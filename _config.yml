@@ -1,7 +1,7 @@
 # Configurations
 title: Minerva
 tagline: The owl of Minerva flies at dusk
-description: 在黄昏起飞的猫头鹰,可以看见整个白天所发生的一切,可以追寻其他鸟儿在白天自由翱翔的足迹。- G.W.F.Hegel
+description: 在黄昏起飞的猫头鹰,可以看见整个白天所发生的一切,可以追寻其他鸟儿在白天自由翱翔的足迹。- Hegel
 
 author:
   name: cloudhan
@@ -10,11 +10,9 @@ author:
 
 plugins:
   - jekyll-paginate
-  - jekyll-remote-theme
 
 paginate: 5
 
-remote_theme: vfvong/jekyll-theme-tao
 
 categories_path: /categories/
 tags_path: /tags/
