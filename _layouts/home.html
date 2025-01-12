@@ -3,9 +3,9 @@ layout: default
 ---
 
 <section>
-  {% assign posts = site.posts %}
+  {% assign posts = site.posts | where_exp: "post", "post.published != false" %}
   {% if paginator %}
-    {% assign posts = paginator.posts %}
+    {% assign posts = paginator.posts | where_exp: "post", "post.published != false" %}
   {% endif %}
   {% for post in posts %}
     <article class="post-entry">
