@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  改革
-author: 飞鸿踏雪
+author: 短腿兜的零食
 categories: [文章]
 tags: [哲学,读书,影视]
 comments: true
