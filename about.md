@@ -3,11 +3,7 @@ layout: page
 title: 
 permalink: /about/
 ---
-<p style="
-font-size: 20px;
-white-space: pre-wrap;
-">
- <font color="#E8590C">
+<div style="font-size: 20px; white-space: pre-wrap; color: #E8590C;">
 那漩涡，
 
 自在地打着转儿，
@@ -20,7 +16,7 @@ white-space: pre-wrap;
 
 偶尔有半透明的水母，如同迷途的纯思，被卷入这温柔的陷阱，
 
-一开一合，闪烁着微光，仿佛在诉说着什么秘密，旋即又被旋流吞没了絮语。。。</font></p>
+一开一合，闪烁着微光，仿佛在诉说着什么秘密，旋即又被旋流吞没了絮语。。。</div>
 
 <p style="
 text-align: center; 
