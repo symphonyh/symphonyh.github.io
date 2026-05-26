@@ -5,6 +5,7 @@ permalink: /about/
 ---
 <p style="
 font-size: 20px;
+white-space: pre-wrap;
 ">
  <font color="#E8590C">
 那漩涡，
