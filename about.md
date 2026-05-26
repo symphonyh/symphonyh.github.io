@@ -3,7 +3,7 @@ layout: page
 title: 
 permalink: /about/
 ---
-<div style="font-size: 20px; white-space: pre-wrap; color: #E8590C;">
+<div style="font-size: 18px; white-space: pre-wrap; color: #E8590C;">
 那漩涡，
 
 自在地打着转儿，
