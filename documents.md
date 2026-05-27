@@ -3,6 +3,7 @@ layout: page
 title: 纯粹
 math: true
 permalink: /pure/
+published: false
 ---
 
 ![登山家剧照](/assets/mark2.jpg) 
