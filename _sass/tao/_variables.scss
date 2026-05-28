@@ -19,7 +19,9 @@ $screen-desktop: 1024px;
   --message-color:    var(--oc-green-8);
 
   //--body-font:        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    --body-font:
+  // --title-font...serif之前代码是宋体字体设置
+  
+  --body-font:
     "Microsoft YaHei",
     "PingFang SC",
     "WenQuanYi Micro Hei",
