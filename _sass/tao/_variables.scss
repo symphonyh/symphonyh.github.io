@@ -18,7 +18,25 @@ $screen-desktop: 1024px;
   --accent-color:     var(--oc-orange-8);
   --message-color:    var(--oc-green-8);
 
-  --body-font:        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  //--body-font:        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --body-font:
+    "Microsoft YaHei",
+    "PingFang SC",
+    "WenQuanYi Micro Hei",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  --post-font:
+    "SimSun",
+    "宋体",
+    "NSimSun",
+    "STSong",
+    "Songti SC",
+    "Microsoft YaHei",
+    "PingFang SC",
+    "WenQuanYi Micro Hei",
+    serif;
+    
   --title-font:       'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   --code-font:        'Courier New', Courier, monospace;
   --line-height:      1.5;

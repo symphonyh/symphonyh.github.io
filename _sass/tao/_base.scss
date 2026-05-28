@@ -169,3 +169,11 @@ a[href^="#fnref:"] {
     content: "TOC";
   }
 }
+
+.post-content,
+.post,
+article.post,
+.entry-content {
+  font-family: var(--post-font, var(--body-font));
+}
+
