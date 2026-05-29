@@ -3,7 +3,8 @@ layout: page
 title: 
 permalink: /about/
 ---
-<div style="font-size: 18px; white-space: pre-wrap; color: #E8590C;">
+[![德勒兹的世界](https://s41.ax1x.com/2026/05/29/pmFUGIe.jpg)](https://imgchr.com/i/pmFUGIe)
+<div class="about-text">
 那漩涡，
 
 自在地打着转儿，
@@ -19,7 +20,3 @@ permalink: /about/
 一开一合，闪烁着微光，仿佛在诉说着什么秘密，旋即又被旋流吞没了
 
 絮语。。。</div>
-
-<p style="
-text-align: center; 
-">
