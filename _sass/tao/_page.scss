@@ -62,6 +62,19 @@ a.post-tag {
   color: var(--body-bg);
 }
 
+
 .about-text {
   font-size: .875rem;
 }
+  .page.about-text-page .page-content {
+    font-size: .875rem;
+  }
+
+  .page.about-text-page .page-content h1,
+  .page.about-text-page .page-content h2,
+  .page.about-text-page .page-content h3,
+  .page.about-text-page .page-content h4,
+  .page.about-text-page .page-content h5,
+  .page.about-text-page .page-content h6 {
+    font-size: unset;
+  }
