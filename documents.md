@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 漩涡之在:一份关于存在的探索旅程
+title: 漩涡之在：关于存在的探索旅程
 page_class: about-text-page
 math: true
 permalink: /pure/
