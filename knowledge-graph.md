@@ -197,6 +197,7 @@ const CONCEPT_DEFINITIONS = [
   { id: 'concept:制度筛选', name: '制度筛选', category: '次级概念', color: '#E67E22' },
   { id: 'concept:规训', name: '规训', category: '次级概念', color: '#E67E22' },
   { id: 'concept:生命政治', name: '生命政治', category: '次级概念', color: '#E67E22' },
+  { id: 'concept:正常与异常', name: '正常与异常', category: '次级概念', color: '#E67E22' },
 
   // =================================================================
   // 4. 次级概念：哲学范畴与认识论（橙色 #E67E22）
@@ -379,19 +380,28 @@ const CONCEPT_RELATIONS = [
   { source: 'concept:业力', target: 'concept:下行因果', type: '构成' },
   { source: 'concept:业力', target: 'concept:元层通道', type: '阻塞' },
   { source: 'concept:业力', target: 'concept:选票悖论', type: '解释' },
-    // —— 福柯权力解剖学：规范的生产与元层的阻塞（第六章文明演化支撑） ——
-  // 权力是下行因果在社会层面的具体运作形态
+  // —— 福柯权力解剖学：规范的生产与元层的阻塞（第六章文明演化支撑） ——
   { source: 'concept:福柯', target: 'concept:下行因果', type: '形态' },
-  // 权力通过规训技术生产出“正常”的规范
   { source: 'concept:福柯', target: 'concept:规范', type: '生产' },
-  // 权力锁死边界时，社会走向僵化
   { source: 'concept:福柯', target: 'concept:僵化', type: '导致' },
-  // 权力通过分类筛选，阻塞了差异的回流通道
   { source: 'concept:福柯', target: 'concept:元层通道', type: '阻塞' },
-  // 规训是权力层面的“筛选机制”，与选择性张力同构
   { source: 'concept:规训', target: 'concept:选择性张力', type: '类比' },
-  // 生命政治是文明对人口的治理形式
   { source: 'concept:生命政治', target: 'concept:文明', type: '治理' },
+   // —— 福柯：正常与异常的规范化生产（新增哲学对话福柯章） ——
+  { source: 'concept:福柯', target: 'concept:正常与异常', type: '奠基' },
+  { source: 'concept:规训', target: 'concept:正常与异常', type: '生产' },
+  { source: 'concept:权力', target: 'concept:正常与异常', type: '生产' },
+  { source: 'concept:生命政治', target: 'concept:正常与异常', type: '治理' },
+  { source: 'concept:正常与异常', target: 'concept:规范', type: '构成' },
+  { source: 'concept:正常与异常', target: 'concept:僵化', type: '趋向' },
+
+  // —— 福柯与权力概念的重构（权力作为关系性力量场） ——
+  { source: 'concept:福柯', target: 'concept:权力', type: '奠基' },
+  { source: 'concept:权力', target: 'concept:规训', type: '机制' },
+  { source: 'concept:权力', target: 'concept:生命政治', type: '演变' },
+  { source: 'concept:权力', target: 'concept:规范', type: '生产' },
+  { source: 'concept:权力', target: 'concept:资本裹挟', type: '缠绕' },
+  { source: 'concept:权力', target: 'concept:元层通道', type: '阻塞' },
 
   // =================================================================
   // 【主线四】元层与治理线：选票悖论 → 元层通道 → 自指 / 下行因果
