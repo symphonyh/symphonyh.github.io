@@ -20,4 +20,6 @@ tags_path: /tags/
 # disqus:
 #  shortname: symphonyh-github-io
 
-url: http://symphonyh.github.io/
+url: https://symphonyh.github.io/
+
+timezone: Asia/Shanghai
