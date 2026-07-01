@@ -120,6 +120,7 @@ const CONCEPT_DEFINITIONS = [
   { id: 'concept:僵化', name: '僵化', category: '核心概念', color: '#C0392B' },
   { id: 'concept:韧性', name: '韧性', category: '核心概念', color: '#C0392B' },
   { id: 'concept:河床', name: '河床', category: '核心概念', color: '#C0392B' },
+  { id: 'concept:选择性张力', name: '选择性张力', category: '核心概念', color: '#C0392B' },
 
   // =================================================================
   // 2. 次级概念：系统科学与物理隐喻（橙色 #E67E22）
@@ -194,6 +195,8 @@ const CONCEPT_DEFINITIONS = [
   { id: 'concept:免疫机制', name: '免疫机制', category: '次级概念', color: '#E67E22' },
   { id: 'concept:权力', name: '权力', category: '次级概念', color: '#E67E22' },
   { id: 'concept:制度筛选', name: '制度筛选', category: '次级概念', color: '#E67E22' },
+  { id: 'concept:规训', name: '规训', category: '次级概念', color: '#E67E22' },
+  { id: 'concept:生命政治', name: '生命政治', category: '次级概念', color: '#E67E22' },
 
   // =================================================================
   // 4. 次级概念：哲学范畴与认识论（橙色 #E67E22）
@@ -376,6 +379,19 @@ const CONCEPT_RELATIONS = [
   { source: 'concept:业力', target: 'concept:下行因果', type: '构成' },
   { source: 'concept:业力', target: 'concept:元层通道', type: '阻塞' },
   { source: 'concept:业力', target: 'concept:选票悖论', type: '解释' },
+    // —— 福柯权力解剖学：规范的生产与元层的阻塞（第六章文明演化支撑） ——
+  // 权力是下行因果在社会层面的具体运作形态
+  { source: 'concept:福柯', target: 'concept:下行因果', type: '形态' },
+  // 权力通过规训技术生产出“正常”的规范
+  { source: 'concept:福柯', target: 'concept:规范', type: '生产' },
+  // 权力锁死边界时，社会走向僵化
+  { source: 'concept:福柯', target: 'concept:僵化', type: '导致' },
+  // 权力通过分类筛选，阻塞了差异的回流通道
+  { source: 'concept:福柯', target: 'concept:元层通道', type: '阻塞' },
+  // 规训是权力层面的“筛选机制”，与选择性张力同构
+  { source: 'concept:规训', target: 'concept:选择性张力', type: '类比' },
+  // 生命政治是文明对人口的治理形式
+  { source: 'concept:生命政治', target: 'concept:文明', type: '治理' },
 
   // =================================================================
   // 【主线四】元层与治理线：选票悖论 → 元层通道 → 自指 / 下行因果
