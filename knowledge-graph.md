@@ -88,8 +88,22 @@ permalink: /knowledge-graph/
 
     // ============================================================
     // 1. 定义核心概念及其关系（语义网络骨架）
+    //    同时注入现代、专业的配色（Economist 风格参考）
     // ============================================================
-   
+
+const PALETTE = {
+  core: '#CC3333',        // 深红（核心概念）
+  secondary: '#FF8C42',   // 暖橙（次级概念）
+  philosopher: '#003366', // 深海军蓝（哲学家）
+  eastern: '#0ABAB5',     // 青绿色（东方思想）
+  case: '#2E8B57',        // 海绿色（案例）
+  article: '#6B5B95',     // 暗紫（文章）
+  category: '#B9770E',    // 金棕（分类）
+  tag: '#2B7BB9',         // 专业蓝（标签）
+  section: '#1F8A70',     // 节点章节色
+  default: '#7C7C7C'      // 中性灰（默认）
+};
+
 const CONCEPT_DEFINITIONS = [
 
   // =================================================================
@@ -668,24 +682,26 @@ const CONCEPT_RELATIONS = [
     allNodes.forEach(function(node) {
       if (node.category === '分类') {
         node.symbolSize = 22 + Math.min(node.value || 1, 8);
-        node.itemStyle = { color: '#F39C12' };
+        node.itemStyle = { color: PALETTE.category };
       } else if (node.category === '标签') {
         node.symbolSize = 18 + Math.min(node.value || 1, 6);
-        node.itemStyle = { color: '#3498DB' };
+        node.itemStyle = { color: PALETTE.tag };
       } else if (node.category === '章节') {
         node.symbolSize = 14 + Math.min(node.value || 1, 6);
-        node.itemStyle = { color: '#2ECC71' };
+        node.itemStyle = { color: PALETTE.section };
       } else if (node.category === '核心概念') {
-        node.itemStyle = { color: '#C0392B' };
+        node.itemStyle = { color: PALETTE.core };
       } else if (node.category === '次级概念') {
-        node.itemStyle = { color: '#E67E22' };
+        node.itemStyle = { color: PALETTE.secondary };
       } else if (node.category === '哲学家') {
-        node.itemStyle = { color: '#2980B9' };
+        node.itemStyle = { color: PALETTE.philosopher };
       } else if (node.category === '案例') {
-        node.itemStyle = { color: '#27AE60' };
+        node.itemStyle = { color: PALETTE.case };
         node.symbol = 'triangle';
+      } else if (node.category === '文章') {
+        node.itemStyle = { color: PALETTE.article };
       } else {
-        node.itemStyle = { color: '#8E44AD' };
+        node.itemStyle = { color: PALETTE.default };
       }
     });
 
@@ -801,14 +817,14 @@ const CONCEPT_RELATIONS = [
               gravity: 0.08
             },
             categories: [
-              { name: '文章', itemStyle: { color: '#8E44AD' } },
-              { name: '分类', itemStyle: { color: '#F39C12' } },
-              { name: '标签', itemStyle: { color: '#3498DB' } },
-              { name: '章节', itemStyle: { color: '#2ECC71' } },
-              { name: '核心概念', itemStyle: { color: '#C0392B' } },
-              { name: '次级概念', itemStyle: { color: '#E67E22' } },
-              { name: '哲学家', itemStyle: { color: '#2980B9' } },
-              { name: '案例', itemStyle: { color: '#27AE60' } }
+              { name: '文章', itemStyle: { color: PALETTE.article } },
+              { name: '分类', itemStyle: { color: PALETTE.category } },
+              { name: '标签', itemStyle: { color: PALETTE.tag } },
+              { name: '章节', itemStyle: { color: PALETTE.section } },
+              { name: '核心概念', itemStyle: { color: PALETTE.core } },
+              { name: '次级概念', itemStyle: { color: PALETTE.secondary } },
+              { name: '哲学家', itemStyle: { color: PALETTE.philosopher } },
+              { name: '案例', itemStyle: { color: PALETTE.case } }
             ],
             data: nodes,
             links: linksData,
