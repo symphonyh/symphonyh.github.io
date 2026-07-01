@@ -1,0 +1,23 @@
+# Configurations
+title: Minerva
+tagline: The owl of Minerva flies at dusk
+description: Being is relation, not substance.
+
+author:
+  name: cloudhan
+  url: https://symphonyh.github.io/
+  email: hxy@cloudhan.me
+
+plugins:
+  - jekyll-paginate
+
+paginate: 5
+
+
+categories_path: /categories/
+tags_path: /tags/
+
+# disqus:
+#  shortname: symphonyh-github-io
+
+url: http://symphonyh.github.io/
