@@ -343,6 +343,7 @@ const CONCEPT_RELATIONS = [
   { source: 'concept:下行因果', target: 'concept:漩涡', type: '构成' },
   { source: 'concept:选择性张力', target: 'concept:动态平衡', type: '构成' },
   { source: 'concept:开放性', target: 'concept:动态平衡', type: '条件' },
+  { source: 'concept:关系', target: 'concept:实体', type: '超越' },
   // —— 系统科学对涌现的支撑 ——
   { source: 'concept:自组织', target: 'concept:涌现', type: '条件' },
   { source: 'concept:自创生', target: 'concept:涌现', type: '实现' },
@@ -402,6 +403,7 @@ const CONCEPT_RELATIONS = [
   { source: 'concept:权力', target: 'concept:规范', type: '生产' },
   { source: 'concept:权力', target: 'concept:资本裹挟', type: '缠绕' },
   { source: 'concept:权力', target: 'concept:元层通道', type: '阻塞' },
+  { source: 'concept:资本裹挟', target: 'concept:僵化', type: '导致' },
 
   // =================================================================
   // 【主线四】元层与治理线：选票悖论 → 元层通道 → 自指 / 下行因果
