@@ -1,0 +1,48 @@
+<script>
+(function() {
+  if (window.mermaidInitialized) return;
+  window.mermaidInitialized = true;  // 移到开头防止重复加载
+
+  var script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+  
+  script.onload = function() {
+    // 1. 初始化配置
+    mermaid.initialize({
+      theme: 'base',
+      themeVariables: {
+        background: 'transparent',
+        primaryColor: '#ffffff',
+        primaryBorderColor: '#333333',
+        primaryTextColor: '#333333',
+        lineColor: '#333333',
+        lineWidth: '2px',
+        strokeWidth: '2px',
+        secondaryColor: '#ffffff',
+        tertiaryColor: '#ffffff',
+        fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+        fontSize: '14px',
+        borderRadius: '4px',
+        edgeLabelBackground: '#ffffff'
+      },
+      flowchart: {
+        curve: 'basis',
+        padding: 20,
+        nodeSpacing: 50,
+        rankSpacing: 50
+      }
+    });
+
+    // 2. 🔥 关键：调用 run() 时传入配置，确保样式生效
+    mermaid.run({
+      querySelector: '.mermaid',
+      // 这里可以再次传入配置，覆盖 initialize 中的设置
+      // 但更关键的是这个调用本身会触发渲染
+    }).catch(function(err) {
+      console.warn('Mermaid 渲染警告:', err);
+    });
+  };
+
+  document.head.appendChild(script);
+})();
+</script>

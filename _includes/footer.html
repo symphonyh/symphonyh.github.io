@@ -1,0 +1,15 @@
+<footer class="footer">
+  <p class="footer-text">
+    &copy;
+    <time datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | date: '%Y' }}</time>
+    {%- if site.author -%}
+      &nbsp;<a href="{{ site.author.url }}" target="_blank">{{ site.author.name }}</a>
+    {%- endif -%}. All rights reserved.
+  </p>
+  {% if jekyll.environment == "production" %}
+    <img
+      class="footer-counter"
+      src="https://hitscounter.dev/api/hit?url=www.cloudhan.me&label=Visitor&icon=alarm-fill&color=%23fd7e14&message=&style=flat&tz=Asia%2FHarbin"
+      alt="Visitor counter">
+  {% endif %}
+</footer>

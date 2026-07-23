@@ -1,0 +1,232 @@
+/**
+ * Styles for the pages and posts
+ */
+
+.page-title,
+.post-title {
+  margin: 0;
+}
+
+.post-subtitle {
+  margin: 0;
+  color: var(--body-color-light);
+}
+
+.post-image {
+  width: 100%;
+}
+
+.post-meta {
+  color: var(--body-color-light);
+  font-size: .8em;
+}
+
+.post-meta-top {
+  margin-bottom: var(--spacing);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing);
+}
+
+.post-categories {
+  text-align: right;
+}
+
+a.post-category,
+a.post-tag {
+  color: inherit;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: var(--body-color-dark);
+  }
+}
+
+.post-meta-bottom {
+  margin-top: var(--spacing);
+}
+
+.post-prev {
+  text-align: left;
+}
+
+.post-next {
+  text-align: right;
+}
+
+.message {
+  padding: var(--spacing);
+  border-radius: .5em;
+  background-color: var(--message-color);
+  color: var(--body-bg);
+}
+
+.about-text {
+  font-size: .875rem;
+}
+
+// Docments 调用
+.about-text-page {
+  font-size: .875rem;
+}
+
+.reader-sidebar {
+  position: fixed;
+  top: 8rem;
+  right: 1.5rem;
+  width: 260px;
+  max-height: calc(100vh - 10rem);
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(14px);
+  z-index: 10;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.reader-sidebar-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(12px);
+}
+
+.reader-sidebar-toggle {
+  border: none;
+  background: transparent;
+  color: var(--body-color-dark);
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.reader-sidebar-toggle:hover,
+.reader-sidebar-toggle:focus {
+  background: rgba(79, 156, 255, 0.1);
+}
+
+.reader-sidebar-show {
+  position: fixed;
+  top: 8rem;
+  right: 1.5rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--body-color-dark);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  z-index: 11;
+}
+
+.reader-sidebar-show.visible {
+  display: inline-flex;
+}
+
+.reader-sidebar-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.reader-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--body-color-dark);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.reader-progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background: var(--body-color-light);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.reader-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--accent-color, #4f9cff);
+  transition: width 0.2s ease;
+}
+
+.reader-sidebar-headings {
+  overflow: auto;
+  max-height: calc(100vh - 16rem);
+}
+
+.reader-sidebar-empty,
+.reader-sidebar-loading {
+  margin: 0;
+  color: var(--body-color-light);
+  font-size: 0.92rem;
+}
+
+.reader-toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.reader-toc-item {
+  margin: 0;
+}
+
+.reader-toc-item.reader-toc-h2 {
+  padding-left: 0;
+}
+
+.reader-toc-item.reader-toc-h3 {
+  padding-left: 0.75rem;
+}
+
+.reader-toc-item.reader-toc-h4 {
+  padding-left: 1.5rem;
+}
+
+.reader-toc-link {
+  display: block;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.92rem;
+  color: var(--body-color-dark);
+  text-decoration: none;
+  border-radius: 0.75rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.reader-toc-link:hover,
+.reader-toc-link:focus {
+  background: rgba(79, 156, 255, 0.08);
+  color: var(--body-color-dark);
+}
+
+.reader-toc-link.active {
+  color: var(--accent-color, #4f9cff);
+}
+
+@media screen and (max-width: 960px) {
+  .reader-sidebar {
+    display: none;
+  }
+}
