@@ -1,0 +1,138 @@
+---
+layout: default
+---
+
+<article class="post">
+  <div class="post-meta post-meta-top">
+    <div>
+      <time datetime="{{ page.date | date_to_xmlschema }}">
+        <i class="fa-solid fa-calendar-days"></i> {{ page.date | date_to_string }}
+      </time>
+      {%- if page.last_modified_at -%}
+        ~
+        {%- assign mdate = page.last_modified_at | date_to_xmlschema -%}
+        <time datetime="{{ mdate }}" itemprop="dateModified">
+          {{ mdate | date_to_string }}
+        </time>
+      {%- endif -%}
+      {%- if page.author -%}
+        <i class="fa-solid fa-at"></i>
+        {% for author in page.author %}
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">{{ author }}</span>
+          {%- if forloop.last == false %}, {% endif -%}
+        {% endfor %}
+      {%- endif -%}
+    </div>
+
+    {% if page.categories.size > 0 %}
+      <nav class="post-categories">
+        {% for category in page.categories %}
+          {% if site.categories_path %}
+            <a class="post-category" href="{{ site.categories_path | relative_url }}#{{ category | slugify }}">{{ category }}</a> /
+          {% else %}
+            <span>{{ category }}</span> /
+          {% endif %}
+        {% endfor %}
+      </nav>
+    {% endif %}
+  </div>
+
+  <h1 class="post-title">{{ page.title }}</h1>
+  {% if page.subtitle %}
+    <h4 class="post-subtitle">{{ page.subtitle }}</h4>
+  {% endif %}
+
+  {% if page.image %}
+    <img class="post-image" src="{{ page.image | relative_url }}" alt="{{ post.title }}">
+  {% endif %}
+
+    <aside class="reader-sidebar" id="reader-sidebar">
+    <div class="reader-sidebar-box">
+      <div class="reader-sidebar-header">
+        <span>阅读进度</span>
+        <button type="button" class="reader-sidebar-toggle" id="reader-sidebar-toggle" aria-label="隐藏目录">×</button>
+      </div>
+      <div class="reader-progress-bar">
+        <div id="reader-progress-fill" class="reader-progress-fill"></div>
+      </div>
+      <div class="reader-sidebar-headings" id="reader-toc">
+        <p class="reader-sidebar-loading">正在生成目录…</p>
+      </div>
+    </div>
+  </aside>
+
+  <button type="button" class="reader-sidebar-show" id="reader-sidebar-show" aria-label="显示目录"><i class="fas fa-list"></i></button>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  {% if page.tags.size > 0 %}
+    <nav class="post-meta post-meta-bottom">
+      {% for tag in page.tags %}
+        {% assign slugified_tag = tag | slugify %}
+        {% if site.tags_path %}
+          <a class="post-tag" href="{{ site.tags_path | relative_url }}#{{ slugified_tag }}">#{{ slugified_tag }}</a>
+        {% else %}
+          <span>#{{ slugified_tag }}</span>
+        {% endif %}
+      {% endfor %}
+    </nav>
+  {% endif %}
+  
+{% if jekyll.environment == "production" %}
+ <img src="https://hitscounter.dev/api/hit?url={{ page.url | absolute_url }}&label=Visitor&icon=alarm-fill&color=%23fd7e14&message=&style=flat&tz=Asia%2FHarbin" alt="Hits">
+{% endif %}
+
+<div class="pagination">
+  {% if page.previous %}
+    <a class="prev post-prev" href="{{ page.previous.url | relative_url }}">
+      <i class="fas fa-chevron-left"></i> <span class="">{{ page.previous.title | markdownify | strip_html }}</span>
+    </a>
+  {% else %}
+    <span class="prev post-prev unable"><i class="fas fa-chevron-left"></i></span>
+  {% endif %}
+
+  {% if page.next %}
+    <a class="next post-next" href="{{ page.next.url | relative_url }}">
+      <span class="">{{ page.next.title | markdownify | strip_html }}</span> <i class="fas fa-chevron-right"></i>
+    </a>
+  {% else %}
+    <span class="next post-next unable"><i class="fas fa-chevron-right"></i></span>
+  {% endif %}
+</div>
+
+{% if jekyll.environment == "production" and site.disqus and page.comments != false %}
+  {% include disqus.html %}
+{% endif %}
+
+
+<script src="https://giscus.app/client.js"
+          data-repo="symphonyh/symphonyh.github.io"
+          data-repo-id="R_kgDOItt3cA"
+          data-category="Announcements"
+          data-category-id="DIC_kwDOItt3cM4C_md9"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="preferred_color_scheme"
+          data-lang="zh-CN"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+<script>
+  document.addEventListener('mouseup', function() {
+  const selection = window.getSelection();
+  if (!selection || selection.isCollapsed) return;
+  const range = selection.getRangeAt(0);
+  const span = document.createElement('span');
+  span.style.backgroundColor = '#fff3b0';
+  span.style.padding = '0 2px';
+  range.surroundContents(span);
+  // 清除选中状态
+  selection.removeAllRanges();
+});
+</script>

@@ -1,0 +1,14 @@
+- title: Home
+  url: /
+- title: Search
+  url: /search/
+- title: TimeLine
+  url: /archive/
+- title: Categories
+  url: /categories/
+- title: Tags
+  url: /tags/
+- title: Knowledge Graph
+  url: /knowledge-graph/
+- title: About
+  url: /about/
