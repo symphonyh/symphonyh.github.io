@@ -3,6 +3,7 @@ layout: page
 title: Search
 permalink: /search/
 page_class: search-page
+sitemap: false
 ---
 
 <form class="search-form" role="search">
