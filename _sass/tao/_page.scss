@@ -7,6 +7,13 @@
   margin: 0;
 }
 
+// 首页文章列表用 h2 保证语义层级（每页只有一个 h1），
+// 但视觉上保持与 h1 一致的字号，避免标题变小。
+.post-entry .post-title {
+  font-size: 2em;
+  line-height: 1.25;
+}
+
 .post-subtitle {
   margin: 0;
   color: var(--body-color-light);
