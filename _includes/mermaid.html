@@ -7,6 +7,23 @@
   script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
   
   script.onload = function() {
+    // 0. 修复：kramdown 会把 <pre class="mermaid"> 内的 --> 转义成 --&gt;
+    //    这里只还原箭头等实体，保留 <br /> 等 Mermaid 需要的标签
+    var blocks = document.querySelectorAll('.mermaid');
+    for (var i = 0; i < blocks.length; i++) {
+      var el = blocks[i];
+      if (el.getAttribute('data-decoded') === '1') continue;
+      var raw = el.textContent;
+      if (raw.indexOf('&gt;') !== -1 || raw.indexOf('&lt;') !== -1 || raw.indexOf('&amp;') !== -1 || raw.indexOf('&quot;') !== -1) {
+        el.textContent = raw
+          .replace(/&gt;/g, '>')
+          .replace(/&lt;/g, '<')
+          .replace(/&quot;/g, '"')
+          .replace(/&amp;/g, '&');
+      }
+      el.setAttribute('data-decoded', '1');
+    }
+
     // 1. 初始化配置
     mermaid.initialize({
       theme: 'base',
