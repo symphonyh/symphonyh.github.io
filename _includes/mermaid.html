@@ -1,31 +1,45 @@
 <script>
 (function() {
   if (window.mermaidInitialized) return;
-  window.mermaidInitialized = true;  // 移到开头防止重复加载
+  window.mermaidInitialized = true;
 
-  var script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
-  
-  script.onload = function() {
-    // 0. 修复：kramdown 会把 <pre class="mermaid"> 内的 --> 转义成 --&gt;
-    //    这里只还原箭头等实体，保留 <br /> 等 Mermaid 需要的标签
+  // 多个 CDN 依次回退，避免单一 CDN 不可达导致图表全部失效
+  var CDN_LIST = [
+    'https://fastly.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js',
+    'https://unpkg.com/mermaid@10/dist/mermaid.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js',
+    'https://cdn.staticfile.org/mermaid/10.9.1/mermaid.min.js',
+    'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js'
+  ];
+
+  // 把 <pre class="mermaid"> 的内容还原成纯文本。
+  // kramdown 会把 --> 转义成 --&gt;，同时 <br /> 会被浏览器解析成真实标签，
+  // 导致 textContent 丢失换行、Mermaid 语法被破坏。
+  // 这里用 innerHTML 反解实体，并把 <br> 还原成换行符。
+  function normalize(el) {
+    var html = el.innerHTML;
+    html = html.replace(/<br\s*\/?>/gi, '\n');
+    html = html.replace(/<\/?p[^>]*>/gi, '\n');
+    var ta = document.createElement('textarea');
+    ta.innerHTML = html;
+    return ta.value.replace(/^\s+|\s+$/g, '');
+  }
+
+  function renderAll() {
     var blocks = document.querySelectorAll('.mermaid');
+    if (!blocks.length) return;
+
+    // 1. 先规范化所有块的内容（必须在 mermaid.run 之前完成）
     for (var i = 0; i < blocks.length; i++) {
       var el = blocks[i];
-      if (el.getAttribute('data-decoded') === '1') continue;
-      var raw = el.textContent;
-      if (raw.indexOf('&gt;') !== -1 || raw.indexOf('&lt;') !== -1 || raw.indexOf('&amp;') !== -1 || raw.indexOf('&quot;') !== -1) {
-        el.textContent = raw
-          .replace(/&gt;/g, '>')
-          .replace(/&lt;/g, '<')
-          .replace(/&quot;/g, '"')
-          .replace(/&amp;/g, '&');
-      }
-      el.setAttribute('data-decoded', '1');
+      if (el.getAttribute('data-normalized') === '1') continue;
+      el.textContent = normalize(el);
+      el.setAttribute('data-normalized', '1');
     }
 
-    // 1. 初始化配置
+    // 2. 初始化配置
     mermaid.initialize({
+      startOnLoad: false,
       theme: 'base',
       themeVariables: {
         background: 'transparent',
@@ -50,16 +64,37 @@
       }
     });
 
-    // 2. 🔥 关键：调用 run() 时传入配置，确保样式生效
-    mermaid.run({
-      querySelector: '.mermaid',
-      // 这里可以再次传入配置，覆盖 initialize 中的设置
-      // 但更关键的是这个调用本身会触发渲染
-    }).catch(function(err) {
+    // 3. 渲染
+    mermaid.run({ querySelector: '.mermaid' }).catch(function(err) {
       console.warn('Mermaid 渲染警告:', err);
     });
-  };
+  }
 
-  document.head.appendChild(script);
+  function loadFrom(index) {
+    if (index >= CDN_LIST.length) {
+      console.error('Mermaid: 所有 CDN 均加载失败');
+      return;
+    }
+    var s = document.createElement('script');
+    s.src = CDN_LIST[index];
+    s.async = true;
+    s.onload = function() {
+      if (typeof window.mermaid === 'undefined') {
+        loadFrom(index + 1);
+        return;
+      }
+      renderAll();
+    };
+    s.onerror = function() {
+      console.warn('Mermaid CDN 失败，尝试下一个:', CDN_LIST[index]);
+      loadFrom(index + 1);
+    };
+    document.head.appendChild(s);
+  }
+
+  // 页面没有 mermaid 块就不加载脚本，节省流量
+  if (document.querySelector('.mermaid')) {
+    loadFrom(0);
+  }
 })();
 </script>
