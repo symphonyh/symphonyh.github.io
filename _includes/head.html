@@ -137,6 +137,15 @@
   <link rel="stylesheet" href="{{ 'assets/css/open-color.css' | relative_url }}">
   <link rel="stylesheet" href="{{ 'assets/css/tao/styles.css' | relative_url }}">
 
+  {%- comment -%}
+    预加载 Mermaid：让浏览器在解析 HTML 阶段就开始下载，
+    而不是等 body 末尾的内联脚本执行后才发起请求。
+    仅当页面确实含图表时才预加载，避免无谓流量。
+  {%- endcomment -%}
+  {%- if content contains 'class="mermaid"' -%}
+  <link rel="preload" as="script" href="{{ 'assets/js/vendor/mermaid.min.js' | relative_url }}">
+  {%- endif -%}
+
   <script async src="https://use.fontawesome.com/releases/v6.0.0/js/all.js"></script>
 
   {% include custom-head.html %}

@@ -3,13 +3,14 @@
   if (window.mermaidInitialized) return;
   window.mermaidInitialized = true;
 
-  // 多个 CDN 依次回退，避免单一 CDN 不可达导致图表全部失效
+  // 加载策略：自托管优先（同域、无跨网延迟），CDN 并行竞速兜底。
+  // 自托管文件位于 /assets/js/vendor/mermaid.min.js，由 GitHub Pages 提供并自动 gzip。
+  var LOCAL_URL = '{{ "/assets/js/vendor/mermaid.min.js" | relative_url }}';
   var CDN_LIST = [
-    'https://fastly.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js',
-    'https://unpkg.com/mermaid@10/dist/mermaid.min.js',
+    'https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js',
     'https://cdn.staticfile.org/mermaid/10.9.1/mermaid.min.js',
-    'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js'
+    'https://fastly.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js'
   ];
 
   // 把 <pre class="mermaid"> 的内容还原成纯文本。
@@ -70,49 +71,57 @@
     });
   }
 
-  function loadFrom(index) {
-    if (index >= CDN_LIST.length) {
-      console.error('Mermaid: 所有 CDN 均加载失败');
-      return;
+  // 并行竞速：同时发起所有请求，谁先成功用谁，其余立即中止。
+  // 这样彻底消除了串行回退时"等 8 秒超时"的浪费。
+  var settled = false;
+  var pending = [];
+
+  function finish() {
+    if (settled) return;
+    settled = true;
+    // 中止其余仍在进行的请求，节省带宽
+    for (var i = 0; i < pending.length; i++) {
+      try { pending[i].abort(); } catch (e) {}
     }
-    var url = CDN_LIST[index];
-    var done = false;
+    pending = [];
+    renderAll();
+  }
 
-    var s = document.createElement('script');
-    s.src = url;
-    s.async = true;
+  function tryLoad(url, isLocal) {
+    if (settled) return;
+    var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    if (ctrl) pending.push(ctrl);
 
-    function next(reason) {
-      if (done) return;
-      done = true;
-      console.warn('Mermaid CDN 失败(' + reason + ')，尝试下一个:', url);
-      loadFrom(index + 1);
-    }
-
-    s.onload = function() {
-      if (done) return;
-      if (typeof window.mermaid === 'undefined') {
-        next('onload 但 mermaid 未定义');
-        return;
-      }
-      done = true;
-      renderAll();
-    };
-    s.onerror = function() { next('onerror'); };
-
-    // 关键：某些网络错误不会触发 onerror，用超时兜底
-    setTimeout(function() {
-      if (!done && typeof window.mermaid === 'undefined') {
-        next('超时 8s');
-      }
-    }, 8000);
-
-    document.head.appendChild(s);
+    fetch(url, ctrl ? { signal: ctrl.signal } : {})
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.text();
+      })
+      .then(function(code) {
+        if (settled) return;
+        // 校验内容，避免把 CDN 的 404 页面当成脚本执行
+        if (code.length < 10000 || code.indexOf('mermaid') === -1) {
+          throw new Error('内容异常');
+        }
+        var s = document.createElement('script');
+        s.textContent = code;
+        document.head.appendChild(s);
+        if (typeof window.mermaid === 'undefined') throw new Error('执行后 mermaid 未定义');
+        finish();
+      })
+      .catch(function(err) {
+        if (settled) return;
+        console.warn('Mermaid 来源失败:', url, err && err.message);
+        // 自托管失败时，才启动 CDN 竞速
+        if (isLocal) {
+          for (var i = 0; i < CDN_LIST.length; i++) tryLoad(CDN_LIST[i], false);
+        }
+      });
   }
 
   // 页面没有 mermaid 块就不加载脚本，节省流量
   if (document.querySelector('.mermaid')) {
-    loadFrom(0);
+    tryLoad(LOCAL_URL, true);
   }
 })();
 </script>
