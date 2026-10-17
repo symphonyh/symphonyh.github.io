@@ -75,8 +75,12 @@
     var scrollHeight = documentElement.scrollHeight - window.innerHeight;
     var ratio = scrollHeight > 0 ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0;
     var percent = Math.round(ratio * 100);
-    progressFill.style.width = percent + '%';
-    progressText.textContent = percent + '%';
+    if (progressFill) {
+      progressFill.style.width = percent + '%';
+    }
+    if (progressText) {
+      progressText.textContent = percent + '%';
+    }
   }
 
   function updateActiveHeading() {
