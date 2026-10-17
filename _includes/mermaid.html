@@ -75,20 +75,38 @@
       console.error('Mermaid: 所有 CDN 均加载失败');
       return;
     }
+    var url = CDN_LIST[index];
+    var done = false;
+
     var s = document.createElement('script');
-    s.src = CDN_LIST[index];
+    s.src = url;
     s.async = true;
+
+    function next(reason) {
+      if (done) return;
+      done = true;
+      console.warn('Mermaid CDN 失败(' + reason + ')，尝试下一个:', url);
+      loadFrom(index + 1);
+    }
+
     s.onload = function() {
+      if (done) return;
       if (typeof window.mermaid === 'undefined') {
-        loadFrom(index + 1);
+        next('onload 但 mermaid 未定义');
         return;
       }
+      done = true;
       renderAll();
     };
-    s.onerror = function() {
-      console.warn('Mermaid CDN 失败，尝试下一个:', CDN_LIST[index]);
-      loadFrom(index + 1);
-    };
+    s.onerror = function() { next('onerror'); };
+
+    // 关键：某些网络错误不会触发 onerror，用超时兜底
+    setTimeout(function() {
+      if (!done && typeof window.mermaid === 'undefined') {
+        next('超时 8s');
+      }
+    }, 8000);
+
     document.head.appendChild(s);
   }
 
