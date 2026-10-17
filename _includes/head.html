@@ -141,8 +141,10 @@
     预加载 Mermaid：让浏览器在解析 HTML 阶段就开始下载，
     而不是等 body 末尾的内联脚本执行后才发起请求。
     仅当页面确实含图表时才预加载，避免无谓流量。
+    注意：必须限定 layout 为 post，否则首页/归档页的摘要文本
+    也可能命中该字符串，导致预加载了却用不上（浏览器会告警）。
   {%- endcomment -%}
-  {%- if content contains 'class="mermaid"' -%}
+  {%- if page.layout == 'post' and content contains 'class="mermaid"' -%}
   <link rel="preload" as="script" href="{{ 'assets/js/vendor/mermaid.min.js' | relative_url }}">
   {%- endif -%}
 
