@@ -1,0 +1,19 @@
+---
+layout: null
+permalink: /robots.txt
+sitemap: false
+---
+User-agent: *
+Allow: /
+Disallow: /search/
+Disallow: /search.json
+
+# 百度
+User-agent: Baiduspider
+Allow: /
+
+# 谷歌
+User-agent: Googlebot
+Allow: /
+
+Sitemap: {{ '/sitemap.xml' | absolute_url }}

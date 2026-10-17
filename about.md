@@ -1,6 +1,7 @@
 ---
 layout: page
-title: 
+title: 关于《漩涡之在》
+description: 《漩涡之在》是一部长篇关系本体论写作计划：存在不是实体，而是持续交换维持的动态过程。本页介绍全书的问题起点、结构与方法。
 permalink: /about/
 ---
 [![德勒兹的世界](https://s41.ax1x.com/2026/05/29/pmFUGIe.jpg)](https://imgchr.com/i/pmFUGIe)

@@ -1,15 +1,20 @@
 # Configurations
 title: Minerva
 tagline: The owl of Minerva flies at dusk
-description: Being is relation, not substance.
+description: 《漩涡之在》——以"关系先于实体"为核心的关系本体论写作计划，涵盖哲学、科学、艺术与日常生活的交叉视域。
+
+lang: zh-CN
+locale: zh_CN
 
 author:
   name: Vortex
-  url: https://symphonyh.github.io/
+  url: https://www.cloudhan.me/
   email: hxy@cloudhan.me
 
 plugins:
   - jekyll-paginate
+  - jekyll-feed
+  - jekyll-sitemap
 
 paginate: 5
 
@@ -20,6 +25,21 @@ tags_path: /tags/
 # disqus:
 #  shortname: symphonyh-github-io
 
-url: https://symphonyh.github.io/
+# 站点正式域名（与 CNAME 保持一致），用于 canonical / sitemap / feed 的绝对地址
+url: https://www.cloudhan.me
+baseurl: ""
 
 timezone: Asia/Shanghai
+
+# 社交与结构化数据
+social:
+  name: Vortex
+  links:
+    - https://github.com/symphonyh
+
+# 站长平台验证
+webmaster_verifications:
+  baidu: codeva-S5bZIVu7ff
+
+# 统计（填入 UA-XXXXXXX-X 后自动生效）
+# google_analytics: UA-XXXXXXXX-X
