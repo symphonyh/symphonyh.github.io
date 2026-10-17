@@ -87,7 +87,34 @@
     renderAll();
   }
 
-  function tryLoad(url, isLocal) {
+  // 自托管文件用 <script src> 加载：这样 head 里的 <link rel="preload">
+  // 才能被浏览器复用，否则会报 "preloaded but not used" 告警。
+  function loadLocal() {
+    var s = document.createElement('script');
+    s.src = LOCAL_URL;
+    s.async = true;
+    s.onload = function() {
+      if (typeof window.mermaid === 'undefined') {
+        console.warn('Mermaid 自托管文件加载后未定义，改用 CDN');
+        loadCdnRace();
+        return;
+      }
+      finish();
+    };
+    s.onerror = function() {
+      console.warn('Mermaid 自托管文件加载失败，改用 CDN');
+      loadCdnRace();
+    };
+    document.head.appendChild(s);
+  }
+
+  // CDN 兜底：并行竞速，谁先成功用谁
+  function loadCdnRace() {
+    if (settled) return;
+    for (var i = 0; i < CDN_LIST.length; i++) tryLoad(CDN_LIST[i]);
+  }
+
+  function tryLoad(url) {
     if (settled) return;
     var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
     if (ctrl) pending.push(ctrl);
@@ -112,16 +139,12 @@
       .catch(function(err) {
         if (settled) return;
         console.warn('Mermaid 来源失败:', url, err && err.message);
-        // 自托管失败时，才启动 CDN 竞速
-        if (isLocal) {
-          for (var i = 0; i < CDN_LIST.length; i++) tryLoad(CDN_LIST[i], false);
-        }
       });
   }
 
   // 页面没有 mermaid 块就不加载脚本，节省流量
   if (document.querySelector('.mermaid')) {
-    tryLoad(LOCAL_URL, true);
+    loadLocal();
   }
 })();
 </script>
