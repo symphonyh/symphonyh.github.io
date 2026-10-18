@@ -232,58 +232,8 @@ a.post-tag {
   color: var(--accent-color, #4f9cff);
 }
 
-// 侧边栏是 position: fixed 固定在视口右侧，而正文是固定 600px 居中。
-// 视口不够宽时两者会重叠（实测 961–1100px 区间重叠 42–111px）。
-// 正文右边界 = (视口宽 + 600) / 2，侧边栏左边界 = 视口宽 - 24 - 260。
-// 令两者不重叠需 视口宽 >= 1168px，这里取 1200px 留出余量。
-//
-// 窄屏策略：不隐藏侧边栏（否则完全没有目录），而是
-//   - JS 默认给它加 reader-sidebar-hidden 类（收起）
-//   - 点唤出按钮后，给 body 加 reader-sidebar-open 类，
-//     让 .wrapper 整体左移，为侧边栏腾出空间（正文不被遮挡）
-@media screen and (max-width: 1199px) {
+@media screen and (max-width: 960px) {
   .reader-sidebar {
-    z-index: 30;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-  }
-
-  // 窄屏下唤出按钮始终可见，作为目录入口
-  .reader-sidebar-show {
-    display: inline-flex;
-  }
-
-  // 侧边栏展开时正文让位：靠左对齐并收窄，把右侧空间让给目录。
-  // 可用宽度 = 视口宽 - 右边距 24 - 侧边栏 260 - 间隙 24 = 视口宽 - 308。
-  // 正文原本固定 600px，窄屏下必须收窄，否则仍会与侧边栏重叠。
-  body.reader-sidebar-open .wrapper {
-    margin-left: 0;
-    margin-right: auto;
-    max-width: calc(100vw - 308px);
-  }
-
-  // 侧边栏展开时，唤出按钮隐藏（此时已有 × 关闭按钮）
-  body.reader-sidebar-open .reader-sidebar-show {
     display: none;
-  }
-}
-
-// 极窄屏（手机）侧边栏占满宽度，正文不再让位（改为全屏浮层）
-@media screen and (max-width: 640px) {
-  .reader-sidebar {
-    left: 1rem;
-    right: 1rem;
-    width: auto;
-    top: 5rem;
-    max-height: calc(100vh - 7rem);
-  }
-
-  .reader-sidebar-headings {
-    max-height: calc(100vh - 13rem);
-  }
-
-  // 手机上空间不足，正文保持居中，侧边栏以浮层覆盖
-  body.reader-sidebar-open .wrapper {
-    margin-left: auto;
-    margin-right: auto;
   }
 }
