@@ -232,8 +232,38 @@ a.post-tag {
   color: var(--accent-color, #4f9cff);
 }
 
-@media screen and (max-width: 960px) {
+// 侧边栏是 position: fixed 固定在视口右侧，而正文是固定 600px 居中。
+// 视口不够宽时两者会重叠（实测 961–1100px 区间重叠 42–111px）。
+// 正文右边界 = (视口宽 + 600) / 2，侧边栏左边界 = 视口宽 - 24 - 260。
+// 令两者不重叠需 视口宽 >= 1168px，这里取 1200px 留出余量。
+//
+// 窄屏不直接隐藏侧边栏（否则完全没有目录），而是：
+//   - JS 默认给它加 reader-sidebar-hidden 类（收起）
+//   - 点唤出按钮后以浮层形式覆盖在正文之上
+@media screen and (max-width: 1199px) {
   .reader-sidebar {
-    display: none;
+    // 浮层化：抬高层级，加更明显的阴影
+    z-index: 30;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  }
+
+  // 窄屏下唤出按钮始终可见，作为目录入口
+  .reader-sidebar-show {
+    display: inline-flex;
+  }
+}
+
+// 极窄屏（手机）侧边栏占满宽度，避免左右留白过窄
+@media screen and (max-width: 640px) {
+  .reader-sidebar {
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    top: 5rem;
+    max-height: calc(100vh - 7rem);
+  }
+
+  .reader-sidebar-headings {
+    max-height: calc(100vh - 13rem);
   }
 }
