@@ -37,9 +37,10 @@ social:
   links:
     - https://github.com/symphonyh
 
-# 站长平台验证
+# 站长平台验证（改这里即可，head.html 会自动输出对应 meta）
 webmaster_verifications:
   baidu: codeva-S5bZIVu7ff
+  bing: CB38EC8A9CA94CC4E308108171EBAEA5
 
 # 统计（填入 UA-XXXXXXX-X 后自动生效）
 # google_analytics: UA-XXXXXXXX-X
