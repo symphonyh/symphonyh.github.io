@@ -252,11 +252,11 @@ a.post-tag {
     display: inline-flex;
   }
 
-  // 侧边栏展开时正文让位：整体左移，避免被浮层压住。
-  // 位移量 = 侧边栏宽度 260 + 右边距 24 + 间隙 24 = 308px，
-  // 但窄屏空间有限，这里取 300px 并配合 max-width 收窄正文。
+  // 侧边栏展开时正文让位：改为靠左对齐，把右侧空间让给目录。
+  // 正文宽 600px 贴左，侧边栏固定在右侧，两者互不重叠。
   body.reader-sidebar-open .wrapper {
-    transform: translateX(-300px);
+    margin-left: 0;
+    margin-right: auto;
   }
 
   // 侧边栏展开时，唤出按钮隐藏（此时已有 × 关闭按钮）
@@ -265,16 +265,7 @@ a.post-tag {
   }
 }
 
-// 中等窄屏（768–1199px）：正文左移后仍可能贴边，收窄正文宽度
-@media screen and (min-width: 768px) and (max-width: 1199px) {
-  body.reader-sidebar-open .wrapper {
-    max-width: calc(600px + 2 * var(--spacing));
-    margin-left: 0;
-    margin-right: auto;
-  }
-}
-
-// 极窄屏（手机）侧边栏占满宽度，正文不再左移（改为全屏浮层）
+// 极窄屏（手机）侧边栏占满宽度，正文不再让位（改为全屏浮层）
 @media screen and (max-width: 640px) {
   .reader-sidebar {
     left: 1rem;
@@ -288,8 +279,9 @@ a.post-tag {
     max-height: calc(100vh - 13rem);
   }
 
-  // 手机上正文左移没有意义（空间不足），取消位移
+  // 手机上空间不足，正文保持居中，侧边栏以浮层覆盖
   body.reader-sidebar-open .wrapper {
-    transform: none;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
