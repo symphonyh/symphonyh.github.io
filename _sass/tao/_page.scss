@@ -85,11 +85,12 @@ a.post-tag {
   width: 260px;
   max-height: calc(100vh - 10rem);
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.96);
+  // [TOC-FIX] 改为纯色背景，避免正文文字透出形成重影。原值: rgba(255, 255, 255, 0.96)
+  background: var(--body-bg);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 1rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  // [TOC-FIX] 已移除，原值: backdrop-filter: blur(14px);（纯色背景下无意义，且弱支持时会露出正文）
   z-index: 10;
   overflow: hidden;
   display: flex;
@@ -237,3 +238,16 @@ a.post-tag {
     display: none;
   }
 }
+
+// [TOC-FIX] BEGIN 主导航侧边栏展开时，收起阅读进度面板与悬浮按钮。
+// 关闭主导航后按用户原有的开启/关闭状态自动恢复（不触碰 localStorage）。
+// 取消本方案：删除 BEGIN ~ END 整块，并把上方 .reader-sidebar 的 background / box-shadow /
+// backdrop-filter 三处注释标记恢复为原值即可。
+#sidebar-checkbox:checked ~ .wrapper .reader-sidebar,
+#sidebar-checkbox:checked ~ .wrapper .reader-sidebar-show {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+// [TOC-FIX] END
