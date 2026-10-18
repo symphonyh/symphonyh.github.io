@@ -15,6 +15,9 @@
     if (showButton) {
       showButton.classList.toggle('visible', hidden);
     }
+    // 窄屏下侧边栏展开时，让正文整体左移让位（见 _page.scss）。
+    // 宽屏下侧边栏本来就不与正文重叠，加这个类也无副作用。
+    document.body.classList.toggle('reader-sidebar-open', !hidden);
     localStorage.setItem('readerSidebarHidden', hidden ? 'true' : 'false');
   }
 
@@ -35,8 +38,7 @@
     setSidebarHidden(true);
   }
 
-  // 窄屏（<1200px）下侧边栏是 fixed 浮层，会压住正文。
-  // 此时强制收起，只保留唤出按钮，由用户主动点开。
+  // 窄屏（<1200px）下侧边栏默认收起，只保留唤出按钮，由用户主动点开。
   // 注意：不写入 localStorage，避免影响宽屏下的用户偏好。
   var NARROW_BREAKPOINT = 1200;
   function applyNarrowDefault() {
@@ -44,10 +46,12 @@
     if (window.innerWidth < NARROW_BREAKPOINT) {
       sidebar.classList.add('reader-sidebar-hidden');
       if (showButton) showButton.classList.add('visible');
+      document.body.classList.remove('reader-sidebar-open');
     } else if (localStorage.getItem('readerSidebarHidden') !== 'true') {
       // 回到宽屏时恢复用户偏好
       sidebar.classList.remove('reader-sidebar-hidden');
       if (showButton) showButton.classList.remove('visible');
+      document.body.classList.add('reader-sidebar-open');
     }
   }
   applyNarrowDefault();
