@@ -148,7 +148,13 @@
   <link rel="preload" as="script" href="{{ 'assets/js/vendor/mermaid.min.js' | relative_url }}">
   {%- endif -%}
 
-  <script async src="https://use.fontawesome.com/releases/v6.0.0/js/all.js"></script>
+  {%- comment -%}
+    Font Awesome 自托管。原来引用 use.fontawesome.com 的 JS 版，
+    该域名在国内不可达（curl 15s 超时、0 字节），导致全站图标空白。
+  {%- endcomment -%}
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="{{ '/assets/vendor/fontawesome/webfonts/fa-solid-900.woff2' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/vendor/fontawesome/css/all.min.css' | relative_url }}">
 
   {% include custom-head.html %}
 
