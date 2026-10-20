@@ -104,6 +104,17 @@
           transform: translateX(var(--sidebar-width));
 }
 
+// 站点简介：中文段落单独排版，避免继承 body 的 16px/1.5/居中
+.sidebar-description {
+  font-family: var(--body-font);
+  font-size: .875rem;        // 16px → 14px，与下方 .8em 粗体导航形成正确层级
+  line-height: 1.85;         // 中文需要比 1.5 更松的行距
+  letter-spacing: .02em;
+  text-align: justify;       // 两端对齐，消除居中造成的两侧参差
+  text-align-last: left;     // 末行保持左对齐，否则会被拉散
+  color: var(--oc-gray-4);   // #ced4da，比 .sidebar 的 gray-5 略亮
+}
+
 // Avatar
 
 .avatar {
