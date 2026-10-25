@@ -25,12 +25,14 @@
     </nav>
   {% endif %}
 
-  {% if site.data.social %}
+  {% if site.data.social and site.data.social.size > 0 %}
   <div class="sidebar-section social">
     {% for social in site.data.social %}
-      <a href="{{ social.url }}" target="_blank">
+      {% if social.url and social.url != '' %}
+      <a href="{{ social.url }}" target="_blank" rel="noopener">
         <i class="{{ social.icon | default: 'fas fa-link' }}" title="{{ social.title }}"></i>
       </a>
+      {% endif %}
     {% endfor %}
   </div>
   {% endif %}
