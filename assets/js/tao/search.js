@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
     resultsContainer: searchResults,
     json: searchResults.dataset.searchJson,
     template: '<div class="search-result"><a href="{{url}}"><h2>{{title}}</h2></a><p>{{content}}</p></div>',
-    noResultsText: '<p class="search-no-results">No results found.</p>',
     limit: 0,
     fuzzy: true,
     debounceTime: 300, // 单位毫秒
-    noResultsText: '没有找到相关文章'
+    noResultsText: '<p class="search-no-results">没有找到相关文章</p>'
   });
 });

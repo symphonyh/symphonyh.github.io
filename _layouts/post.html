@@ -49,7 +49,7 @@ layout: default
     <aside class="reader-sidebar" id="reader-sidebar">
     <div class="reader-sidebar-box">
       <div class="reader-sidebar-header">
-        <span>阅读进度</span>
+        <span>阅读进度 <span id="reader-progress-text" class="reader-progress-text">0%</span></span>
         <button type="button" class="reader-sidebar-toggle" id="reader-sidebar-toggle" aria-label="隐藏目录">×</button>
       </div>
       <div class="reader-progress-bar">
@@ -119,6 +119,7 @@ layout: default
           data-input-position="bottom"
           data-theme="preferred_color_scheme"
           data-lang="zh-CN"
+          data-loading="lazy"
           crossorigin="anonymous"
           async>
   </script>
