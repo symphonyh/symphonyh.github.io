@@ -4,7 +4,10 @@ title: 关于《漩涡之在》
 description: 《漩涡之在》是一部长篇关系本体论写作计划：存在不是实体，而是持续交换维持的动态过程。本页介绍全书的问题起点、结构与方法。
 permalink: /about/
 ---
-[![德勒兹的世界](https://s41.ax1x.com/2026/05/29/pmFUGIe.jpg)](https://imgchr.com/i/pmFUGIe)
+<a href="https://imgchr.com/i/pmFUGIe" target="_blank" rel="noopener">
+  <img src="{{ '/assets/img/about/deleuze.jpg' | relative_url }}"
+       alt="德勒兹的世界" width="1456" height="816" decoding="async">
+</a>
 <pre><code>
     那漩涡，自在地打着转儿，将流光与暗影绞成螺旋的丝线。<br>
     沉入其中的光影，扭曲成淡金色的纹理，与黯绿的水藻缠绕着，跳着一支永无终章的舞蹈。<br>
