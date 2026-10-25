@@ -22,25 +22,13 @@ paginate: 5
 categories_path: /categories/
 tags_path: /tags/
 
-# disqus:
-#  shortname: symphonyh-github-io
-
 # 站点正式域名（与 CNAME 保持一致），用于 canonical / sitemap / feed 的绝对地址
 url: https://www.cloudhan.me
 baseurl: ""
 
 timezone: Asia/Shanghai
 
-# 社交与结构化数据
-social:
-  name: Vortex
-  links:
-    - https://github.com/symphonyh
-
 # 站长平台验证（改这里即可，head.html 会自动输出对应 meta）
 webmaster_verifications:
   baidu: codeva-S5bZIVu7ff
   bing: CB38EC8A9CA94CC4E308108171EBAEA5
-
-# 统计（填入 UA-XXXXXXX-X 后自动生效）
-# google_analytics: UA-XXXXXXXX-X

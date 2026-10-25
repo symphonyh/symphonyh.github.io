@@ -17,10 +17,6 @@
     <script src="{{ '/assets/js/tao/toc-progress.js' | relative_url }}"></script>
     {% endif %}
 
-    {% if jekyll.environment == 'production' and site.google_analytics %}
-      {% include google-analytics.html %}
-    {% endif %}
-
     {% include mermaid.html %}
   </body>
 </html>
