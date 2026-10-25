@@ -164,6 +164,21 @@
   {%- if site.webmaster_verifications.bing %}
   <meta name="msvalidate.01" content="{{ site.webmaster_verifications.bing }}">
   {%- endif %}
+  {%- comment -%}
+    数学公式按需加载。
+    tex-svg.js 原始 2.11 MB / gzip 686 KB，而全站 87 篇文章里真正含公式的只有 6 篇
+    （5 篇 layout: post + 1 篇 layout: page），首页/归档/分类/标签/搜索页一个字公式都没有。
+    所以不再全站加载。
+
+    判据用 content contains '$'，不用 page.layout == 'post'：
+    一是「2026-07-14-导读」的 layout 是 page，按 post 判断会漏；
+    二是 home 分页 5 篇、archive 只列标题，两者正文实测均不含 $，不会误命中。
+    若将来某篇非数学文章正文里出现美元符号，最坏结果是多加载一次，不会渲染错。
+
+    ⚠️ 配置块必须与 <script src> 同处条件内：MathJax 3 在脚本执行瞬间读取 window.MathJax，
+       配置留在外面而脚本被跳过，不会报错但也不会生效。
+  {%- endcomment -%}
+  {%- if content contains '$' %}
   <script>
     MathJax = {
       tex: {
@@ -179,4 +194,5 @@
   <script type="text/javascript" id="MathJax-script" async
     src="{{ 'assets/js/vendor/tex-svg.js' | relative_url }}">
   </script>
+  {%- endif %}
 </head>
