@@ -919,7 +919,9 @@ const CONCEPT_RELATIONS = [
         }
 
         const fetchSections = posts.map(function(post) {
-            return fetch(post.url, { credentials:'same-origin' })
+            const ctrl = new AbortController();
+            const timer = setTimeout(function() { ctrl.abort(); }, 8000);
+            return fetch(post.url, { credentials:'same-origin', signal: ctrl.signal })
                 .then(function(response) {
                     if (!response.ok) throw new Error('Network error');
                     return response.text();
@@ -950,24 +952,34 @@ const CONCEPT_RELATIONS = [
                     });
                 })
                 .catch(function() {
-                    // 忽略抓取错误
+                    // 忽略抓取错误 / 超时
+                })
+                .then(function() {
+                    clearTimeout(timer);
                 });
         });
 
         // ============================================================
         // 5. 渲染 ECharts 图谱
+        //    关键：先用内联数据（概念/分类/标签/文章）立即渲染，
+        //    不等上面那 65 个文章页的抓取。章节节点是增量补充，
+        //    到齐后再重画一次即可。原实现把 echarts.init 放在
+        //    Promise.all 的回调里，链路抖动时 fetch 挂起 → 图谱永远不出现。
         // ============================================================
-        Promise.all(fetchSections).then(function() {
+        let renderGraph = null;
+        let searchInput = null;
+
+        function mountGraph() {
             currentNodes = allNodes;
             currentLinks = allLinks;
 
             const chartDom = document.getElementById('knowledge-graph');
-            const searchInput = document.getElementById('knowledge-graph-search');
+            searchInput = document.getElementById('knowledge-graph-search');
             const resetButton = document.getElementById('knowledge-graph-reset');
 
             const myChart = echarts.init(chartDom);
 
-            function renderGraph(nodes, linksData) {
+            renderGraph = function (nodes, linksData) {
                 const option = {
                     tooltip:{
                         formatter:function(param) {
@@ -1053,7 +1065,7 @@ const CONCEPT_RELATIONS = [
                     }]
                 };
                 myChart.setOption(option, true);
-            }
+            };
 
             renderGraph(currentNodes, currentLinks);
 
@@ -1115,6 +1127,16 @@ const CONCEPT_RELATIONS = [
             window.addEventListener('resize', function() {
                 myChart.resize();
             });
+        }
+
+        mountGraph();
+
+        // 章节数据异步补充：到齐后重画一次；失败或超时都不影响已渲染的图谱。
+        // 用户已在筛选中则不打断（重画是 notMerge，会清掉过滤状态）。
+        Promise.all(fetchSections).then(function() {
+            if (!renderGraph || !sectionNodes.size) return;
+            if (searchInput && searchInput.value.trim()) return;
+            renderGraph(allNodes, allLinks);
         });
 
     }); 
