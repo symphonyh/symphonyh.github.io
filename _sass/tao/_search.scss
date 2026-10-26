@@ -8,49 +8,58 @@
   width: 100%;
 }
 
-// [SEARCH-FIX] 原来用的 --border-color / --body-surface / --primary-color / --surface-color
-// 全站从未定义，声明会整条失效（输入框无边框、结果卡无底色）。改用 _variables.scss 里已有的变量。
+// [SEARCH-FIX] 第一版曾用全站未定义的 --border-color 等变量（声明整条失效），已改为
+// _variables.scss 里已有的变量。
+// [SEARCH-FIX 2026-10-26] 原方案把结果做成「灰底圆角卡片」，与 tao 主页的
+// 白底纯排版语言相逆，视觉上很突兀。改为对齐主页：无色块、细分割线、
+// 橙色只出现在链接 hover（与 _base.scss 全局 a 一致）。全部走变量，深色模式自动适配。
+//
+// 注：--body-fg 在浅色下是 gray-1（浅灰）、深色下是 gray-8（深灰），
+// 不能直接当卡片底色用（深色模式下会变成深底配深字），此前即踩过此坑。
 .search-input {
   width: 100%;
-  padding: calc(var(--spacing) * 0.75) var(--spacing);
+  padding: calc(var(--spacing) * 0.6) var(--spacing);
   border: 1px solid var(--body-color-light);
-  border-radius: .75em;
-  background-color: var(--body-fg);
-  color: inherit;
+  border-radius: .5em;
+  background-color: var(--body-bg);
+  color: var(--body-color);
   font-size: 1rem;
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 .15em rgba(0, 0, 0, .08);
 }
 
 .search-results {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 0.75);
 }
 
 .search-result {
-  padding: calc(var(--spacing) * 0.85);
-  border-radius: .75em;
-  background-color: var(--body-fg);
+  padding: calc(var(--spacing) * 0.9) 0;
+  border-bottom: 1px solid var(--body-color-light);
+}
+
+.search-result:last-child {
+  border-bottom: 0;
 }
 
 .search-result a {
-  color: inherit;
   text-decoration: none;
-}
-
-.search-result a:hover,
-.search-result a:focus {
-  text-decoration: underline;
 }
 
 .search-result h2 {
   margin: 0 0 .35em;
   font-size: 1.05rem;
+  color: var(--body-color);
+}
+
+// 标题 hover 回归全站链接语言：accent 色 + 下划线（见 _base.scss 的 a）
+.search-result a:hover h2,
+.search-result a:focus h2 {
+  color: var(--accent-color);
+  text-decoration: underline;
 }
 
 // [SEARCH-FIX] 摘要最长 1500 字，不截断会撑成整屏高的卡片。
