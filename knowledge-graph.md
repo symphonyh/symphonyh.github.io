@@ -102,10 +102,11 @@ permalink: /knowledge-graph/
 
     }
 </style>
-<!--
-<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
--->
-<script src="{{ '/assets/js/tao/echarts.min.js' | relative_url }}"></script>
+<!-- ECharts 是整站最大的单个资源（1 MB）。CDN 优先：本站自托管走 Cloudflare→伦敦链路，
+     1 MB 必传不完；失败则同步回退本地副本（document.write 保证后续内联脚本拿得到 window.echarts）。
+     版本锁 5.6.0（npm 上 5.x 最新；本地文件内标的是 5.6.1，但 npm 无此版本）。 -->
+<script src="https://fastly.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+<script>window.echarts || document.write('<script src="{{ '/assets/js/tao/echarts.min.js' | relative_url }}"><\/script>');</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
