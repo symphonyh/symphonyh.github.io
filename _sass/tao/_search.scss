@@ -8,19 +8,21 @@
   width: 100%;
 }
 
+// [SEARCH-FIX] 原来用的 --border-color / --body-surface / --primary-color / --surface-color
+// 全站从未定义，声明会整条失效（输入框无边框、结果卡无底色）。改用 _variables.scss 里已有的变量。
 .search-input {
   width: 100%;
   padding: calc(var(--spacing) * 0.75) var(--spacing);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--body-color-light);
   border-radius: .75em;
-  background-color: var(--body-surface);
+  background-color: var(--body-fg);
   color: inherit;
   font-size: 1rem;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--accent-color);
   box-shadow: 0 0 0 .15em rgba(0, 0, 0, .08);
 }
 
@@ -33,7 +35,7 @@
 .search-result {
   padding: calc(var(--spacing) * 0.85);
   border-radius: .75em;
-  background-color: var(--surface-color);
+  background-color: var(--body-fg);
 }
 
 .search-result a {
@@ -51,9 +53,15 @@
   font-size: 1.05rem;
 }
 
+// [SEARCH-FIX] 摘要最长 1500 字，不截断会撑成整屏高的卡片。
 .search-result p {
   margin: 0;
   color: var(--body-color-light);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
 }
 
 .search-hint,

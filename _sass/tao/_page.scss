@@ -239,7 +239,10 @@ a.post-tag {
   color: var(--accent-color, #4f9cff);
 }
 
-@media screen and (max-width: 960px) {
+// [TOC-FIX] 960px 只挡住了最窄的区间。正文实宽 600px（.wrapper 用 border-box），
+// 目录 fixed 于视口右侧、左沿 = 视口宽 − 284px，两者重叠区间实测到 1168px，
+// 原值 960 会让 960~1168px 之间的目录整块盖住正文。取 1200px 留一点余量。
+@media screen and (max-width: 1200px) {
   .reader-sidebar {
     display: none;
   }

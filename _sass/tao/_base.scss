@@ -67,6 +67,16 @@ blockquote {
   }
 }
 
+// [DARK-FIX] 引用块底色写死浅色 #f5f3f0，深色模式下正文色是 --oc-gray-3（浅灰），
+// 会变成浅字压浅底。这里只覆盖深色底色，浅色取值一字不动。
+// 取消本方案：删掉下面整个 @media 块即可。
+@media (prefers-color-scheme: dark) {
+  blockquote {
+    background-color: rgba(255, 255, 255, .055);
+    border-left-color: #C9A79E;
+  }
+}
+
 ul, ol {
   padding-left: calc(2 * var(--spacing));
   margin: var(--spacing) 0;

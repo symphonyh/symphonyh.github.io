@@ -121,14 +121,26 @@ layout: default
   </script>
 
 <script>
+  // [HILITE-FIX] 两点收口：
+  // 1) surroundContents 在选区跨越多个元素时会抛 InvalidStateError（跨段落拖选是最常见操作），
+  //    原来没有 try/catch，每次都会在控制台抛未捕获异常；这里捕获后放弃本次高亮。
+  // 2) 原来挂在整个文档的 mouseup 上，选中导航、侧栏文字也会被包 span，一并改写 DOM。
+  //    现在只在 .post-content 内的选区生效。
   document.addEventListener('mouseup', function() {
   const selection = window.getSelection();
   if (!selection || selection.isCollapsed) return;
   const range = selection.getRangeAt(0);
+  const content = document.querySelector('.post-content');
+  if (!content || !content.contains(range.commonAncestorContainer)) return;
   const span = document.createElement('span');
   span.style.backgroundColor = '#fff3b0';
   span.style.padding = '0 2px';
-  range.surroundContents(span);
+  try {
+    range.surroundContents(span);
+  } catch (e) {
+    // 选区跨元素，无法包裹，保持原样
+    return;
+  }
   // 清除选中状态
   selection.removeAllRanges();
 });
