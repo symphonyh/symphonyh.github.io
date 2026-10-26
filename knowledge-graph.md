@@ -102,11 +102,16 @@ permalink: /knowledge-graph/
 
     }
 </style>
-<!-- ECharts 是整站最大的单个资源（1 MB）。CDN 优先：本站自托管走 Cloudflare→伦敦链路，
-     1 MB 必传不完；失败则同步回退本地副本（document.write 保证后续内联脚本拿得到 window.echarts）。
-     版本锁 5.6.0（npm 上 5.x 最新；本地文件内标的是 5.6.1，但 npm 无此版本）。 -->
-<script src="https://fastly.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
-<script>window.echarts || document.write('<script src="{{ '/assets/js/tao/echarts.min.js' | relative_url }}"><\/script>');</script>
+<!-- ECharts 是整站最大的单个资源（1 MB）。**本地优先**：2026-10-26 实测，本站副本从
+     Cloudflare 边缘（cf-cache-status: HIT）取 1 MB 只需 2–7 s；而 fastly.jsdelivr.net 同文件
+     45 s 仍未下完（997 KB / 507 KB）。原先「CDN 优先、本站必传不完」的判断是错的：
+     同步 script 标签会阻塞解析，CDN 迟到一分钟，后面 document.write 的兜底根本轮不到执行，
+     页面就一直空白——这才是图谱页长期「卡住出不来」的真因。
+     本地 404/失败时才同步回退 CDN（document.write 保证后续内联脚本拿得到 window.echarts）。
+     版本锁 5.6.0（npm 上 5.x 最新；本地文件内标的是 5.6.1，但 npm 无此版本）。
+     若哪天国内 CDN 明显快于本站，再评估对调回去（先测再说，别信注释）。 -->
+<script src="{{ '/assets/js/tao/echarts.min.js' | relative_url }}"></script>
+<script>window.echarts || document.write('<script src="https://fastly.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"><\/script>');</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
