@@ -69,11 +69,25 @@ blockquote {
 
 // [DARK-FIX] 引用块底色写死浅色 #f5f3f0，深色模式下正文色是 --oc-gray-3（浅灰），
 // 会变成浅字压浅底。这里只覆盖深色底色，浅色取值一字不动。
+// 边框用主题 accent 变量（跟随深色模式的蓝），不再硬编码裸色值。
 // 取消本方案：删掉下面整个 @media 块即可。
 @media (prefers-color-scheme: dark) {
   blockquote {
     background-color: rgba(255, 255, 255, .055);
-    border-left-color: #C9A79E;
+    border-left-color: var(--accent-color);
+  }
+}
+
+// [HILITE-FIX] 划词高亮：样式从 post.html 的内联 style 移到这里统一管理。
+// 浅色沿用原亮黄；深色下亮黄块刺眼，换成低饱和半透明。
+.text-hilite {
+  background-color: #fff3b0;
+  padding: 0 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .text-hilite {
+    background-color: rgba(201, 167, 110, .35);
   }
 }
 

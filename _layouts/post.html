@@ -133,8 +133,9 @@ layout: default
   const content = document.querySelector('.post-content');
   if (!content || !content.contains(range.commonAncestorContainer)) return;
   const span = document.createElement('span');
-  span.style.backgroundColor = '#fff3b0';
-  span.style.padding = '0 2px';
+  // [HILITE-FIX] 高亮色不写死在 JS 里，走 .text-hilite 类（样式在 _base.scss，
+  // 深色模式自动换半透明白，避免深底上出现刺眼亮黄块）
+  span.className = 'text-hilite';
   try {
     range.surroundContents(span);
   } catch (e) {

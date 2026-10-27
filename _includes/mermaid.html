@@ -6,9 +6,10 @@
   // 加载策略：自托管优先（同域、无跨网延迟），CDN 并行竞速兜底。
   // 自托管文件位于 /assets/js/vendor/mermaid.min.js，由 GitHub Pages 提供并自动 gzip。
   var LOCAL_URL = '{{ "/assets/js/vendor/mermaid.min.js" | relative_url }}';
+  // [CDN-TRIM 2026-10-27] 删掉 unpkg 与 cdnjs 两路：2026-10-26 实测 unpkg 国内超时、
+  // cdnjs 同走 Cloudflare 网段（当时整段不可达），这两路在竞速里永远输，
+  // 只白占连接。保留 staticfile（国内快）与 fastly.jsdelivr（海外快）。
   var CDN_LIST = [
-    'https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js',
     'https://cdn.staticfile.org/mermaid/10.9.1/mermaid.min.js',
     'https://fastly.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js'
   ];

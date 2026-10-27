@@ -51,7 +51,10 @@
 
 .search-result h2 {
   margin: 0 0 .35em;
-  font-size: 1.05rem;
+  // [SIZE-FIX] 不能用 rem：rem 相对 html（16px），而正文继承 body 的 --body-font-size
+  // （≥768px 屏是 18px）——写成 1.05rem 会让标题(16.8px)比摘要(18px)还小。
+  // 用 em 相对父级，任何屏宽下标题都稳压正文。
+  font-size: 1.15em;
   color: var(--body-color);
 }
 

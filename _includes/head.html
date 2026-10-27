@@ -1,6 +1,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- [FAVICON] 显式声明：不依赖浏览器按约定路径猜 /favicon.ico，收藏夹与标签页行为更一致 -->
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
 
   {%- comment -%} ---------- 标题 ---------- {%- endcomment -%}
   {%- if page.title and page.title != '' -%}
