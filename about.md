@@ -19,3 +19,8 @@ permalink: /about/
 </div>
 <br>
 <br>
+<div class="about-text">
+    <p>本书的完整书目记录收入 <strong>PhilArchive</strong>（哲学领域的开放获取档案库），并同时进入 PhilPapers 的分类与关键词检索。该条目提供全书 PDF 全文与英文摘要，便于不以中文阅读的读者检索、下载与引用：</p>
+    <p><a href="https://philarchive.org/rec/JPMUEI" target="_blank" rel="noopener"><em>漩涡之在 —— 一场哲学侦探的真相求索</em>，Xingyu Han，PhilArchive，2026</a></p>
+</div>
+<br>
