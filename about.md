@@ -22,6 +22,7 @@ permalink: /about/
 <div class="about-text">
     <p>本书的完整书目记录收入 <strong>PhilArchive</strong>（哲学领域的开放获取档案库），并同时进入 PhilPapers 的分类与关键词检索。该条目提供全书 PDF 全文与英文摘要，便于不以中文阅读的读者检索、下载与引用：</p>
     <p><a href="https://philarchive.org/rec/JPMUEI" target="_blank" rel="noopener"><em>漩涡之在 —— 一场哲学侦探的真相求索</em>，Xingyu Han，PhilArchive，2026</a></p>
+    <p>同一框架的英文论文 <em>The Vortex of Being: A Relational Ontology of Difference-Coupling</em> 已作为开放预印本在线发表，附正式 DOI，可直接引用：<a href="https://doi.org/10.5281/zenodo.23733500" target="_blank" rel="noopener">doi.org/10.5281/zenodo.23733500</a>（Zenodo，CC BY 4.0）。该文亦收入 <a href="https://philarchive.org/rec/HANTVO-12" target="_blank" rel="noopener">PhilArchive</a>。</p>
     <p>作者的学术身份标识：<a href="https://orcid.org/0009-0000-2815-128X" target="_blank" rel="noopener">ORCID 0009-0000-2815-128X</a></p>
 </div>
 <br>
