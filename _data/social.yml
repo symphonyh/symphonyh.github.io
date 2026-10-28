@@ -7,3 +7,6 @@
 - title: PhilArchive
   url: https://philarchive.org/rec/JPMUEI
   icon: fas fa-book-open
+- title: ORCID
+  url: https://orcid.org/0009-0000-2815-128X
+  icon: fab fa-orcid

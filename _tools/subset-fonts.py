@@ -120,27 +120,42 @@ def main():
     if unknown:
         print('⚠ 源码里出现、但 all.min.css 里查不到的类名（忽略）：', ', '.join(unknown))
 
+    forced = [e.strip() for e in args.extra.split(',') if e.strip()]
     wanted = {n: c for n, c in used.items() if n in css_map}
-    for extra in ALWAYS + [e.strip() for e in args.extra.split(',') if e.strip()]:
+    for extra in ALWAYS + forced:
         if extra in css_map:
             wanted.setdefault(extra, 0)
 
     # 品牌图标（github 等）在 fa-brands 里，实心图标在 fa-solid 里，分属两个文件。
     # 不区分的话，检查 solid 时会永远把 github 报成缺失。
+    #
+    # ⚠ 这个区分只能靠"现有子集里有哪些 codepoint"反推，天生认不出**尚未加入**的新图标：
+    #   新增第一个品牌图标时，它既不 solid 也不在 brands_names 里，会被下面的过滤悄悄丢掉。
+    #   所以 --extra 显式点名的图标一律绕过分属过滤（"强制保留"的应有语义）。
+    solid_cps = current_codepoints(SOLID)
     brands_cps = current_codepoints(BRANDS)
     brands_names = {n for n, cp in css_map.items() if cp in brands_cps}
     if args.brands:
-        wanted = {n: c for n, c in wanted.items() if n in brands_names}
+        wanted = {n: c for n, c in wanted.items() if n in brands_names or n in forced}
     else:
         wanted = {n: c for n, c in wanted.items() if n not in brands_names}
 
+    # 全站盲点：源码用到、但 solid 和 brands 两个子集里都没有的字形（不分当前体检哪个文件）
+    nowhere = sorted(n for n in used
+                     if n in css_map and css_map[n] not in solid_cps and css_map[n] not in brands_cps)
+
     have = current_codepoints(target)
-    missing = sorted(n for n in wanted if wanted[n] >= 0 and css_map[n] not in have)
+    # nowhere 里的图标连归属都还没确定，由下面单独一行报，不混进"缺失"
+    missing = sorted(n for n in wanted
+                     if css_map[n] not in have and css_map[n] not in {css_map[x] for x in nowhere})
 
     print(f'编辑器目标文件：{os.path.basename(target)}')
     print(f'源码扫描到图标：{len(wanted)} 个 → ' + ', '.join(sorted(wanted)))
     print(f'当前子集字形数：{len(have)}')
     print(f'缺失字形：{len(missing)} 个' + ((' → ' + ', '.join(missing)) if missing else '（无）'))
+    if nowhere:
+        print(f'⚠ 两个子集都没有：{len(nowhere)} 个 → ' + ', '.join(nowhere)
+              + '（用 --extra 点名，配 --brands 判断它属于哪个文件）')
 
     if args.check:
         if missing:
