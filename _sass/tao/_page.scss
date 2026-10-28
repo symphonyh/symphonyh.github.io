@@ -73,6 +73,137 @@ a.post-tag {
   font-size: .875rem;
 }
 
+// about 页专用版式（2026-10-28）：题图 / 诗句 / 导语 / 三行要点 / 引用卡片。
+// 类名全部带 about- 前缀且只在 about.md 使用，无需 page_class 作用域。
+// 回退：删掉本块 + git checkout about.md 即恢复旧版。
+.page-content {
+  figure.about-figure {
+    margin: 0 0 2.6em;
+  }
+
+  .about-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: .35em;
+  }
+
+  .about-figure figcaption {
+    margin-top: .9em;
+    font-size: .85rem;
+    color: var(--body-color-light);
+    text-align: center;
+    letter-spacing: .03em;
+  }
+
+  .about-verse {
+    margin: 0 0 2.9em;
+    font-family: var(--post-font, var(--body-font));
+    font-size: 1.05rem;
+    line-height: 1.95;
+    color: var(--body-color);
+
+    p {
+      margin: 0;
+      text-indent: 2em;
+      text-wrap: pretty;
+    }
+  }
+
+  .about-lead {
+    margin: 0 0 2.8em;
+    font-family: var(--post-font, var(--body-font));
+    font-size: 1.2rem;
+    line-height: 1.95;
+    color: var(--body-color-dark);
+  }
+
+  .about-points {
+    margin: 0 0 2.8em;
+  }
+
+  .about-point {
+    display: flex;
+    gap: 1.3em;
+    padding: 1.15em 0;
+    border-top: 1px solid rgba(128, 128, 128, .22);
+
+    &:last-child {
+      border-bottom: 1px solid rgba(128, 128, 128, .22);
+    }
+
+    p {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--body-color);
+    }
+  }
+
+  .about-point-k {
+    flex: 0 0 2.6em;
+    font-size: .8rem;
+    color: var(--accent-color);
+    letter-spacing: .1em;
+    padding-top: .38em;
+  }
+
+  .about-cite {
+    padding: 1.5em 1.7em;
+    background: var(--body-fg);
+    border-radius: .5em;
+    font-size: .9rem;
+    line-height: 1.8;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .about-cite-row {
+    display: flex;
+    gap: 1.1em;
+    padding: .6em 0;
+
+    & + .about-cite-row {
+      border-top: 1px solid rgba(128, 128, 128, .18);
+    }
+  }
+
+  .about-cite-k {
+    flex: 0 0 4.2em;
+    color: var(--body-color-light);
+    font-size: .86em;
+    padding-top: .1em;
+  }
+
+  @media (max-width: 640px) {
+    .about-point {
+      gap: .8em;
+    }
+
+    .about-point-k {
+      flex: 0 0 2.4em;
+      font-size: .74rem;
+      padding-top: .5em;
+    }
+
+    .about-cite {
+      padding: 1.2em 1.1em;
+      font-size: .85rem;
+    }
+
+    .about-cite-row {
+      flex-direction: column;
+      gap: .25em;
+    }
+
+    .about-cite-k {
+      flex: none;
+    }
+  }
+}
+
 // Docments 调用
 .about-text-page {
   font-size: .875rem;
