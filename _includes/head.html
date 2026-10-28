@@ -7,12 +7,12 @@
   {%- comment -%} ---------- 标题 ---------- {%- endcomment -%}
   {%- if page.title and page.title != '' -%}
     {%- if page.url == '/' -%}
-      {%- assign seo_title = site.title | append: ' · ' | append: site.tagline -%}
+      {%- assign seo_title = site.title | append: ' · ' | append: site.seo_brand -%}
     {%- else -%}
       {%- assign seo_title = page.title | append: ' · ' | append: site.title -%}
     {%- endif -%}
   {%- else -%}
-    {%- assign seo_title = site.title | append: ' · ' | append: site.tagline -%}
+    {%- assign seo_title = site.title | append: ' · ' | append: site.seo_brand -%}
   {%- endif -%}
   <title>{{ seo_title | strip | escape }}</title>
 

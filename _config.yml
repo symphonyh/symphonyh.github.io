@@ -1,5 +1,6 @@
 # Configurations
 title: Minerva
+seo_brand: 漩涡之在      # 仅用于 <title>/og:title，页头视觉仍走 title+tagline
 tagline: The owl of Minerva flies at dusk
 description: 《漩涡之在》——以「关系先于实体」为核心的关系本体论写作计划，涵盖哲学、科学、艺术与日常生活的交叉视域。
 
