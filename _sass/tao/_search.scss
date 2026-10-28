@@ -54,7 +54,10 @@
   // [SIZE-FIX] 不能用 rem：rem 相对 html（16px），而正文继承 body 的 --body-font-size
   // （≥768px 屏是 18px）——写成 1.05rem 会让标题(16.8px)比摘要(18px)还小。
   // 用 em 相对父级，任何屏宽下标题都稳压正文。
-  font-size: 1.15em;
+  // [HIERARCHY-FIX 2026-10-28] 1.15em 只比正文(1em)大 2.7px，搜索结果标题压不住摘要。
+  // 提到 1.3em，同时把摘要降到 .9em —— 一升一降，差距从 2.7px 拉到 7.2px。
+  font-size: 1.3em;
+  font-weight: 600;
   color: var(--body-color);
 }
 
@@ -68,12 +71,26 @@
 // [SEARCH-FIX] 摘要最长 1500 字，不截断会撑成整屏高的卡片。
 .search-result p {
   margin: 0;
+  // [HIERARCHY-FIX 2026-10-28] 摘要原本继承 body 的正文号（18px），跟文章正文一样大，
+  // 在列表页里既挤又压不住标题。降到 .9em，明确低正文一档。
+  font-size: .9em;
+  line-height: 1.65;
   color: var(--body-color-light);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
   overflow: hidden;
+}
+
+// [DATE 2026-10-28] 搜索结果显示日期：单独一行、最轻的一级，不跟标题抢层级。
+// tabular-nums 让多位数字等宽，多行结果的日期能对齐成一条竖线。
+.search-result time {
+  display: block;
+  margin-top: .45em;
+  font-size: .75em;
+  color: var(--body-color-light);
+  font-variant-numeric: tabular-nums;
 }
 
 .search-hint,
