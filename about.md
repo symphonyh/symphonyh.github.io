@@ -37,7 +37,7 @@ permalink: /about/
 <div class="about-cite">
   <div class="about-cite-row">
     <span class="about-cite-k">全书</span>
-    <p><a href="https://philarchive.org/rec/JPMUEI" target="_blank" rel="noopener"><em>漩涡之在 —— 一场哲学侦探的真相求索</em></a>，Xingyu Han，PhilArchive，2026。附 PDF 全文与英文摘要，并进入 PhilPapers 的分类与关键词检索。</p>
+    <p><a href="https://doi.org/10.5281/zenodo.23754112" target="_blank" rel="noopener"><em>漩涡之在 —— 一场哲学侦探的真相求索</em></a>，Xingyu Han，2026，213 页。<a href="https://doi.org/10.5281/zenodo.23754112" target="_blank" rel="noopener">doi.org/10.5281/zenodo.23754112</a>（Zenodo，CC BY 4.0，打印版 PDF 全文）；条目另见 <a href="https://philarchive.org/rec/JPMUEI" target="_blank" rel="noopener">PhilArchive</a>，附英文摘要与 PhilPapers 分类检索。</p>
   </div>
   <div class="about-cite-row">
     <span class="about-cite-k">英文稿</span>
