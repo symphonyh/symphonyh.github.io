@@ -156,6 +156,9 @@ const CONCEPT_DEFINITIONS = [
     { id:'concept:操作语法', name:'操作语法', category:'核心概念', color:'#C0392B' },
     { id:'concept:筛选语法', name:'筛选语法', category:'核心概念', color:'#C0392B' },
     { id:'concept:呼吸孔', name:'呼吸孔', category:'核心概念', color:'#C0392B' },
+    // —— 2026-10-29 补录：CONCEPT_RELATIONS 里已大量使用、但定义表缺失（此前被 nodeMap 过滤静默丢弃）——
+    { id:'concept:上行因果', name:'上行因果', category:'核心概念', color:'#C0392B' },
+    { id:'concept:下行因果', name:'下行因果', category:'核心概念', color:'#C0392B' },
 
     // =================================================================
     // 2. 次级概念：系统科学与物理隐喻（橙色 #E67E22）
@@ -227,7 +230,7 @@ const CONCEPT_DEFINITIONS = [
     { id:'concept:说得着', name:'说得着', category:'次级概念', color:'#E67E22' }, 
     { id:'concept:文明', name:'文明', category:'次级概念', color:'#E67E22' }, 
     { id:'concept:业力', name:'业力', category:'次级概念', color:'#E67E22' }, 
-    { id:'concept:免疫机制', name:'免疫机制', category:'次级概念', color:'#E67E22' }, 
+    // 2026-10-29：「免疫机制」与「免疫系统」同义，已合并进 concept:免疫系统，勿再单独建节点
     { id:'concept:权力', name:'权力', category:'次级概念', color:'#E67E22' }, 
     { id:'concept:制度筛选', name:'制度筛选', category:'次级概念', color:'#E67E22' }, 
     { id:'concept:规训', name:'规训', category:'次级概念', color:'#E67E22' }, 
@@ -336,6 +339,10 @@ const CONCEPT_DEFINITIONS = [
     { id:'concept:超人', name:'超人', category:'次级概念', color:'#E67E22' },
     { id:'concept:他者', name:'他者', category:'次级概念', color:'#E67E22' },
     { id:'concept:预测误差', name:'预测误差', category:'次级概念', color:'#E67E22' },
+    // —— 2026-10-29 补录：下方 CONCEPT_RELATIONS / 文章前置元数据已引用、但定义表缺失 ——
+    { id:'concept:他者开放性', name:'他者开放性', category:'次级概念', color:'#E67E22' },
+    { id:'concept:生成性', name:'生成性', category:'次级概念', color:'#E67E22' },
+    { id:'concept:约束', name:'约束', category:'次级概念', color:'#E67E22' },
     // =================================================================
     // 5. 哲学家（蓝色 #2980B9）—— 思想的对话者
     // =================================================================
@@ -760,6 +767,27 @@ const CONCEPT_RELATIONS = [
     { source:'concept:认知切割', target:'concept:认知', type:'机制' },
     { source:'concept:认知切割', target:'concept:实体', type:'产生' },
     { source:'concept:认知切割', target:'concept:关系', type:'遮蔽' },
+
+    // =================================================================
+    // 【2026-10-29 补录】哲学家 3 + 案例 5 的补边（依据均出自正文）
+    // =================================================================
+    // —— 哲学家：笛卡尔 / 斯宾诺莎 / 莱布尼茨 ——
+    { source:'concept:笛卡尔', target:'concept:实体论', type:'奠基' }, // 第一份卷宗：实体论传统的起点
+    { source:'concept:笛卡尔', target:'concept:二元论', type:'奠基' }, // 「留下了一道无法愈合的裂缝」
+    { source:'concept:斯宾诺莎', target:'concept:实体', type:'奠基' }, // 「只有一个实体——神，即自然」
+    { source:'concept:斯宾诺莎', target:'concept:二元论', type:'批判' }, // 用一元论缝合笛卡尔的裂缝
+    { source:'concept:斯宾诺莎', target:'concept:自因', type:'奠基' }, // 自因是自指结构的第一次哲学表达
+    { source:'concept:莱布尼茨', target:'concept:单子', type:'奠基' }, // 世界由无数单子构成
+    { source:'concept:莱布尼茨', target:'concept:预定和谐', type:'奠基' }, // 上帝在创世时已预定和谐
+    { source:'concept:单子', target:'concept:僵化', type:'导致' }, // 把自指封闭成了僵化的实体
+    // —— 案例：什克洛夫斯基 / 本雅明 / 刘震云 ——
+    { source:'concept:什克洛夫斯基', target:'concept:陌生化', type:'奠基' }, // 1917《作为手法的艺术》
+    { source:'concept:陌生化', target:'concept:僵化', type:'超越' }, // 对抗僵化、从认知自动化中解救
+    { source:'concept:本雅明', target:'concept:光晕', type:'奠基' }, // 《机械复制时代的艺术作品》
+    { source:'concept:光晕', target:'concept:漩涡', type:'形态' }, // 漩涡在感性层面的特殊显形
+    { source:'concept:刘震云', target:'concept:说得着', type:'奠基' }, // 《一句顶一万句》核心区分
+    { source:'concept:米拉', target:'concept:僵化', type:'印证' }, // 两位神都陷入了僵化漩涡
+    { source:'concept:多玛', target:'concept:绝对化', type:'印证' }, // 力量 / 秩序 / 理性 → 绝对化
 
 ]; 
 
