@@ -789,6 +789,10 @@ const CONCEPT_RELATIONS = [
     { source:'concept:米拉', target:'concept:僵化', type:'印证' }, // 两位神都陷入了僵化漩涡
     { source:'concept:多玛', target:'concept:绝对化', type:'印证' }, // 力量 / 秩序 / 理性 → 绝对化
 
+    // —— 免疫系统：从孤立节点接回主干 ——
+    { source:'concept:免疫系统', target:'concept:僵化', type:'超越' }, // 第十一章：「社会免疫系统…抵抗这种僵化」
+    { source:'concept:免疫系统', target:'concept:僵化三角', type:'回应' }, // 「三层机制，分别针对僵化三角的三条边」
+
 ]; 
 
         // ============================================================
