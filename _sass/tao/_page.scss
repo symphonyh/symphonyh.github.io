@@ -204,6 +204,32 @@ a.post-tag {
     padding-top: .1em;
   }
 
+  .about-id {
+    display: flex;
+    align-items: center;
+    gap: .9em;
+    min-width: 0;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .about-avatar {
+    flex: 0 0 auto;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px rgba(128, 128, 128, .28);
+  }
+
+  // 「联系：邮箱」作为整体换行，避免在「联 / 系」之间断字
+  .about-id-meta {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
   .about-refs {
     flex: 1 1 auto;
     min-width: 0;
@@ -255,6 +281,14 @@ a.post-tag {
       display: block;
       min-width: 0;
       margin: 0 0 .1em;
+    }
+
+    .about-id-sep {
+      display: none;
+    }
+
+    .about-id-meta {
+      display: block;
     }
   }
 }

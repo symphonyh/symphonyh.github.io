@@ -5,8 +5,8 @@ description: 《漩涡之在》是一部长篇关系本体论写作计划：存�
 permalink: /about/
 ---
 <figure class="about-figure">
-  <img src="{{ '/assets/img/about/deleuze.jpg' | relative_url }}"
-       alt="漩涡意象：暗色背景中粉色触手状结构缠绕着金色齿轮" width="1456" height="816" decoding="async">
+  <img src="{{ '/assets/img/about/vortex.jpg' | relative_url }}"
+       alt="漩涡意象：暗色背景中粉色触手状结构缠绕着金色齿轮" width="1000" height="482" decoding="async">
   <figcaption>题图 · 漩涡意象</figcaption>
 </figure>
 
@@ -57,7 +57,11 @@ permalink: /about/
     </div>
   </div>
   <div class="about-cite-row">
-    <span class="about-cite-k">身份</span>
-    <p><a href="https://orcid.org/0009-0000-2815-128X" target="_blank" rel="noopener">ORCID 0009-0000-2815-128X</a>　·　联系：<a href="mailto:hxy@cloudhan.me">hxy@cloudhan.me</a></p>
+    <span class="about-cite-k">作者</span>
+    <div class="about-id">
+      <img class="about-avatar" src="{{ '/assets/img/about/avatar.jpg' | relative_url }}"
+           alt="韩兴宇头像插画" width="176" height="176" loading="lazy" decoding="async">
+      <p>韩兴宇（Xingyu Han）<br><a href="https://orcid.org/0009-0000-2815-128X" target="_blank" rel="noopener">ORCID 0009-0000-2815-128X</a><span class="about-id-sep">　·　</span><span class="about-id-meta">联系：<a href="mailto:hxy@cloudhan.me">hxy@cloudhan.me</a></span></p>
+    </div>
   </div>
 </div>
