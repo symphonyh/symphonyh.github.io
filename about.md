@@ -59,8 +59,10 @@ permalink: /about/
   <div class="about-cite-row">
     <span class="about-cite-k">作者</span>
     <div class="about-id">
-      <img class="about-avatar" src="{{ '/assets/img/about/avatar.jpg' | relative_url }}"
-           alt="韩兴宇头像插画" width="176" height="176" loading="lazy" decoding="async">
+      <span class="about-avatar-ring">
+        <img class="about-avatar" src="{{ '/assets/img/about/avatar.jpg' | relative_url }}"
+             alt="韩兴宇头像插画" width="384" height="384" loading="lazy" decoding="async">
+      </span>
       <p>韩兴宇（Xingyu Han）<br><a href="https://orcid.org/0009-0000-2815-128X" target="_blank" rel="noopener">ORCID 0009-0000-2815-128X</a><span class="about-id-sep">　·　</span><span class="about-id-meta">联系：<a href="mailto:hxy@cloudhan.me">hxy@cloudhan.me</a></span></p>
     </div>
   </div>
