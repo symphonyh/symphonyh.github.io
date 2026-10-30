@@ -85,7 +85,8 @@ a.post-tag {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: .35em;
+    // 透明底 + 手撕边，圆角会切掉纸边纤维，故不加圆角
+    border-radius: 0;
   }
 
   .about-figure figcaption {

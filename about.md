@@ -5,8 +5,8 @@ description: 《漩涡之在》是一部长篇关系本体论写作计划：存�
 permalink: /about/
 ---
 <figure class="about-figure">
-  <img src="{{ '/assets/img/about/vortex.jpg' | relative_url }}"
-       alt="漩涡意象：暗色背景中粉色触手状结构缠绕着金色齿轮" width="1000" height="482" decoding="async">
+  <img src="{{ '/assets/img/about/vortex.webp' | relative_url }}"
+       alt="漩涡意象：暗色背景中粉色触手状结构缠绕着金色齿轮，四周是手撕纸边" width="1456" height="816" decoding="async">
   <figcaption>题图 · 漩涡意象</figcaption>
 </figure>
 
