@@ -73,12 +73,26 @@ a.post-tag {
   font-size: .875rem;
 }
 
-// about 页专用版式（2026-10-28）：题图 / 诗句 / 导语 / 三行要点 / 引用卡片。
-// 类名全部带 about- 前缀且只在 about.md 使用，无需 page_class 作用域。
-// 回退：删掉本块 + git checkout about.md 即恢复旧版。
+// about 页专用版式（2026-10-31 重排）：题图 → 题词 → 正文 → 书目页（colophon）。
+// 类名全部带 about- 前缀，只在 about.md 使用；标题居中靠 front matter 的
+// page_class: about-page 作用域，不污染全站 .page-title。
+// 回退：git checkout 3095a4c -- _sass/tao/_page.scss about.md
+
+// 扉页式标题：比全站标题小一档、字距略开、居中。
+// 全站那条在 _sass/lab/_apply.scss（clamp 上限 2.5em），这里用两级选择器压过它。
+.about-page .page-title {
+  margin: 0 0 1.9em;
+  font-size: clamp(1.6em, 3.1vw, 1.92em);
+  line-height: 1.28;
+  letter-spacing: .012em;
+  text-align: center;
+  color: var(--body-color-dark);
+}
+
 .page-content {
+  /* ---------- 题图 ---------- */
   figure.about-figure {
-    margin: 0 0 2.6em;
+    margin: 0 0 3.2em;
   }
 
   .about-figure img {
@@ -90,85 +104,62 @@ a.post-tag {
   }
 
   .about-figure figcaption {
-    margin-top: .9em;
-    font-size: .85rem;
+    margin-top: 1.2em;
+    font-size: .78rem;
+    letter-spacing: .16em;
     color: var(--body-color-light);
     text-align: center;
-    letter-spacing: .03em;
   }
 
-  .about-verse {
-    margin: 0 0 2.9em;
-    font-family: var(--post-font, var(--body-font));
-    font-size: 1.05rem;
-    line-height: 1.95;
-    color: var(--body-color);
-
-    .about-verse-k {
-      display: block;
-      margin-bottom: .6em;
-      font-family: var(--body-font);
-      font-size: .88rem;
-      letter-spacing: .16em;
-      color: var(--accent-color);
-    }
+  /* ---------- 题词：扉页体 ----------
+     不用背景、不用边框、不用竖线，只靠宋体大字与四侧留白。
+     它是全页唯一居中的文本块，与左对齐的正文形成「扉页 / 内文」的分工。 */
+  .about-epigraph {
+    margin: 2.7em 0 3.1em;
+    text-align: center;
 
     p {
       margin: 0;
-      text-indent: 2em;
-      text-wrap: pretty;
+      font-family: var(--post-font, var(--body-font));
+      font-size: 1.38rem;
+      line-height: 2.05;
+      letter-spacing: .01em;
+      color: var(--body-color-dark);
+      text-wrap: balance;
     }
+
+    cite {
+      display: block;
+      margin-top: 1.4em;
+      font-family: var(--body-font);
+      font-style: normal;
+      font-size: .78rem;
+      letter-spacing: .16em;
+      color: var(--body-color-light);
+    }
+  }
+
+  /* ---------- 正文：宋体、行高 2.05 ----------
+     段间不留空行，第二段首行缩进两字 —— 中文书籍正文的排法，
+     比「段间空一行」更紧凑，也不会有卡片感。 */
+  .about-lead,
+  .about-note {
+    margin: 0;
+    font-family: var(--post-font, var(--body-font));
+    line-height: 2.05;
+    color: var(--body-color);
+    text-wrap: pretty;
   }
 
   .about-lead {
-    margin: 0 0 2.8em;
-    font-family: var(--post-font, var(--body-font));
-    font-size: 1.2rem;
-    line-height: 1.95;
+    font-size: 1.1rem;
     color: var(--body-color-dark);
   }
 
-  .about-points {
-    margin: 0 0 2.8em;
-  }
-
-  .about-point {
-    display: flex;
-    gap: 1.3em;
-    padding: 1.15em 0;
-    border-top: 1px solid rgba(128, 128, 128, .22);
-
-    &:last-child {
-      border-bottom: 1px solid rgba(128, 128, 128, .22);
-    }
-
-    p {
-      margin: 0;
-      font-size: 1.02rem;
-      line-height: 1.85;
-      color: var(--body-color);
-    }
-  }
-
-  .about-point-k {
-    flex: 0 0 2.4em;
-    font-size: .92rem;
-    color: var(--accent-color);
-    letter-spacing: .08em;
-    padding-top: .3em;
-  }
-
-  .about-tracks {
-    margin: 0 0 2.6em;
-    padding-left: 1.1em;
-    border-left: 2px solid var(--accent-color);
-    font-size: .96rem;
-    line-height: 1.9;
-    color: var(--body-color);
-
-    p {
-      margin: 0;
-    }
+  .about-note {
+    padding-top: 1.1em;
+    font-size: 1.02rem;
+    text-indent: 2em;
 
     strong {
       font-weight: 600;
@@ -176,44 +167,138 @@ a.post-tag {
     }
   }
 
-  .about-cite {
-    padding: 1.5em 1.7em;
-    background: var(--body-fg);
-    border-radius: .5em;
+  /* ---------- 书目页（colophon）----------
+     原先是灰底圆角卡片，读起来像表单。改成：顶部一条发丝线起头、
+     行间用更淡的发丝线分隔、左栏标签右对齐贴住文字 —— 版权页的排法。 */
+  .about-colophon {
+    margin-top: 3.4em;
+    border-top: 1px solid rgba(128, 128, 128, .30);
     font-size: .9rem;
-    line-height: 1.8;
-
-    p {
-      margin: 0;
-    }
+    line-height: 1.9;
   }
 
-  .about-cite-row {
+  .about-col-row {
     display: flex;
-    gap: 1.1em;
-    padding: .6em 0;
+    gap: 1em;
+    padding: .95em 0;
 
-    & + .about-cite-row {
-      border-top: 1px solid rgba(128, 128, 128, .18);
+    & + .about-col-row {
+      border-top: 1px solid rgba(128, 128, 128, .14);
     }
   }
 
-  .about-cite-k {
-    flex: 0 0 4.2em;
+  .about-col-k {
+    flex: 0 0 3.1rem;
+    white-space: nowrap;
+    padding-top: .28em;
+    text-align: right;
+    font-size: .76rem;
+    letter-spacing: .16em;
     color: var(--body-color-light);
-    font-size: .86em;
-    padding-top: .1em;
   }
 
-  .about-id {
-    display: flex;
-    align-items: center;
-    gap: .9em;
+  .about-col-v {
+    flex: 1 1 auto;
     min-width: 0;
 
     p {
       margin: 0;
     }
+  }
+
+  /* 作品条目：书名一行、出版信息一行、标识与入口一行，层与层之间靠字号和颜色分开 */
+  .about-work-t {
+    font-family: var(--post-font, var(--body-font));
+    font-size: 1.04rem;
+    line-height: 1.75;
+    color: var(--body-color-dark);
+
+    // 书名常态用正文深色、不抢眼，只有指向时才转为强调色 + 下划线。
+    // 橙色留给 DOI 一类的「可复制入口」，一页里的强调色才不会遍地开花。
+    a {
+      color: var(--body-color-dark);
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        color: var(--accent-color);
+        text-decoration: underline;
+        text-underline-offset: .22em;
+      }
+    }
+  }
+
+  // 西文书名比中文书名略小一档：拉丁字母视觉面积小，同字号会更「重」，
+  // 而且 62 字符的长标题在小一档时刚好不算出「孤字」尾行。
+  .about-work-t em {
+    font-size: .92em;
+  }
+
+  .about-work-m {
+    margin-top: .3em;
+    font-size: .84rem;
+    line-height: 1.8;
+    color: var(--body-color-light);
+
+    & + & {
+      margin-top: .1em;
+    }
+  }
+
+  // DOI 用等宽，和正文的汉字骨架分得开；窄屏允许在任意字符处换行
+  .about-doi {
+    font-family: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+    font-size: .94em;
+    letter-spacing: -.01em;
+    word-break: break-all;
+  }
+
+  /* 引用三条：悬挂缩进（标签挂左、正文整块对齐），参考文献的通行排法 */
+  .about-refs {
+    p {
+      margin: 0;
+      font-size: .84rem;
+      line-height: 1.85;
+      padding-left: 4.9rem;
+      text-indent: -4.9rem;
+      color: var(--body-color);
+    }
+
+    p + p {
+      margin-top: .5em;
+    }
+  }
+
+  .about-ref-k {
+    display: inline-block;
+    min-width: 4.4rem;
+    margin-right: .5rem;
+    text-indent: 0;
+    font-family: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+    font-size: .76rem;
+    letter-spacing: 0;
+    color: var(--body-color-light);
+  }
+
+  /* 作者行 */
+  .about-id {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    min-width: 0;
+
+    p {
+      margin: 0;
+      font-size: .88rem;
+      line-height: 1.8;
+      color: var(--body-color-light);
+    }
+  }
+
+  .about-id-name {
+    font-family: var(--post-font, var(--body-font));
+    font-size: 1.02rem;
+    color: var(--body-color-dark);
   }
 
   // 金属圈：2px 渐变实体环（左上白亮 → 右下转灰）+ 外投影，像一枚嵌进纸面的小徽章。
@@ -227,8 +312,8 @@ a.post-tag {
     align-items: center;
     justify-content: center;
     // 尺寸写死成「头像 + 左右各 2px 环」，否则会被 .about-id 的 stretch 拉成椭圆
-    width: calc(3rem + 4px);
-    height: calc(3rem + 4px);
+    width: calc(2.75rem + 4px);
+    height: calc(2.75rem + 4px);
     padding: 2px;
     border-radius: 50%;
     background: linear-gradient(145deg, #fff 0%, #e6e6e6 26%, #a9a9a9 52%, #dcdcdc 74%, #f7f7f7 100%);
@@ -248,8 +333,8 @@ a.post-tag {
 
   .about-avatar {
     display: block;
-    width: 3rem;
-    height: 3rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 50%;
     object-fit: cover;
   }
@@ -260,57 +345,55 @@ a.post-tag {
     white-space: nowrap;
   }
 
-  .about-refs {
-    flex: 1 1 auto;
-    min-width: 0;
-
-    p {
-      margin: 0;
-    }
-
-    p + p {
-      margin-top: .6em;
-    }
-  }
-
-  .about-ref-k {
-    display: inline-block;
-    min-width: 5.6em;
-    margin-right: .5em;
-    font-size: .82em;
-    letter-spacing: .03em;
-    color: var(--body-color-light);
-  }
-
   @media (max-width: 640px) {
-    .about-point {
-      gap: .8em;
+    .about-epigraph {
+      margin: 2.4em 0 2.6em;
+
+      p {
+        font-size: 1.16rem;
+        line-height: 1.95;
+      }
     }
 
-    .about-point-k {
-      flex: 0 0 2.4em;
-      font-size: .86rem;
-      padding-top: .4em;
+    .about-lead {
+      font-size: 1.04rem;
     }
 
-    .about-cite {
-      padding: 1.2em 1.1em;
-      font-size: .85rem;
+    .about-note {
+      font-size: .98rem;
     }
 
-    .about-cite-row {
+    .about-colophon {
+      margin-top: 2.6em;
+    }
+
+    .about-col-row {
       flex-direction: column;
-      gap: .25em;
+      gap: .3em;
+      padding: .85em 0;
     }
 
-    .about-cite-k {
+    .about-col-k {
       flex: none;
+      padding-top: 0;
+      text-align: left;
+    }
+
+    .about-work-m {
+      font-size: .82rem;
+    }
+
+    .about-refs {
+      p {
+        padding-left: 0;
+        text-indent: 0;
+      }
     }
 
     .about-ref-k {
       display: block;
       min-width: 0;
-      margin: 0 0 .1em;
+      margin-bottom: .1em;
     }
 
     .about-id-sep {
