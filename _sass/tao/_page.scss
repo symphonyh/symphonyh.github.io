@@ -79,7 +79,7 @@ a.post-tag {
 // 回退：git checkout 3095a4c -- _sass/tao/_page.scss about.md
 
 // 扉页式标题：比全站标题小一档、字距略开、居中。
-// 全站那条在 _sass/lab/_apply.scss（clamp 上限 2.5em），这里用两级选择器压过它。
+// 全站那条在 _sass/override/_apply.scss（clamp 上限 2.5em），这里用两级选择器压过它。
 .about-page .page-title {
   margin: 0 0 1.9em;
   font-size: clamp(1.6em, 3.1vw, 1.92em);

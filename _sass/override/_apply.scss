@@ -1,9 +1,9 @@
 /* ==================================================================
-   lab/apply —— 装到真实页面上的几条样式（目录名沿用历史叫法）
+   override/apply —— 装到真实页面上的几条样式（2026-10-31 由 _sass/lab/ 改名）
    ------------------------------------------------------------------
-   唯一入口：assets/css/lab-apply.scss（由 _includes/head.html 引用一行）
+   唯一入口：assets/css/override.scss（由 _includes/head.html 引用一行）
    回退：删掉 _includes/head.html 里那一行 <link> 即恢复原样；
-         彻底清理则连本文件 + assets/css/lab-apply.scss 一起删。
+         彻底清理则连本文件 + assets/css/override.scss 一起删。
    _sass/tao/ 下所有文件一字未动。
    ================================================================== */
 

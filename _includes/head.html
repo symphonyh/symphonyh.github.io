@@ -141,10 +141,10 @@
 
   {%- comment -%}
     ---------- 样式覆盖层 ----------
-    只加载 assets/css/lab-apply.css（内容在 _sass/lab/_apply.scss）。
+    只加载 assets/css/override.css（内容在 _sass/override/_apply.scss）。
     回退：删掉下面这一行 <link> 即完全恢复原版，tao/ 下无需改动。
   {%- endcomment -%}
-  <link rel="stylesheet" href="{{ 'assets/css/lab-apply.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ 'assets/css/override.css' | relative_url }}">
 
   {%- comment -%}
     预加载 Mermaid：让浏览器在解析 HTML 阶段就开始下载，
