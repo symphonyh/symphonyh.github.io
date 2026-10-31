@@ -358,6 +358,22 @@ a.post-tag {
     object-fit: cover;
   }
 
+  // 深色模式：亮银环在近黑底上会过曝成一圈白边，比正文还抢眼。
+  // 压成枪灰、收窄明暗跨度，立体感靠 ::after 的内阴影维持；
+  // 外描边由「暗描边」翻成「亮描边」，否则环在暗底上看不见边界。
+  @media (prefers-color-scheme: dark) {
+    .about-avatar-ring {
+      background: linear-gradient(145deg, #9aa0a6 0%, #71777c 26%, #45494d 52%, #5b6064 74%, #868c91 100%);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .13),
+                  0 5px 12px -4px rgba(0, 0, 0, .8);
+
+      &::after {
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, .16),
+                    inset 0 -10px 14px -10px rgba(0, 0, 0, .7);
+      }
+    }
+  }
+
   // 「联系：邮箱」作为整体换行，避免在「联 / 系」之间断字
   .about-id-meta {
     display: inline-block;
