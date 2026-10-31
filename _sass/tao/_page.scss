@@ -111,55 +111,74 @@ a.post-tag {
     text-align: center;
   }
 
-  /* ---------- 题词：扉页体 ----------
-     不用背景、不用边框、不用竖线，只靠宋体大字与四侧留白。
-     它是全页唯一居中的文本块，与左对齐的正文形成「扉页 / 内文」的分工。 */
+  /* ---------- 题词：引言卡片 ----------
+     米色纸底 + 左侧橙色竖线 + 大引号装饰，署名右对齐收尾。
+     深色模式换半透明白底，避免亮色纸底刺眼。 */
   .about-epigraph {
-    margin: 2.7em 0 3.1em;
-    text-align: center;
+    position: relative;
+    margin: 0 0 3.1em;
+    padding: 2.15em 1.9em 1.45em;
+    background: #f4efe6;
+    border-left: 3px solid var(--accent-color);
+
+    &::before {
+      content: '“';
+      position: absolute;
+      top: .06em;
+      left: .3em;
+      font: 700 3.4em/1 Georgia, 'Times New Roman', serif;
+      color: rgba(232, 89, 12, .24);
+      pointer-events: none;
+    }
 
     p {
       margin: 0;
       font-family: var(--post-font, var(--body-font));
-      font-size: 1.38rem;
-      line-height: 2.05;
+      font-size: 1.2rem;
+      line-height: 1.85;
       letter-spacing: .01em;
       color: var(--body-color-dark);
-      text-wrap: balance;
+      text-indent: 0;
+      text-wrap: pretty;
     }
 
     cite {
       display: block;
-      margin-top: 1.4em;
+      margin-top: .85em;
       font-family: var(--body-font);
       font-style: normal;
-      font-size: .78rem;
-      letter-spacing: .16em;
+      font-size: .8rem;
+      letter-spacing: .06em;
       color: var(--body-color-light);
+      text-align: right;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .about-epigraph {
+      background: rgba(255, 255, 255, .05);
+
+      &::before {
+        color: rgba(255, 255, 255, .22);
+      }
     }
   }
 
   /* ---------- 正文：宋体、行高 2.05 ----------
-     段间不留空行，第二段首行缩进两字 —— 中文书籍正文的排法，
-     比「段间空一行」更紧凑，也不会有卡片感。 */
+     两段完全同款（字号 / 缩进 / 颜色一致），首行缩进两字 —— 中文书籍正文的排法。 */
   .about-lead,
   .about-note {
     margin: 0;
     font-family: var(--post-font, var(--body-font));
+    font-size: 1.02rem;
     line-height: 2.05;
     color: var(--body-color);
+    text-indent: 2em;
     text-wrap: pretty;
-  }
-
-  .about-lead {
-    font-size: 1.1rem;
-    color: var(--body-color-dark);
   }
 
   .about-note {
     padding-top: 1.1em;
-    font-size: 1.02rem;
-    text-indent: 2em;
 
     strong {
       font-weight: 600;
@@ -347,20 +366,18 @@ a.post-tag {
 
   @media (max-width: 640px) {
     .about-epigraph {
-      margin: 2.4em 0 2.6em;
+      margin-bottom: 2.6em;
+      padding: 1.7em 1.3em 1.2em;
 
       p {
-        font-size: 1.16rem;
-        line-height: 1.95;
+        font-size: 1.08rem;
+        line-height: 1.8;
       }
     }
 
-    .about-lead {
-      font-size: 1.04rem;
-    }
-
+    .about-lead,
     .about-note {
-      font-size: .98rem;
+      font-size: 1rem;
     }
 
     .about-colophon {
