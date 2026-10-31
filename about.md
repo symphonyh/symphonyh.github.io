@@ -10,7 +10,12 @@ permalink: /about/
   <figcaption>题图 · 漩涡意象</figcaption>
 </figure>
 
-<p class="about-lead">《漩涡之在》并不试图颠覆绵延两千年的形而上学传统。恰恰相反，它要在历代前贤的肩膀上，完成一次面向现代的重构——存在不是实体，而是持续交换维持的动态过程。</p>
+<p class="about-lead">《漩涡之在》并不试图颠覆绵延两千年的形而上学传统。恰恰相反，它要在历代前贤的肩膀上，完成一次面向现代的重构。</p>
+
+<div class="quote-card">
+  <p>存在不是实体，而是持续交换维持的动态过程。</p>
+  <cite>——《漩涡之在》</cite>
+</div>
 
 <div class="about-verse">
   <span class="about-verse-k">题记</span>

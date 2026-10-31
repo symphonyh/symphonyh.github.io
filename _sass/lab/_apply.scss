@@ -1,0 +1,164 @@
+/* ==================================================================
+   lab/apply —— 装到真实页面上的几条样式（目录名沿用历史叫法）
+   ------------------------------------------------------------------
+   唯一入口：assets/css/lab-apply.scss（由 _includes/head.html 引用一行）
+   回退：删掉 _includes/head.html 里那一行 <link> 即恢复原样；
+         彻底清理则连本文件 + assets/css/lab-apply.scss 一起删。
+   _sass/tao/ 下所有文件一字未动。
+   ================================================================== */
+
+/* ---------- 01 token：暖纸底 + 正文行距 ---------- */
+:root {
+  --line-height: 1.72;   /* 原 1.5。中文正文 1.7 左右最稳，1.5 会让长段显得挤 */
+  --body-bg: #fcfaf6;    /* 原纯白。略偏暖，配橙强调色不打架 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* 深色模式另给一档中性底，避免纸色渗进去显得脏 */
+    --body-bg: #191a1c;
+  }
+}
+
+/* ---------- 02 标题：不放大到海报尺度，只收行距、压字距 ----------
+   实测正文栏 600px：h1 超过约 44px 后，「关于《漩涡之在》」这类
+   9 字标题还撑得住，但长标题会折三行。所以用 clamp 上限卡在 2.5em。 */
+.page-title {
+  font-size: clamp(1.9em, 4.4vw, 2.5em);
+  line-height: 1.08;
+  letter-spacing: -.022em;
+  text-wrap: balance;      /* 断行尽量均分，不出现「最后一行只有一个字」 */
+}
+
+/* ⚠️ 必须写成 `.post-entry .post-title`：主题的 _page.scss 里这一条是两级选择器
+   （font-size 2em / line-height 1.25），只写 .post-title 压不过它，实测无效。 */
+.post-entry .post-title,
+.post-title {
+  font-size: 2.1em;
+  line-height: 1.14;       /* 原 1.25，收「两行标题之间空得能塞一行」的松散感 */
+  letter-spacing: -.018em;
+  text-wrap: balance;
+}
+
+/* ---------- 03 首页条目：发丝线分隔 ----------
+   原来只靠 2em 空白分隔，条目之间界限靠猜。加 1px 线后节奏清楚，
+   且不改任何间距数值（相邻 margin 会折叠，实际仍是 2em）。 */
+.post-entry + .post-entry {
+  margin-top: calc(2 * var(--spacing));
+  padding-top: calc(2 * var(--spacing));
+  border-top: 1px solid rgba(0, 0, 0, .085);
+}
+
+@media (prefers-color-scheme: dark) {
+  .post-entry + .post-entry {
+    border-top-color: rgba(255, 255, 255, .10);
+  }
+}
+
+/* ---------- 04 链接：下划线离字远一点，避免压住中文骨架 ---------- */
+a {
+  text-underline-offset: .18em;
+  text-decoration-thickness: from-font;
+}
+
+/* ---------- 05 元信息：日期行退到背景里 ---------- */
+.post-meta {
+  letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==================================================================
+   以下两条是「组件」：只在显式写了类名的地方生效（about.md / 文章正文）
+   ================================================================== */
+
+/* ---------- 06 引语卡：把一句论点从正文里拎出来 ----------
+   用在 about 页导语之后。三件套：左侧强调色竖线 + 大号开引号 + 出处。
+   引号用 ::before 定位，不占位，所以 2em 的缩进和行宽不受影响。 */
+.quote-card {
+  position: relative;
+  margin: 0 0 2.6em;
+  padding: 2.15em 1.9em 1.45em;
+  background: #f4efe6;
+  border-left: 3px solid var(--accent-color);
+  border-radius: 0;
+
+  &::before {
+    content: '“';
+    position: absolute;
+    top: .06em;
+    left: .3em;
+    font: 700 3.4em/1 Georgia, 'Times New Roman', serif;
+    color: rgba(232, 89, 12, .24);
+    pointer-events: none;
+  }
+
+  p {
+    margin: 0;
+    font-family: var(--post-font, var(--body-font));
+    font-size: 1.2rem;
+    line-height: 1.85;
+    text-indent: 0;
+    color: var(--body-color-dark);
+  }
+
+  cite {
+    display: block;
+    margin-top: .85em;
+    font-style: normal;
+    font-size: .8rem;
+    letter-spacing: .06em;
+    color: var(--body-color-light);
+  }
+}
+
+/* ---------- 07 2×2 发丝网格：文章正文里的四点并列 ----------
+   600px 栏里每格约 290px，正文收到 .95rem 才好读。窄屏退成单列。 */
+.hgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1.7em 0;
+  background: rgba(0, 0, 0, .16);
+  border: 1px solid rgba(0, 0, 0, .16);
+
+  > .hgrid-cell {
+    margin: 0;
+    padding: 1.05em 1.15em 1.15em;
+    background: var(--body-bg);
+  }
+
+  .hgrid-k {
+    display: block;
+    margin-bottom: .5em;
+    font-family: var(--title-font);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    color: var(--accent-color);
+  }
+
+  p {
+    margin: 0;
+    font-size: .95rem;
+    line-height: 1.78;
+    color: var(--body-color);
+  }
+
+  @media (max-width: 560px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .quote-card {
+    background: rgba(255, 255, 255, .05);
+
+    &::before { color: rgba(255, 255, 255, .22); }
+  }
+
+  .hgrid {
+    background: rgba(255, 255, 255, .18);
+    border-color: rgba(255, 255, 255, .18);
+  }
+}
+
