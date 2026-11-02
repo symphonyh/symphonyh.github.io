@@ -68,50 +68,10 @@ a {
 }
 
 /* ==================================================================
-   以下两条是「组件」：只在显式写了类名的地方生效（about.md / 文章正文）
+   以下这条是「组件」：只在显式写了类名的地方生效（文章正文）
    ================================================================== */
 
-/* ---------- 06 引语卡：把一句论点从正文里拎出来 ----------
-   用在 about 页导语之后。三件套：左侧强调色竖线 + 大号开引号 + 出处。
-   引号用 ::before 定位，不占位，所以 2em 的缩进和行宽不受影响。 */
-.quote-card {
-  position: relative;
-  margin: 0 0 2.6em;
-  padding: 2.15em 1.9em 1.45em;
-  background: #f4efe6;
-  border-left: 3px solid var(--accent-color);
-  border-radius: 0;
-
-  &::before {
-    content: '“';
-    position: absolute;
-    top: .06em;
-    left: .3em;
-    font: 700 3.4em/1 Georgia, 'Times New Roman', serif;
-    color: rgba(232, 89, 12, .24);
-    pointer-events: none;
-  }
-
-  p {
-    margin: 0;
-    font-family: var(--post-font, var(--body-font));
-    font-size: 1.2rem;
-    line-height: 1.85;
-    text-indent: 0;
-    color: var(--body-color-dark);
-  }
-
-  cite {
-    display: block;
-    margin-top: .85em;
-    font-style: normal;
-    font-size: .8rem;
-    letter-spacing: .06em;
-    color: var(--body-color-light);
-  }
-}
-
-/* ---------- 07 2×2 发丝网格：文章正文里的四点并列 ----------
+/* ---------- 06 2×2 发丝网格：文章正文里的四点并列 ----------
    600px 栏里每格约 290px，正文收到 .95rem 才好读。窄屏退成单列。 */
 .hgrid {
   display: grid;
@@ -150,12 +110,6 @@ a {
 }
 
 @media (prefers-color-scheme: dark) {
-  .quote-card {
-    background: rgba(255, 255, 255, .05);
-
-    &::before { color: rgba(255, 255, 255, .22); }
-  }
-
   .hgrid {
     background: rgba(255, 255, 255, .18);
     border-color: rgba(255, 255, 255, .18);
@@ -163,7 +117,7 @@ a {
 }
 
 /* ==================================================================
-   08 文章底部：本文涉及的概念
+   07 文章底部：本文涉及的概念
    ==================================================================
    与标签行的分工：
      概念行 = 这篇谈论的东西，指向知识图谱里的唯一节点（网）

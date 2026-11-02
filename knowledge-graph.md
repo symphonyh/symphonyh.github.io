@@ -49,15 +49,6 @@ permalink: /knowledge-graph/
 </div>
 
 <style>
-    .knowledge-graph-intro {
-
-        background:#f8f9fb;
-        border:1px solid #e5e7eb;
-        border-radius:10px;
-        padding:1.2rem 1.4rem;
-        margin-bottom:1rem;
-
-    }
     .knowledge-graph-toolbar {
 
         display:flex;
@@ -1333,7 +1324,9 @@ const CONCEPT_RELATIONS = [
                         ],
                         data:nodes,
                         links:linksData,
-                        focusNodeAdjacency:true,
+                        // hover 时只亮邻居，靠下面 emphasis.focus（v5 写法）。
+                        // 不要在这里加 focusNodeAdjacency：那是 v4 属性，echarts 只在
+                        // emphasis.focus 为空时才把它转义过来，这里永远轮不到，纯冗余。
                         emphasis:{
                             focus:'adjacency',
                             label:{ show:true, fontWeight:'bold' }

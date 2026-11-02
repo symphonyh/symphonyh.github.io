@@ -69,10 +69,6 @@ a.post-tag {
   color: var(--body-bg);
 }
 
-.about-text {
-  font-size: .875rem;
-}
-
 // about 页专用版式（2026-10-31 重排）：题图 → 题词 → 正文 → 书目页（colophon）。
 // 类名全部带 about- 前缀，只在 about.md 使用；标题居中靠 front matter 的
 // page_class: about-page 作用域，不污染全站 .page-title。
