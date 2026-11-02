@@ -108,21 +108,29 @@ permalink: /knowledge-graph/
         display:block;
 
     }
-    /* ---- 宽屏外扩 ----
-       正文栏宽 600px，几百个节点挤在里面看不出结构。这里只把搜索框、
-       图例、画布三件一起横向外扩并居中，页头页脚都不动；窄屏（<1080px）
-       完全保持原样。删掉本段即回到 600 栏宽。 */
+    /* ---- 宽屏外扩：整页统一到 1180 ----
+       本页是站里唯一一个「工具页」：几百个节点挤在 600px 正文栏里看不出结构。
+       早先只把搜索框、图例、画布三件用 translateX 拉宽，页头页脚还留在 600
+       栏上，两者错位 290px（实测 1440 视口：页头 420，画布 130）。现在改成
+       直接放宽 .wrapper —— 页头、页脚、工具区共用同一条左右边，三个左边缘
+       自然对齐。
+       max-width 写 1180 + 8rem 而不是 1180，是因为要配 padding-inline 4rem：
+       这样 1080–1440 之间每个宽度下的画布几何与改动前完全一致（1080 视口
+       952px、1440 视口 1180px，两侧仍留 4rem），只是把页头页脚一起拉进了
+       这条边。窄屏（<1080px）完全保持原样。删掉本段即回到 600 栏宽。 */
     @media (min-width:1080px) {
 
+        .wrapper {
+            max-width:calc(1180px + 8rem);
+            padding-inline:4rem;
+        }
         .knowledge-graph-toolbar,
         .knowledge-graph-legend,
         .knowledge-graph-layout {
-            position:relative;
-            left:50%;
-            transform:translateX(-50%);
-            /* 用 100vw 减固定留白而不是百分比：视口刚过断点时也能保住 4rem 边距，
-               不会贴到屏幕边缘。 */
-            width:min(1180px, calc(100vw - 8rem));
+            position:static;
+            left:auto;
+            transform:none;
+            width:auto;
         }
         .knowledge-graph-toolbar input { max-width:480px; }
 
