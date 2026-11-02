@@ -158,17 +158,6 @@
   {%- endif -%}
 
   {%- comment -%}
-    预取知识图谱用的 ECharts。文章尾部有一个进图谱的入口按钮，
-    读完的人大概率会点进去；这时 490 KB 已经在缓存里，点开即用。
-    用 prefetch 而不是 preload：preload 是高优先级、会跟当前页抢带宽，
-    而读者多数时候并不去图谱页。prefetch 只在浏览器空闲时下，跨页复用。
-    只挂 post 布局——首页、归档页没有这个入口，预取是纯浪费。
-  {%- endcomment -%}
-  {%- if page.layout == 'post' -%}
-  <link rel="prefetch" href="{{ 'assets/js/tao/echarts.min.js' | relative_url }}">
-  {%- endif -%}
-
-  {%- comment -%}
     Font Awesome 自托管。原来引用 use.fontawesome.com 的 JS 版，
     该域名在国内不可达（curl 15s 超时、0 字节），导致全站图标空白。
   {%- endcomment -%}
