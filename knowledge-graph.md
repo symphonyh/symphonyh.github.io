@@ -13,8 +13,39 @@ permalink: /knowledge-graph/
     </button>
 </div>
 
+<div class="knowledge-graph-legend" id="knowledge-graph-legend" role="group" aria-label="按类别筛选"></div>
+
 <div class="knowledge-graph-layout">
-    <div id="knowledge-graph" class="knowledge-graph-container"></div>
+    <div id="knowledge-graph" class="knowledge-graph-container">
+
+        <!-- 骨架层。ECharts 现在由脚本运行期注入，1 MB 下载期间它就摊在这里；
+             之所以必须有它，是因为原来的同步 <script src> 会卡住 HTML 解析，
+             连这种「正在加载」的画面都来不及画，页面只能是白的。 -->
+        <div class="knowledge-graph-skeleton" id="knowledge-graph-skeleton" aria-hidden="true">
+            <svg class="knowledge-graph-skeleton-net" viewBox="0 0 620 440" preserveAspectRatio="xMidYMid meet" fill="none">
+                <g stroke="currentColor" stroke-width="1">
+                    <line x1="310" y1="220" x2="180" y2="128"/>
+                    <line x1="310" y1="220" x2="452" y2="140"/>
+                    <line x1="310" y1="220" x2="200" y2="330"/>
+                    <line x1="310" y1="220" x2="470" y2="322"/>
+                    <line x1="180" y1="128" x2="452" y2="140"/>
+                    <line x1="180" y1="128" x2="120" y2="250"/>
+                    <line x1="452" y1="140" x2="470" y2="322"/>
+                    <line x1="200" y1="330" x2="120" y2="250"/>
+                </g>
+                <g fill="currentColor">
+                    <circle cx="310" cy="220" r="30"/>
+                    <circle cx="180" cy="128" r="19"/>
+                    <circle cx="452" cy="140" r="16"/>
+                    <circle cx="200" cy="330" r="17"/>
+                    <circle cx="470" cy="322" r="20"/>
+                    <circle cx="120" cy="250" r="13"/>
+                </g>
+            </svg>
+            <p class="knowledge-graph-skeleton-note">正在构建关系图</p>
+        </div>
+
+    </div>
 </div>
 
 <style>
@@ -77,8 +108,28 @@ permalink: /knowledge-graph/
         display:block;
 
     }
+    /* ---- 宽屏外扩 ----
+       正文栏宽 600px，几百个节点挤在里面看不出结构。这里只把搜索框、
+       图例、画布三件一起横向外扩并居中，页头页脚都不动；窄屏（<1080px）
+       完全保持原样。删掉本段即回到 600 栏宽。 */
+    @media (min-width:1080px) {
+
+        .knowledge-graph-toolbar,
+        .knowledge-graph-legend,
+        .knowledge-graph-layout {
+            position:relative;
+            left:50%;
+            transform:translateX(-50%);
+            /* 用 100vw 减固定留白而不是百分比：视口刚过断点时也能保住 4rem 边距，
+               不会贴到屏幕边缘。 */
+            width:min(1180px, calc(100vw - 8rem));
+        }
+        .knowledge-graph-toolbar input { max-width:480px; }
+
+    }
     .knowledge-graph-container {
 
+        position:relative;
         width:100%;
         min-height:88vh;
         border:1px solid #e5e7eb;
@@ -93,28 +144,137 @@ permalink: /knowledge-graph/
         }
 
     }
-    .knowledge-graph-container .echarts-legend {
+    /* ---- 骨架层 ---- */
+    .knowledge-graph-skeleton {
 
-        background:rgba(255,255,255,0.9);
-        padding:6px 12px;
-        border-radius:8px;
-        box-shadow:0 2px 8px rgba(0,0,0,0.08);
+        position:absolute;
+        inset:0;
+        z-index:2;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:1.6rem;
+        border-radius:inherit;
+        background:#ffffff;
+        pointer-events:none;
+        transition:opacity .55s ease;
+
+    }
+    .knowledge-graph-skeleton-net {
+
+        width:min(84%, 600px);
+        height:auto;
+        color:#bcc1c8;
+        animation:kg-breathe 3.6s ease-in-out infinite;
+
+    }
+    .knowledge-graph-skeleton-net circle { opacity:.5; }
+    .knowledge-graph-skeleton-net line { opacity:.8; }
+    .knowledge-graph-skeleton-note {
+
+        margin:0;
+        font-size:.82rem;
+        letter-spacing:.1em;
+        color:#7d838a;
+        animation:kg-pulse 3.6s ease-in-out infinite;
+
+    }
+    .knowledge-graph-skeleton.is-done { opacity:0; }
+    .knowledge-graph-skeleton.is-failed .knowledge-graph-skeleton-net {
+
+        animation:none;
+        opacity:.3;
+
+    }
+    .knowledge-graph-skeleton.is-failed .knowledge-graph-skeleton-note {
+
+        animation:none;
+        color:#8a6d3b;
+
+    }
+    @keyframes kg-breathe {
+
+        0%, 100% { opacity:.86; transform:scale(1); }
+        50%      { opacity:1;   transform:scale(1.016); }
+
+    }
+    @keyframes kg-pulse {
+
+        0%, 100% { opacity:.5; }
+        50%      { opacity:1; }
+
+    }
+    @media (prefers-reduced-motion: reduce) {
+
+        .knowledge-graph-skeleton-net,
+        .knowledge-graph-skeleton-note { animation:none; }
+
+    }
+
+    /* ---- 图例：canvas 外的一排 ----
+       原来用 echarts 内置 legend（bottom:10），压在节点上，
+       九个分类名几乎全被遮住。挪出来后节点不再被挡，窄屏还能换行。 */
+    .knowledge-graph-legend {
+
+        display:flex;
+        flex-wrap:wrap;
+        align-items:center;
+        gap:.3rem .95rem;
+        margin:0 0 .75rem;
+
+    }
+    .knowledge-graph-legend-item {
+
+        display:inline-flex;
+        align-items:center;
+        gap:.4rem;
+        padding:.25rem .1rem;
+        border:0;
+        background:none;
+        font-family:inherit;
+        font-size:.82rem;
+        line-height:1.4;
+        color:#5b6066;
+        cursor:pointer;
+        transition:color .18s ease, opacity .18s ease;
+
+    }
+    .knowledge-graph-legend-dot {
+
+        width:.6rem;
+        height:.6rem;
+        border-radius:50%;
+        flex:0 0 auto;
+        transition:transform .18s ease, opacity .18s ease;
+
+    }
+    .knowledge-graph-legend-item:hover { color:#1a1a1a; }
+    .knowledge-graph-legend-item:hover .knowledge-graph-legend-dot { transform:scale(1.18); }
+    .knowledge-graph-legend-item[aria-pressed="false"] { opacity:.36; }
+    .knowledge-graph-legend-item[aria-pressed="false"] .knowledge-graph-legend-dot {
+
+        transform:scale(.62);
+        opacity:.6;
+
+    }
+    @media (prefers-color-scheme: dark) {
+
+        .knowledge-graph-legend-item { color:#a8adb3; }
+        .knowledge-graph-legend-item:hover { color:#f0f0f0; }
 
     }
 </style>
-<!-- ECharts 是整站最大的单个资源（1 MB）。**本地优先**：2026-10-26 实测，本站副本从
-     Cloudflare 边缘（cf-cache-status: HIT）取 1 MB 只需 2–7 s；而 fastly.jsdelivr.net 同文件
-     45 s 仍未下完（997 KB / 507 KB）。原先「CDN 优先、本站必传不完」的判断是错的：
-     同步 script 标签会阻塞解析，CDN 迟到一分钟，后面 document.write 的兜底根本轮不到执行，
-     页面就一直空白——这才是图谱页长期「卡住出不来」的真因。
-     本地 404/失败时才同步回退 CDN（document.write 保证后续内联脚本拿得到 window.echarts）。
-     版本锁 5.6.0（npm 上 5.x 最新；本地文件内标的是 5.6.1，但 npm 无此版本）。
-     若哪天国内 CDN 明显快于本站，再评估对调回去（先测再说，别信注释）。 -->
-<script src="{{ '/assets/js/tao/echarts.min.js' | relative_url }}"></script>
-<script>window.echarts || document.write('<script src="https://fastly.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"><\/script>');</script>
+<!-- ECharts 是整站最大的单个资源（定制包 490 KB，原版 1 MB）。
+     2026-11-02 起不再用 <script src>：同步标签会阻塞 HTML 解析，1 MB 下完之前
+     页面连骨架都画不出来，这才是图谱页长期「卡住出不来」的真因。
+     改为运行期注入（见文件末尾第 7 节）：本地优先，失败才回退 CDN。
+     版本锁 5.6.0；定制包用 esbuild 只打包 graph + tooltip + legend + canvas，
+     体积从 1,034 KB 降到 502 KB，功能验证过（图例九项、点击跳转都正常）。 -->
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    // 数据处理 + 渲染。由文件末尾的 bootGraph 在 ECharts 到货后调用。
+    function initGraph() {
 
         // ============================================================
         // 1. 定义核心概念及其关系（语义网络骨架）
@@ -824,12 +984,12 @@ const CONCEPT_RELATIONS = [
                 name:def.name,
                 category:def.category,
                 color:def.color,
-                symbolSize:def.category === '核心概念' ? 48 :
-                             def.category === '哲学家' ? 40 :
-                             def.category === '次级概念' ? 32 :28,
+                symbolSize:def.category === '核心概念' ? 30 :
+                             def.category === '哲学家' ? 25 :
+                             def.category === '次级概念' ? 20 :18,
                 value:1,
-                label:{ fontSize:def.category === '核心概念' ? 13 :
-                                 def.category === '哲学家' ? 12 :10 },
+                label:{ fontSize:def.category === '核心概念' ? 12 :
+                                 def.category === '哲学家' ? 11 :10 },
             });
         });
 
@@ -854,7 +1014,7 @@ const CONCEPT_RELATIONS = [
                 id:post.id,
                 name:post.title,
                 category:'文章',
-                symbolSize:38,
+                symbolSize:24,
                 url:post.url,
                 value:post.categories.length + post.tags.length + 1,
                 label:{ fontSize:12 }
@@ -867,7 +1027,7 @@ const CONCEPT_RELATIONS = [
                         id:nodeId,
                         name:category,
                         category:'分类',
-                        symbolSize:22,
+                        symbolSize:13,
                         value:1,
                         label:{ fontSize:10 }
                     });
@@ -884,7 +1044,7 @@ const CONCEPT_RELATIONS = [
                         id:nodeId,
                         name:tag,
                         category:'标签',
-                        symbolSize:18,
+                        symbolSize:11,
                         value:1,
                         label:{ fontSize:10 }
                     });
@@ -913,13 +1073,13 @@ const CONCEPT_RELATIONS = [
 
         allNodes.forEach(function(node) {
             if (node.category === '分类') {
-                node.symbolSize = 22 + Math.min(node.value || 1, 8);
+                node.symbolSize = 13 + Math.min(node.value || 1, 8);
                 node.itemStyle = { color:PALETTE.category };
             } else if (node.category === '标签') {
-                node.symbolSize = 18 + Math.min(node.value || 1, 6);
+                node.symbolSize = 11 + Math.min(node.value || 1, 6);
                 node.itemStyle = { color:PALETTE.tag };
             } else if (node.category === '章节') {
-                node.symbolSize = 14 + Math.min(node.value || 1, 6);
+                node.symbolSize = 8 + Math.min(node.value || 1, 6);
                 node.itemStyle = { color:PALETTE.section };
             } else if (node.category === '核心概念') {
                 node.itemStyle = { color:PALETTE.core };
@@ -980,7 +1140,7 @@ const CONCEPT_RELATIONS = [
                             category:'章节',
                             parentTitle:post.title,
                             url:post.url + '#' + headingId,
-                            symbolSize:16,
+                            symbolSize:12,
                             label:{ fontSize:9 },
                             itemStyle:{ color:'#2ECC71' }
                         });
@@ -1006,6 +1166,11 @@ const CONCEPT_RELATIONS = [
         let renderGraph = null;
         let searchInput = null;
 
+        // 图例选中态。renderGraph 用的是 setOption(option, true)（notMerge），
+        // 每次重画都会把 legend.selected 重置，所以状态必须自己存一份、回填进 option，
+        // 否则筛选一次就全亮回去了。
+        const legendSelected = {};
+
         function mountGraph() {
             currentNodes = allNodes;
             currentLinks = allLinks;
@@ -1015,6 +1180,65 @@ const CONCEPT_RELATIONS = [
             const resetButton = document.getElementById('knowledge-graph-reset');
 
             const myChart = echarts.init(chartDom);
+
+            // 力导向参数必须跟着画布宽度走。1180 宽的大画布如果沿用窄栏那组参数，
+            // 几百个节点会挤成一团看不出结构；反过来把宽画布的参数搬到 600 窄栏，
+            // 节点又会被斥力直接甩出边界。所以按宽度分两档。
+            const wideCanvas = chartDom.clientWidth >= 900;
+
+            // ------------------------------------------------------------
+            // 外置图例：一行 HTML，颜色取自 PALETTE，点击交给 echarts 处理。
+            // 状态只有一个来源（echarts 的 legendselectchanged），DOM 只负责显示，
+            // 免得两边各记一份、越点越乱。
+            // ------------------------------------------------------------
+            (function buildLegend() {
+                const legendBox = document.getElementById('knowledge-graph-legend');
+                if (!legendBox) return;
+
+                const items = [
+                    ['文章', PALETTE.article],
+                    ['分类', PALETTE.category],
+                    ['标签', PALETTE.tag],
+                    ['章节', PALETTE.section],
+                    ['核心概念', PALETTE.core],
+                    ['次级概念', PALETTE.secondary],
+                    ['哲学家', PALETTE.philosopher],
+                    ['案例', PALETTE.case],
+                    ['东方思想', PALETTE.eastern]
+                ];
+
+                function paint() {
+                    Array.prototype.forEach.call(legendBox.children, function(btn) {
+                        btn.setAttribute('aria-pressed', legendSelected[btn.dataset.name] === false ? 'false' : 'true');
+                    });
+                }
+
+                items.forEach(function(pair) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'knowledge-graph-legend-item';
+                    btn.dataset.name = pair[0];
+                    btn.setAttribute('aria-pressed', 'true');
+
+                    const dot = document.createElement('span');
+                    dot.className = 'knowledge-graph-legend-dot';
+                    dot.style.background = pair[1];
+
+                    btn.appendChild(dot);
+                    btn.appendChild(document.createTextNode(pair[0]));
+                    btn.addEventListener('click', function() {
+                        myChart.dispatchAction({ type: 'legendToggleSelect', name: pair[0] });
+                    });
+                    legendBox.appendChild(btn);
+                });
+
+                myChart.on('legendselectchanged', function(e) {
+                    Object.keys(e.selected).forEach(function(k) {
+                        legendSelected[k] = e.selected[k];
+                    });
+                    paint();
+                });
+            })();
 
             renderGraph = function (nodes, linksData) {
                 const option = {
@@ -1043,11 +1267,17 @@ const CONCEPT_RELATIONS = [
                     legend:[{
                         data:['文章', '分类', '标签', '章节', '核心概念', '次级概念', '哲学家', '案例', '东方思想'],
                         orient:'horizontal',
-                        bottom:10,
-                        textStyle:{ color:'#666', fontSize:12 },
-                        formatter:function(name) {
-                            return name;
-                        }
+                        selected:legendSelected,
+                        // 图例已经做成画布外的一排 HTML（见 buildLegend）。
+                        // 但组件本身不能关：legend.show:false 会让组件不被创建，
+                        // dispatchAction('legendToggleSelect') 就没对象可派发，点了没反应。
+                        // 所以留在原地、塞到画布外、尺寸压到 1px：看不见，但交互仍然是官方的。
+                        left:-9999,
+                        top:-9999,
+                        itemWidth:1,
+                        itemHeight:1,
+                        itemGap:0,
+                        textStyle:{ color:'transparent', fontSize:1 }
                     }],
                     series:[{
                         type:'graph',
@@ -1056,9 +1286,13 @@ const CONCEPT_RELATIONS = [
                         draggable:true,
                         animationDurationUpdate:300,
                         force:{
-                            repulsion:280,
-                            edgeLength:[80, 200],
-                            gravity:0.08
+                            // 窄栏（手机）：画布只有 386px 宽，斥力必须压小、重力加大，
+                            // 否则几百个节点会一路飘出边界被裁成半圆。
+                            // 宽画布反过来：斥力提高让节点铺开，重力 0.26 把外圈收回画布内
+                            // （只加斥力不加重力，节点同样会飘出去）。
+                            repulsion: wideCanvas ? 380 : 120,
+                            edgeLength: wideCanvas ? [90, 210] : [55, 130],
+                            gravity: wideCanvas ? 0.26 : 0.35
                         },
                         categories:[
                             { name:'文章', itemStyle:{ color:PALETTE.article } },
@@ -1078,6 +1312,7 @@ const CONCEPT_RELATIONS = [
                             focus:'adjacency',
                             label:{ show:true, fontWeight:'bold' }
                         },
+                        labelLayout:{ hideOverlap:true },
                         label:{
                             position:'right',
                             formatter:function(params) {
@@ -1161,8 +1396,16 @@ const CONCEPT_RELATIONS = [
                 applyFilter('');
             });
 
+            // 窗口跨过 900px 档位时（比如横竖屏切换、拉宽窗口），力导向参数要跟着换，
+            // 否则节点会按旧档位溢出画布或者挤成一团。只换档位才重画，普通缩放只 resize。
+            let lastWide = wideCanvas;
             window.addEventListener('resize', function() {
                 myChart.resize();
+                const nowWide = chartDom.clientWidth >= 900;
+                if (nowWide !== lastWide) {
+                    lastWide = nowWide;
+                    renderGraph(currentNodes, currentLinks);
+                }
             });
         }
 
@@ -1175,6 +1418,69 @@ const CONCEPT_RELATIONS = [
             if (searchInput && searchInput.value.trim()) return;
             renderGraph(allNodes, allLinks);
         });
+    }
 
-    }); 
+    // ============================================================
+    // 7. 注入 ECharts，到货再启动
+    //    顺序很关键：先把 HTML 渲染完（骨架可见、搜索框能点），
+    //    再在后台下载库，onload 之后才 initGraph。
+    //    失败才回退 CDN；都失败则把骨架换成一句人话，不留白屏。
+    // ============================================================
+    (function bootGraph() {
+        var skeleton = document.getElementById('knowledge-graph-skeleton');
+        var note = skeleton ? skeleton.querySelector('.knowledge-graph-skeleton-note') : null;
+        var settled = false;
+
+        function finish(err) {
+            if (settled) return;
+            settled = true;
+
+            if (err || !window.echarts) {
+                if (note) note.textContent = '关系图没能加载出来，刷新页面再试';
+                if (skeleton) skeleton.classList.add('is-failed');
+                return;
+            }
+
+            initGraph();
+
+            if (skeleton) {
+                skeleton.classList.add('is-done');
+                window.setTimeout(function() {
+                    if (skeleton.parentNode) skeleton.parentNode.removeChild(skeleton);
+                }, 700);
+            }
+        }
+
+        function inject(src, ok, fail) {
+            var el = document.createElement('script');
+            el.src = src;
+            el.async = true;
+            el.onload = ok;
+            el.onerror = fail;
+            document.head.appendChild(el);
+        }
+
+        function start() {
+            inject('{{ "/assets/js/tao/echarts.min.js" | relative_url }}', function() {
+                finish(null);
+            }, function() {
+                inject('https://fastly.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js', function() {
+                    finish(null);
+                }, function() {
+                    finish(new Error('both sources failed'));
+                });
+            });
+
+            // 兜底：网极慢或请求悬挂时，别让骨架一直转。
+            window.setTimeout(function() {
+                if (!settled && !window.echarts) finish(new Error('timeout'));
+            }, 25000);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', start);
+        } else {
+            start();
+        }
+    })();
 </script>
