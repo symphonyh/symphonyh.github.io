@@ -2,3 +2,7 @@ _site/
 _draft/
 .jekyll-cache/
 .vscode/
+
+# 本地工具与试验产物，不进仓库（sass/playwright 依赖、页面样张与截图）
+node_modules/
+.hero-try/
