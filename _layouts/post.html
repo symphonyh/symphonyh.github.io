@@ -79,15 +79,20 @@ layout: default
     不要「格式化」成一行一个：每个概念是一个 inline-block 单元，
     HTML 里多一个换行就是一个空格，词与词之间会凭空多出几像素，
     折行位置也会跟着变。
+
+    分隔点写在词尾、不写在下个词前面：手机上一行放不下时，点若属于下一个词，
+    就会孤零零挂在行首（360–420px 实测全部如此，把间距从 .4rem 收到 .18rem
+    也躲不掉，只能少占几像素）。跟着前一个词走，折行只发生在「词+点」与
+    下一个词之间，行首永远是干净的字，也符合中文排版里间隔号不进行首的规矩。
     （注释里不能出现未闭合的模板定界符，Liquid 连注释内容也当标签扫，
       写了就 SyntaxError，构建直接挂。）
   {%- endcomment -%}
   {% if page.concepts.size > 0 %}
     <nav class="post-concepts" aria-label="本文涉及的概念">
       <span class="post-concepts-label">本文涉及概念</span>{%
-      for concept in page.concepts %}<span class="post-concepts-item">{%
-        unless forloop.first %}<span class="post-concepts-sep" aria-hidden="true">·</span>{%
-        endunless %}<a class="post-concept" href="{{ '/knowledge-graph/' | relative_url }}?q={{ concept | url_encode }}">{{ concept }}</a></span>{%
+      for concept in page.concepts %}<span class="post-concepts-item"><a class="post-concept" href="{{ '/knowledge-graph/' | relative_url }}?q={{ concept | url_encode }}">{{ concept }}</a>{%
+        unless forloop.last %}<span class="post-concepts-sep" aria-hidden="true">·</span>{%
+        endunless %}</span>{%
       endfor %}
     </nav>
   {% endif %}
