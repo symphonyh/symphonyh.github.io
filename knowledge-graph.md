@@ -5,6 +5,9 @@ permalink: /knowledge-graph/
 ---
 
 <div class="knowledge-graph-toolbar">
+    <button id="knowledge-graph-back" class="knowledge-graph-back" type="button" aria-label="返回上一页" title="返回上一页">
+        <i class="fas fa-chevron-left" aria-hidden="true"></i><span class="knowledge-graph-back-text">返回</span>
+    </button>
     <input id="knowledge-graph-search" type="text" placeholder="搜索文章、分类、标签或概念" />
     <button id="knowledge-graph-reset" type="button" aria-label="重置视图" title="重置视图">
 
@@ -92,6 +95,41 @@ permalink: /knowledge-graph/
     .knowledge-graph-toolbar button:hover {
 
         background:#f0f0f0;
+
+    }
+    /* 返回按钮：默认不占位，由脚本加 .is-visible 才出现。
+       两级选择器是必须的 —— .knowledge-graph-toolbar button 那条已经有
+       display:inline-flex，单写 .knowledge-graph-back 压不过它，会藏不住。 */
+    .knowledge-graph-toolbar .knowledge-graph-back {
+
+        display:none;
+        gap:0.35rem;
+
+    }
+    .knowledge-graph-toolbar .knowledge-graph-back.is-visible {
+
+        display:inline-flex;
+
+    }
+    /* 窄屏只留箭头：返回按钮一出现，搜索框的 220px 下限会把重置按钮挤到
+       第二行（360px 下 36+12+220+12+44 = 324 > 312 可用宽）。 */
+    @media (max-width:767px) {
+
+        .knowledge-graph-toolbar .knowledge-graph-back {
+
+            padding:0.6rem 0.7rem;
+
+        }
+        .knowledge-graph-toolbar .knowledge-graph-back-text {
+
+            display:none;
+
+        }
+        .knowledge-graph-toolbar input {
+
+            min-width:0;
+
+        }
 
     }
     .knowledge-graph-layout {
@@ -272,6 +310,40 @@ permalink: /knowledge-graph/
      体积从 1,034 KB 降到 502 KB，功能验证过（图例九项、点击跳转都正常）。 -->
 
 <script>
+    // ============================================================
+    // 返回按钮：图谱是「终点站」，进来之后页面上没有任何回文章的出口，
+    // 只能靠浏览器后退。这里补一个显式按钮。
+    //
+    // 只在本站内部跳转进来时才显示，判据是 document.referrer 同源：
+    // 书签、粘贴网址、外站搜索进来时 referrer 为空或是外站，按钮保持隐藏，
+    // 退化成现在这样 —— 那些场景本来也没有「上一页」可退。
+    //
+    // 独立于 ECharts：放在 initGraph 外面，图没加载出来按钮照样能用。
+    // ============================================================
+    (function initBackButton() {
+        var backButton = document.getElementById('knowledge-graph-back');
+        if (!backButton) return;
+
+        var cameFromHere = false;
+        try {
+            cameFromHere = !!document.referrer &&
+                new URL(document.referrer).origin === window.location.origin;
+        } catch (e) {
+            cameFromHere = false;
+        }
+        if (!cameFromHere) return;
+
+        backButton.classList.add('is-visible');
+        backButton.addEventListener('click', function() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // 历史里没有上一条（少见，但在新标签里直接打开时会这样）
+                window.location.href = document.referrer;
+            }
+        });
+    })();
+
     // 数据处理 + 渲染。由文件末尾的 bootGraph 在 ECharts 到货后调用。
     function initGraph() {
 
