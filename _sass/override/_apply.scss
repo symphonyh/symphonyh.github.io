@@ -162,3 +162,101 @@ a {
   }
 }
 
+/* ==================================================================
+   08 文章底部：本文涉及的概念
+   ==================================================================
+   与标签行的分工：
+     概念行 = 这篇谈论的东西，指向知识图谱里的唯一节点（网）
+     标签行 = 题材归档，指向 /tags/ 的文章目录（索引）
+   视觉上也刻意分开：概念是正文色 + 一条细下划线，像正文里的词；
+   标签是灰色小号 #，像页脚注记。两者不共用类名，互不影响。
+
+   字号踩过一轮：.95rem 那版在深色模式下整行糊成一片灰（颜色其实和正文
+   同值 #dee2e6，锅在字号小 + 行高 1.95 太散 + 下划线只有 24% 白）。
+   现在字号提到 1.02rem、行高收到 2、下划线加深到 38%，才站得住。 */
+.post-concepts {
+  /* 不用 flex：flex 里每个词和分隔点都是独立 item，换行时那个「·」
+     会被甩到行尾，孤零零挂在右边（实测很难看）。改成行内流 + 下面
+     的 inline-block 单元，折行只发生在单元之间。 */
+  display: block;
+  margin: 2.6rem 0 1.4rem;
+  /* 试过缩进 2em（想让这块读起来像正文最后一句），结果是第一行缩进、
+     第二行顶格的悬挂错位，反而像溢出。整块齐左更稳。 */
+  font-size: 1.02rem;
+  line-height: 2;
+}
+
+/* 「· 词」绑成一个不可断开的单元：nowrap 保证分隔点永远跟着它后面的词，
+   不会单独留在行尾；下划线只画在里面的 <a> 上，所以点本身不带线。 */
+.post-concepts-item {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+  /* text-indent 是继承属性：inline-block 自成块容器，不归零的话
+     每个词都会各自再缩进 2em，词间距被撑成一片散沙（踩过）。 */
+  text-indent: 0;
+}
+
+/* 前缀不写成大写英文，保持中文页面的语气；冒号用 ::after 给，
+   这样换文案时不用动 HTML，也不必再写一遍全角标点 */
+.post-concepts-label {
+  margin-right: .55rem;
+  font-size: .76rem;
+  letter-spacing: .16em;
+  text-indent: .16em;
+  white-space: nowrap;
+  color: var(--body-color-light);
+
+  &::after {
+    content: '：';
+    margin-left: -.06em;
+    letter-spacing: 0;
+  }
+}
+
+.post-concept {
+  padding-bottom: .1em;
+  color: var(--body-color);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
+  transition: color .22s ease, border-color .22s ease;
+
+  &:hover {
+    color: var(--accent-color);
+    border-bottom-color: currentColor;
+    /* 必须显式写：_base.scss 里有 a:hover { text-decoration: underline }，
+       否则一 hover 就和这条细线叠成两道 */
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+  }
+}
+
+.post-concepts-sep {
+  margin: 0 .5rem;
+  color: rgba(0, 0, 0, .32);
+}
+
+@media (prefers-color-scheme: dark) {
+  .post-concept { border-bottom-color: rgba(255, 255, 255, .38); }
+  .post-concepts-label { color: rgba(255, 255, 255, .52); }
+  .post-concepts-sep { color: rgba(255, 255, 255, .34); }
+}
+
+@media (max-width: 560px) {
+  .post-concepts {
+    margin: 2.2rem 0 1.2rem;
+    font-size: .98rem;
+    line-height: 1.95;
+  }
+
+  .post-concepts-label {
+    margin-right: .45rem;
+    font-size: .74rem;
+  }
+
+  .post-concepts-sep { margin: 0 .4rem; }
+}

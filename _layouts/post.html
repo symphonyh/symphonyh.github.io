@@ -67,15 +67,59 @@ layout: default
     {{ content }}
   </div>
 
-  {% if page.tags.size > 0 %}
+  {%- comment -%}
+    概念坐标：这篇文章真正谈论的几样东西（front matter 的 concepts）。
+    每个词都指到知识图谱里的同一个节点 —— 这里点「关系」和从别处点「关系」，
+    落到的是同一张网的同一个位置，而不是各自的路由。
+
+    url_encode 是 Liquid 核心过滤器：概念名是中文，不编码的话分享、粘贴时
+    容易被半截截断；编码后 URLSearchParams 解出来仍是原词。
+
+    ⚠️ 下面那个 for 循环故意写成紧凑形式（标签和内容挤在同一行），
+    不要「格式化」成一行一个：每个概念是一个 inline-block 单元，
+    HTML 里多一个换行就是一个空格，词与词之间会凭空多出几像素，
+    折行位置也会跟着变。
+    （注释里不能出现未闭合的模板定界符，Liquid 连注释内容也当标签扫，
+      写了就 SyntaxError，构建直接挂。）
+  {%- endcomment -%}
+  {% if page.concepts.size > 0 %}
+    <nav class="post-concepts" aria-label="本文涉及的概念">
+      <span class="post-concepts-label">本文涉及概念</span>{%
+      for concept in page.concepts %}<span class="post-concepts-item">{%
+        unless forloop.first %}<span class="post-concepts-sep" aria-hidden="true">·</span>{%
+        endunless %}<a class="post-concept" href="{{ '/knowledge-graph/' | relative_url }}?q={{ concept | url_encode }}">{{ concept }}</a></span>{%
+      endfor %}
+    </nav>
+  {% endif %}
+
+  {%- comment -%}
+    标签行去重：已发布的 21 种标签里有 19 种与 concepts 同名（关系、僵化、动态平衡……），
+    同一行里出现两遍只是啰嗦。与概念同名的标签已经在概念行里给过图谱入口，
+    这里只留真正的题材标签（交换模型三部曲、智能）。
+    想恢复完整标签，把下面这个 assign 改成 false。
+  {%- endcomment -%}
+  {%- assign dedupe_tags = true -%}
+  {%- assign tags_left = page.tags.size -%}
+  {%- if dedupe_tags -%}
+    {%- assign tags_left = 0 -%}
+    {%- for tag in page.tags -%}
+      {%- unless page.concepts contains tag -%}
+        {%- assign tags_left = tags_left | plus: 1 -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {% if tags_left > 0 %}
     <nav class="post-meta post-meta-bottom">
       {% for tag in page.tags %}
-        {% assign slugified_tag = tag | slugify %}
-        {% if site.tags_path %}
-          <a class="post-tag" href="{{ site.tags_path | relative_url }}#{{ slugified_tag }}">#{{ slugified_tag }}</a>
-        {% else %}
-          <span>#{{ slugified_tag }}</span>
-        {% endif %}
+        {% unless dedupe_tags and page.concepts contains tag %}
+          {% assign slugified_tag = tag | slugify %}
+          {% if site.tags_path %}
+            <a class="post-tag" href="{{ site.tags_path | relative_url }}#{{ slugified_tag }}">#{{ slugified_tag }}</a>
+          {% else %}
+            <span>#{{ slugified_tag }}</span>
+          {% endif %}
+        {% endunless %}
       {% endfor %}
     </nav>
   {% endif %}

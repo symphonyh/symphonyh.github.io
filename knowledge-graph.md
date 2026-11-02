@@ -1249,6 +1249,32 @@ const CONCEPT_RELATIONS = [
             })();
 
             renderGraph = function (nodes, linksData) {
+                // 60 是个经验分界：全图 338 个节点，而从一个概念点进来通常 5–25 个。
+                // 子图用另一套力导向参数（重力几乎抽掉，让它铺开），见下面 force。
+                const sparse = nodes.length <= 60;
+                // 只剩十几个（甚至五个）节点时，用全图那组斥力会把它们甩出画布，
+                // 边都够不到边 —— 所以再切一档回来。
+                const few = nodes.length <= 10;
+                const forceParams = few
+                    ? {
+                        repulsion: wideCanvas ? 520 : 240,
+                        edgeLength: wideCanvas ? [170, 300] : [95, 175],
+                        gravity: wideCanvas ? 0.07 : 0.22
+                    }
+                    : sparse
+                        ? {
+                            // 子图那一档要铺开：重力几乎抽掉、边拉长，
+                            // 否则节点挤成中心一小团，标签互相压住被 hideOverlap 全数隐藏
+                            repulsion: wideCanvas ? 600 : 280,
+                            edgeLength: wideCanvas ? [150, 300] : [85, 175],
+                            gravity: wideCanvas ? 0.06 : 0.2
+                        }
+                        : {
+                            // 全图：窄屏斥力压小、重力加大，宽屏反过来
+                            repulsion: wideCanvas ? 380 : 120,
+                            edgeLength: wideCanvas ? [90, 210] : [55, 130],
+                            gravity: wideCanvas ? 0.26 : 0.35
+                        };
                 const option = {
                     tooltip:{
                         formatter:function(param) {
@@ -1293,15 +1319,7 @@ const CONCEPT_RELATIONS = [
                         roam:true,
                         draggable:true,
                         animationDurationUpdate:300,
-                        force:{
-                            // 窄栏（手机）：画布只有 386px 宽，斥力必须压小、重力加大，
-                            // 否则几百个节点会一路飘出边界被裁成半圆。
-                            // 宽画布反过来：斥力提高让节点铺开，重力 0.26 把外圈收回画布内
-                            // （只加斥力不加重力，节点同样会飘出去）。
-                            repulsion: wideCanvas ? 380 : 120,
-                            edgeLength: wideCanvas ? [90, 210] : [55, 130],
-                            gravity: wideCanvas ? 0.26 : 0.35
-                        },
+                        force: forceParams,
                         categories:[
                             { name:'文章', itemStyle:{ color:PALETTE.article } },
                             { name:'分类', itemStyle:{ color:PALETTE.category } },
@@ -1322,12 +1340,21 @@ const CONCEPT_RELATIONS = [
                         },
                         labelLayout:{ hideOverlap:true },
                         label:{
+                            // 全图 338 个节点：标签一开就糊成一片，保持原样（靠 hover 看名字）。
+                            // 但子图（从文章点一个概念进来）只有 5–25 个节点，
+                            // 名字本身就是这张网的全部意义 —— 不显示等于让人看一堆无名圆点。
+                            show: sparse,
                             position:'right',
                             formatter:function(params) {
                                 return params.data ? params.data.name :'';
                             },
                             fontSize:11,
-                            color:'#333'
+                            color:'#333',
+                            // 文章标题动辄十几字，不截断会顶出画布右缘（手机上尤其明显）。
+                            // 只在子图里截断：全图本来不显示标签，hover 时应该看到完整标题
+                            // （那是原有行为，不该被这次的改动顺手改掉）。
+                            width: sparse ? (wideCanvas ? 150 : 104) : undefined,
+                            overflow: sparse ? 'truncate' : undefined
                         },
                         lineStyle:{
                             color:'source',
@@ -1360,8 +1387,10 @@ const CONCEPT_RELATIONS = [
                 }
             });
 
-            // 搜索过滤
-            function applyFilter(query) {
+            // 搜索过滤。
+            // exact = true 走「同名精确匹配」：URL 带词进来时用，一个词只对应一个节点；
+            // exact = false 走子串：手打字时用，输「关系」也能带出「关系本体论」。
+            function applyFilter(query, exact, markName) {
                 const normalized = query.trim().toLowerCase();
                 if (!normalized) {
                     currentNodes = allNodes;
@@ -1372,11 +1401,32 @@ const CONCEPT_RELATIONS = [
 
                 const matchedIds = new Set();
                 allNodes.forEach(function(node) {
-                    const searchText = (node.name + ' ' + node.category + ' ' + (node.parentTitle || '')).toLowerCase();
-                    if (searchText.indexOf(normalized) >= 0) {
-                        matchedIds.add(node.id);
-                    }
+                    const searchText = node.name.toLowerCase();
+                    const hit = exact
+                        ? searchText === normalized
+                        : (searchText + ' ' + node.category + ' ' + (node.parentTitle || '')).indexOf(normalized) >= 0;
+                    if (hit) matchedIds.add(node.id);
                 });
+
+                // 名字改过、链接抄错：精确匹配不到就退化成子串，别让人撞进一张空画布
+                if (exact && matchedIds.size === 0) {
+                    applyFilter(query, false);
+                    return;
+                }
+
+                // 同名撞车：概念节点和标签节点可能各有一个（概念「关系」与标签「关系」）。
+                // 精确模式下只留非标签那侧 —— 标签是文章 tags 字段的副产物，
+                // 概念才是网里的主节点。否则画布上会出现两个一模一样的「关系」。
+                if (exact && matchedIds.size > 1) {
+                    const nonTag = new Set();
+                    allNodes.forEach(function(node) {
+                        if (matchedIds.has(node.id) && node.category !== '标签') nonTag.add(node.id);
+                    });
+                    if (nonTag.size) {
+                        matchedIds.clear();
+                        nonTag.forEach(function(id) { matchedIds.add(id); });
+                    }
+                }
 
                 const visibleIds = new Set(matchedIds);
                 allLinks.forEach(function(link) {
@@ -1392,17 +1442,86 @@ const CONCEPT_RELATIONS = [
                 currentLinks = allLinks.filter(function(link) {
                     return visibleIds.has(link.source) && visibleIds.has(link.target);
                 });
+
+                // 「你点的是哪个」：画布上只剩它和它的邻居，但同类节点一多就分不清。
+                // 给中心节点一圈强调色描边 + 略微放大。
+                // （先试过 dispatchAction('highlight')：实测节点 emphasis 状态始终为空，
+                //   echarts 在 notMerge 重画后不认这个派发，白写。描边是直接改数据，一定生效。）
+                if (markName) {
+                    const mark = markName.toLowerCase();
+                    let mi = currentNodes.findIndex(function(n) {
+                        return n.name.toLowerCase() === mark && n.category !== '标签';
+                    });
+                    if (mi < 0) {
+                        mi = currentNodes.findIndex(function(n) {
+                            return n.name.toLowerCase() === mark;
+                        });
+                    }
+                    if (mi >= 0) {
+                        const c = currentNodes[mi];
+                        // currentNodes 是 filter 出来的新数组，替换元素不会碰到 allNodes
+                        currentNodes[mi] = Object.assign({}, c, {
+                            // 放大 1.45 倍是最主要的信号：单靠描边不管用 ——
+                            // 节点本身就有九种颜色，任何一种描边色都会和其中一类撞
+                            // （深蓝的哲学家撞近黑，核心概念的橙红撞强调色）。
+                            symbolSize: Math.round((c.symbolSize || 20) * 1.45),
+                            itemStyle: {
+                                // 白描边把节点和光晕分隔开，橙色光晕在任何底色上都看得见
+                                borderColor: '#fff',
+                                borderWidth: 2,
+                                shadowBlur: 18,
+                                shadowColor: 'rgba(232, 89, 12, .6)'
+                            }
+                        });
+                    }
+                }
+
                 renderGraph(currentNodes, currentLinks);
             }
 
             searchInput.addEventListener('input', function() {
-                applyFilter(this.value);
+                applyFilter(this.value, false);
             });
 
             resetButton.addEventListener('click', function() {
                 searchInput.value = '';
                 applyFilter('');
+                // 把 ?q= 也从地址栏抹掉，否则一刷新又跳回刚才那个概念
+                if (window.history && history.replaceState && window.location.search) {
+                    history.replaceState(null, '', window.location.pathname);
+                }
             });
+
+            // ============================================================
+            // URL 带词进入：/knowledge-graph/?q=实体
+            // 文章底部「本文涉及」的每个词都走这条路径。
+            // 精确同名优先，落到唯一的那个节点上，再把命中的节点高亮出来 ——
+            // 过滤后画布只剩它和它的邻居，但「我点进来的是哪个」还得一眼看得见。
+            // ============================================================
+            (function applyUrlQuery() {
+                let q = '';
+                try {
+                    q = (new URLSearchParams(window.location.search).get('q') || '').trim();
+                } catch (e) {
+                    return;
+                }
+                if (!q) return;
+
+                const lower = q.toLowerCase();
+                const exactHit = allNodes.some(function(node) {
+                    return node.name.toLowerCase() === lower;
+                });
+
+                searchInput.value = q;
+                applyFilter(q, exactHit, q);
+
+                // 一个都没过滤出来（概念改过名、链接抄错）：宁可回到全图，
+                // 也不要留一张空画布让人以为页面坏了
+                if (!currentNodes.length) {
+                    searchInput.value = '';
+                    applyFilter('');
+                }
+            })();
 
             // 窗口跨过 900px 档位时（比如横竖屏切换、拉宽窗口），力导向参数要跟着换，
             // 否则节点会按旧档位溢出画布或者挤成一团。只换档位才重画，普通缩放只 resize。
