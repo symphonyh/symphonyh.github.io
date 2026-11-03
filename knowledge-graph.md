@@ -314,9 +314,12 @@ permalink: /knowledge-graph/
     // 返回按钮：图谱是「终点站」，进来之后页面上没有任何回文章的出口，
     // 只能靠浏览器后退。这里补一个显式按钮。
     //
-    // 只在本站内部跳转进来时才显示，判据是 document.referrer 同源：
-    // 书签、粘贴网址、外站搜索进来时 referrer 为空或是外站，按钮保持隐藏，
-    // 退化成现在这样 —— 那些场景本来也没有「上一页」可退。
+    // 只在本站内部、且是从「别的页面」跳进来时才显示。判据两条：
+    // ① referrer 同源 —— 书签、粘贴网址、外站搜索进来时 referrer 为空或
+    //    是外站，按钮保持隐藏，退化成原样，那些场景本来也没有上一页可退；
+    // ② referrer 路径 ≠ 当前路径 —— 只判同源不够：读者站在图谱页上再点一次
+    //    导航里的「知识图谱」，浏览器把它当一次新跳转，referrer 就变成图谱
+    //    自己，按钮照样亮着，点下去不是原地打转就是莫名多退一步。
     //
     // 独立于 ECharts：放在 initGraph 外面，图没加载出来按钮照样能用。
     // ============================================================
@@ -326,9 +329,11 @@ permalink: /knowledge-graph/
 
         var cameFromHere = false;
         try {
-            cameFromHere = !!document.referrer &&
-                new URL(document.referrer).origin === window.location.origin;
+            var ref = new URL(document.referrer);
+            cameFromHere = ref.origin === window.location.origin &&
+                ref.pathname !== window.location.pathname;
         } catch (e) {
+            // referrer 为空时 new URL('') 直接抛 TypeError，落到这里即视为直达
             cameFromHere = false;
         }
         if (!cameFromHere) return;
