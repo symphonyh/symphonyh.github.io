@@ -218,3 +218,159 @@ a {
      而折行次数并不会减少 —— 版面收益到此为止。 */
   .post-concepts-sep { margin: 0 .34rem; }
 }
+
+/* ==================================================================
+   08 说明页（/documents/）：网站使用说明
+   ==================================================================
+   只在该页 page_class: doc-page 下生效，不碰全站其它页面。
+
+   这一页是「查阅」性质，不是供人静读的散文，所以整页比正文小一档：
+   桌面 --body-font-size 是 18px，正文按 1em 排在这页显得松散，一屏装不下几条；
+   压回 16px（min(1em, 16px)）后同样的高度多出三行。
+   叠加上 h2 段前收紧、行距收到 1.72，一屏能看到两个整节而不是一个半。
+
+   h1 也压一档：全站 clamp 上限 2.5em ≈ 45px，对「网站使用说明」六个字太大；
+   该页收在 1.62em ≈ 29px。
+   h2 不再靠放大分层（1.14em 只比正文高一档），改用发丝线 + 轻微加深来切节。
+   h3 干脆不再放大，只靠字重和颜色区分。
+   回退：删掉这一段，页面回落到主题默认排版。
+   ================================================================== */
+.doc-page .page-title {
+  margin: 0 0 1.15em;
+  font-size: clamp(1.4em, 3.2vw, 1.62em);
+  line-height: 1.3;
+  letter-spacing: .008em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.doc-page .page-content {
+  /* ⚠️ 不能写 .9rem：rem 的基准是 html（16px），不是 body（≥1200px 时 18px）。
+     写 rem 会得到 14.4px，桌面反而比手机还小。1em 才是正文基准，
+     再用 min() 把桌面那档 18px 压回 16px —— 窄屏本来就是 16px，不受影响。 */
+  font-size: min(1em, 16px);
+  line-height: 1.72;
+  letter-spacing: .004em;
+
+  p {
+    margin: 0 0 .78em;
+  }
+
+  /* 发丝线是这一页唯一的分节视觉，宽度只到文字栏，不做到满幅 */
+  h2 {
+    margin: 2.1em 0 .65em;
+    padding-top: 1.15em;
+    border-top: 1px solid rgba(0, 0, 0, .075);
+    font-size: 1.14em;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: .015em;
+    color: var(--body-color-dark);
+  }
+
+  /* 开篇第一个 h2 前不需要 2.1em：上面只有导语和速查行 */
+  h2:first-of-type {
+    margin-top: 1.5em;
+  }
+
+  h3 {
+    margin: 1.6em 0 .55em;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--body-color-dark);
+  }
+
+  ul {
+    padding-left: 1.15em;
+  }
+
+  li {
+    margin-bottom: .34em;
+
+    /* 「**词** —— 释义」这种列表，词是每行的锚点，压深一档才看得出结构 */
+    > strong {
+      font-weight: 600;
+      color: var(--body-color-dark);
+    }
+  }
+
+  /* 行内代码：?q=概念 这类写法夹在中文里，不垫一层底纹会和正文糊成一片 */
+  code {
+    padding: .1em .34em;
+    font-size: .92em;
+    background-color: rgba(0, 0, 0, .045);
+    border-radius: 2px;
+  }
+
+  /* 图谱示例图：整页截图放进 600px 栏，靠一条发丝边和底色分开，
+     不加阴影 —— 和这一页其它分隔线保持同一种力度 */
+  figure {
+    margin: 1.5em 0 1.7em;
+  }
+
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(0, 0, 0, .08);
+    border-radius: 3px;
+  }
+
+  figcaption {
+    margin-top: .65em;
+    font-size: .82rem;
+    line-height: 1.65;
+    color: var(--body-color-light);
+  }
+
+  /* 页首速查：七个锚点排成一行会变成一堵橙色链接墙，手机上还占两行。
+     改成退到背景里的小字 + 发丝下划线，只在 hover 时才给强调色。 */
+  .doc-jump {
+    margin: 0 0 1.25em;
+    font-size: .82rem;
+    line-height: 2.1;
+    /* 间隔号两边的 &nbsp; 只有 4px 左右，中文里显得点和词粘在一起。
+       word-spacing 连 nbsp 一起加宽，比在每个链接里塞 span 省事得多；
+       换行只会发生在链接之间，点始终跟在词尾，不会落到行首。 */
+    word-spacing: .2em;
+    color: var(--body-color-light);
+
+    a {
+      padding-bottom: .06em;
+      /* 手机上 358px 栏里「联系与勘误」会被拦腰断成「…联 / 系与勘误」，
+         每个锚点整体不折行，只允许在链接之间换行 */
+      white-space: nowrap;
+      color: var(--body-color);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0, 0, 0, .24);
+      transition: color .2s ease, border-color .2s ease;
+
+      /* _base.scss 有 a:hover { text-decoration: underline }，
+         不显式写 no，悬停时细线和下划线会叠成两道 */
+      &:hover {
+        color: var(--accent-color);
+        text-decoration: none;
+        border-bottom-color: currentColor;
+      }
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    /* 深色下 7.5% 的黑线等于没有，换成 10% 的白 */
+    h2 {
+      border-top-color: rgba(255, 255, 255, .1);
+    }
+
+    code {
+      background-color: rgba(255, 255, 255, .07);
+    }
+
+    figure img {
+      border-color: rgba(255, 255, 255, .12);
+    }
+
+    .doc-jump a {
+      border-bottom-color: rgba(255, 255, 255, .3);
+    }
+  }
+}
