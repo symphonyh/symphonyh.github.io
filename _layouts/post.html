@@ -131,7 +131,7 @@ layout: default
 </article>
 
 {% if jekyll.environment == "production" %}
- <img src="https://hitscounter.dev/api/hit?url={{ page.url | absolute_url }}&label=Visitor&icon=alarm-fill&color=%23fd7e14&message=&style=flat&tz=Asia%2FHarbin" alt="Hits">
+ <img src="https://hitscounter.dev/api/hit?url={{ page.url | absolute_url }}&label=Visitor&icon=alarm-fill&color=%23fd7e14&message=&style=flat&tz=Asia%2FHarbin" alt="Hits" onerror="this.style.display='none'">
 {% endif %}
 
 <div class="pagination">
