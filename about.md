@@ -24,9 +24,9 @@ permalink: /about/
   <div class="about-col-row">
     <span class="about-col-k">全书</span>
     <div class="about-col-v">
-      <p class="about-work-t"><a href="https://doi.org/10.5281/zenodo.23754112" target="_blank" rel="noopener">漩涡之在——一场哲学侦探的真相求索</a></p>
-      <p class="about-work-m">Xingyu Han · 2026 · 213 页</p>
-      <p class="about-work-m"><a class="about-doi" href="https://doi.org/10.5281/zenodo.23754112" target="_blank" rel="noopener">doi.org/10.5281/zenodo.23754112</a> · Zenodo，CC BY 4.0，打印版 PDF 全文</p>
+      <p class="about-work-t"><a href="https://doi.org/10.5281/zenodo.23967889" target="_blank" rel="noopener">漩涡之在——一场哲学侦探的真相求索</a></p>
+      <p class="about-work-m">Xingyu Han · 2026 · 239 页</p>
+      <p class="about-work-m"><a class="about-doi" href="https://doi.org/10.5281/zenodo.23967889" target="_blank" rel="noopener">doi.org/10.5281/zenodo.23967889</a> · Zenodo，CC BY 4.0，打印版 PDF 全文</p>
       <p class="about-work-m">条目另见 <a href="https://philarchive.org/rec/JPMUEI" target="_blank" rel="noopener">PhilArchive</a>，附英文摘要与 PhilPapers 分类检索</p>
     </div>
   </div>
@@ -43,8 +43,8 @@ permalink: /about/
   <div class="about-col-row">
     <span class="about-col-k">引用</span>
     <div class="about-col-v about-refs">
-      <p><span class="about-ref-k">GB/T 7714</span>韩兴宇. 漩涡之在——一场哲学侦探的真相求索[M/OL]. 日内瓦: Zenodo, 2026. https://doi.org/10.5281/zenodo.23754112.</p>
-      <p><span class="about-ref-k">Chicago</span>Han, Xingyu. 漩涡之在——一场哲学侦探的真相求索. Geneva: Zenodo, 2026. https://doi.org/10.5281/zenodo.23754112.</p>
+      <p><span class="about-ref-k">GB/T 7714</span>韩兴宇. 漩涡之在——一场哲学侦探的真相求索[M/OL]. 日内瓦: Zenodo, 2026. https://doi.org/10.5281/zenodo.23967889.</p>
+      <p><span class="about-ref-k">Chicago</span>Han, Xingyu. 漩涡之在——一场哲学侦探的真相求索. Geneva: Zenodo, 2026. https://doi.org/10.5281/zenodo.23967889.</p>
       <p><span class="about-ref-k">English</span>Han, Xingyu. “The Vortex of Being: A Relational Ontology of Difference-Coupling.” Preprint, Zenodo, 2026. https://doi.org/10.5281/zenodo.23733500.</p>
     </div>
   </div>
