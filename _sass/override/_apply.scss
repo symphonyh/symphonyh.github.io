@@ -374,3 +374,145 @@ a {
     }
   }
 }
+
+/* ---------- 09 幕：扉页块与幕眉（2026-11-06） ----------
+   书里幕是一卷的扉页，比章高一级；博客没有这一级节点，而右侧目录
+   会把正文 h2/h3/h4 全收进去（toc-progress.js:38），所以幕只能用块表达，
+   并且块内一律不用标题标签。
+   题词底色与 about 页题记同一配方（#f4efe6 + accent 竖线），
+   但不放 Georgia 大引号——幕题词是扉页的一部分，不是独立引言卡。
+   回退：删掉 09 段 + _includes/act-mark.html + post.html 里那行 include。 */
+.act-card {
+  /* 上方 2.1em 是必须的：.post-title 的 margin-bottom 很小，
+     不留白的话「第四幕」会紧贴标题底边，像标题掉下来的一块 */
+  margin: 2.1em 0 2.6em;
+  padding: 0 0 1.5em;
+  border-bottom: 1px solid rgba(0, 0, 0, .085);
+}
+
+.act-label {
+  margin: 0 0 .6em;
+  font-size: .82rem;
+  letter-spacing: .28em;      /* 「第 四 幕」靠字距拉开，不手写空格 */
+  /* 不用 --body-color-light：那个灰在浅底上淡到几乎看不见，
+     幕号是定位信息，得能读出来。降透明度对深浅两套底色都成立。 */
+  color: var(--body-color);
+  opacity: .6;
+}
+
+.act-name {
+  margin: 0 0 1.15em;
+  font-size: 1.28rem;
+  line-height: 1.5;
+  color: var(--body-color);
+}
+
+/* 两级选择器：_base.scss 的 blockquote 单级规则带 4px 红竖线 + 暖灰底
+   + .875em 字号，单级压不过它 */
+.post-content .act-quote {
+  margin: 0;
+  padding: .95em 1.15em;
+  background: #f4efe6;
+  border-left: 3px solid var(--accent-color);
+  border-radius: 0;
+  font-size: 1rem;
+  line-height: 1.8;
+
+  p {
+    margin: 0;
+  }
+
+  .act-source {
+    margin-top: .55em;
+    text-align: right;
+    font-size: .84rem;
+    color: var(--body-color-light);
+  }
+}
+
+.act-ribbon {
+  /* 与标题拉开 1em：贴着标题会被当成副标题，读者会以为「真相的扩散」
+     是「第八章 生命世界的漩涡」的补充说明 */
+  margin: 1em 0 2em;
+  font-size: .85rem;
+  line-height: 1.6;
+  letter-spacing: .03em;
+  color: var(--body-color);
+  opacity: .55;
+
+  .act-dot {
+    margin: 0 .55em;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .act-card {
+    border-bottom-color: rgba(255, 255, 255, .10);
+  }
+
+  .post-content .act-quote {
+    background: rgba(255, 255, 255, .055);
+  }
+}
+
+/* ---------- 10 说明页的书稿目录（2026-11-06） ----------
+   /documents/ 里按幕分组列出全书 19 篇。三件事：
+   ① 幕是组标题、章节是内容，靠段前距与字重分层——不用缩进，缩进在手机上对不齐；
+   ② 19 行橙色链接会变成一片色块，退到正文色加细下划线，hover 才给强调色
+      （与同页 .doc-jump 是同一思路）；
+   ③ 手机上一屏装不下全书目录是正常的，但每行要够紧，别让 19 行散成三屏。
+   回退：删掉这一段，块回落到正文默认列表样式。 */
+.doc-page .page-content .doc-acts {
+  margin: 1.25em 0 1.5em;
+
+  > p {
+    margin: 1.25em 0 .3em;
+    font-size: .95em;
+    letter-spacing: .02em;
+    color: var(--body-color-dark);
+  }
+
+  /* 序章那行是第一组，上面刚有「书稿主线的幕次」一句，不需要再空一格 */
+  > p:first-child {
+    margin-top: 0;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1em;
+  }
+
+  li {
+    margin-bottom: .14em;
+    font-size: .95em;
+    line-height: 1.62;
+    color: var(--body-color);
+  }
+
+  a {
+    padding-bottom: .04em;
+    color: var(--body-color);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .14);
+    transition: color .2s ease, border-color .2s ease;
+
+    &:hover,
+    &:focus {
+      color: var(--accent-color);
+      text-decoration: none;
+      border-bottom-color: currentColor;
+    }
+  }
+}
+
+/* 列表之后单起一段说明（版本说明）：不给上距会被读成列表的最后一项 */
+.doc-page .page-content .doc-version {
+  margin: 1.35em 0 .2em;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* 14% 的黑线在深色底上等于没有 */
+  .doc-page .page-content .doc-acts a {
+    border-bottom-color: rgba(255, 255, 255, .22);
+  }
+}

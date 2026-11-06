@@ -1,0 +1,32 @@
+{%- comment -%}
+  幕标记。数据在 _data/acts.yml，文章 front matter 只写 act: 4；
+  幕首章再加 act_opening: true，才展开题词。
+
+  ⚠️ 这里刻意不用 h2/h3：assets/js/tao/toc-progress.js:38 把正文里的
+  h2、h3、h4 全收进右侧目录。幕一旦写成标题，就会和「7.1 微观层面」
+  并列成一条，读者会以为幕是一节。幕在书里是卷，比章高一级，
+  博客没有这一级节点，所以只能用块表达。
+
+  结案陈词用 act: 6，走同一套逻辑。
+
+  外层那个 page.act 判断不是多余的：绝大多数文章没有幕，
+  没必要为它们跑一次 where。结案陈词用 act: 6 而不是 0，
+  这样这一层不依赖「0 是 truthy」这种实现差异。
+{%- endcomment -%}
+{%- if page.act -%}
+{%- assign act = site.data.acts | where: "id", page.act | first -%}
+{%- if act -%}
+{%- if page.act_opening -%}
+<div class="act-card">
+  <p class="act-label">{{ act.label }}</p>
+  <p class="act-name">{{ act.title }}</p>
+  <blockquote class="act-quote">
+    <p>{{ act.quote }}</p>
+    <p class="act-source">{{ act.source }}</p>
+  </blockquote>
+</div>
+{%- else -%}
+<p class="act-ribbon">{{ act.label }}<span class="act-dot" aria-hidden="true">·</span>{{ act.title }}</p>
+{%- endif -%}
+{%- endif -%}
+{%- endif -%}
