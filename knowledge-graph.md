@@ -650,6 +650,21 @@ const CONCEPT_DEFINITIONS = [
     { id:'concept:什克洛夫斯基', name:'什克洛夫斯基', category:'案例', color:'#27AE60' }, 
     { id:'concept:米拉', name:'米拉', category:'案例', color:'#27AE60' }, 
     { id:'concept:多玛', name:'多玛', category:'案例', color:'#27AE60' }, 
+    // —— 2026-11-07 补录：发文前置元数据已引用、但定义表缺失（此前被 nodeMap 静默丢弃）——
+    { id:'concept:存在', name:'存在', category:'核心概念', color:'#C0392B' },
+    { id:'concept:关系网络', name:'关系网络', category:'次级概念', color:'#E67E22' },
+    { id:'concept:先验', name:'先验', category:'次级概念', color:'#E67E22' },
+    { id:'concept:沉积', name:'沉积', category:'次级概念', color:'#E67E22' },
+    { id:'concept:时空', name:'时空', category:'次级概念', color:'#E67E22' },
+    { id:'concept:光子', name:'光子', category:'次级概念', color:'#E67E22' },
+    { id:'concept:熵增', name:'熵增', category:'次级概念', color:'#E67E22' },
+    { id:'concept:时间不可逆', name:'时间不可逆', category:'次级概念', color:'#E67E22' },
+    { id:'concept:条件独立', name:'条件独立', category:'次级概念', color:'#E67E22' },
+    { id:'concept:分类框', name:'分类框', category:'次级概念', color:'#E67E22' },
+    { id:'concept:自然法则', name:'自然法则', category:'次级概念', color:'#E67E22' },
+    { id:'concept:德性', name:'德性', category:'次级概念', color:'#E67E22' },
+    { id:'concept:自由选择', name:'自由选择', category:'次级概念', color:'#E67E22' },
+    { id:'concept:当下', name:'当下', category:'次级概念', color:'#E67E22' },
 ]; 
 
 // ============================================================
@@ -1028,6 +1043,30 @@ const CONCEPT_RELATIONS = [
     // —— 免疫系统：从孤立节点接回主干 ——
     { source:'concept:免疫系统', target:'concept:僵化', type:'超越' }, // 第十一章：「社会免疫系统…抵抗这种僵化」
     { source:'concept:免疫系统', target:'concept:僵化三角', type:'回应' }, // 「三层机制，分别针对僵化三角的三条边」
+    // —— 2026-11-07 补录：新入表概念接回主干，并给孤立已久的「边界」补边 ——
+    { source:'concept:关系', target:'concept:关系网络', type:'构成' },
+    { source:'concept:关系网络', target:'concept:操作语法', type:'产生' }, // 数学的重新定位：关系网络铸造操作语法
+    { source:'concept:关系网络', target:'concept:存在', type:'产生' }, // 存在如何被定义：稳定下来的节点即存在
+    { source:'concept:存在', target:'concept:漩涡', type:'形态' },
+    { source:'concept:光子', target:'concept:存在', type:'实例' }, // 光子无静止质量，只在相互作用中存在
+    { source:'concept:时空', target:'concept:存在', type:'构成' },
+    { source:'concept:涌现', target:'concept:熵增', type:'产生' }, // 熵增是关系网络涌现的数学必然
+    { source:'concept:熵增', target:'concept:时间不可逆', type:'导致' },
+    { source:'concept:时间不可逆', target:'concept:历史曲率', type:'条件' }, // 不可逆才留下曲率
+    { source:'concept:条件独立', target:'concept:马尔可夫毯', type:'构成' }, // 毯即条件独立的边界
+    { source:'concept:河床', target:'concept:沉积', type:'构成' },
+    { source:'concept:沉积', target:'concept:先验', type:'产生' }, // 先验不是前提，是沉积
+    { source:'concept:康德', target:'concept:先验', type:'奠基' },
+    { source:'concept:边界', target:'concept:漩涡', type:'构成' },
+    { source:'concept:边界', target:'concept:僵化', type:'条件' }, // 边界硬化 → 僵化
+    { source:'concept:边界', target:'concept:分类框', type:'产生' },
+    { source:'concept:分类框', target:'concept:僵化', type:'导致' }, // 把分类框当成本体
+    { source:'concept:河床', target:'concept:德性', type:'产生' }, // 德性的源头是河床，不是自然法则
+    { source:'concept:自然法则', target:'concept:德性', type:'遮蔽' }, // 把伦理归于宇宙秩序是一种投射
+    { source:'concept:自然法则', target:'concept:僵化', type:'导致' },
+    { source:'concept:历史曲率', target:'concept:自由选择', type:'约束' },
+    { source:'concept:自由选择', target:'concept:动态平衡', type:'趋向' },
+    { source:'concept:自由选择', target:'concept:当下', type:'构成' }, // 三层循环：倾听内心 / 活在当下
 
 ]; 
 
