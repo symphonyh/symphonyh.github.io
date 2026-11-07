@@ -43,8 +43,8 @@ permalink: /about/
   <div class="about-col-row">
     <span class="about-col-k">引用</span>
     <div class="about-col-v about-refs">
-      <p><span class="about-ref-k">GB/T 7714</span>韩兴宇. 漩涡之在——一场哲学侦探的真相求索[M/OL]. 3 版. 日内瓦: Zenodo, 2026. https://doi.org/10.5281/zenodo.23754111.</p>
-      <p><span class="about-ref-k">Chicago</span>Han, Xingyu. 漩涡之在——一场哲学侦探的真相求索. Version 3.0. Geneva: Zenodo, 2026. https://doi.org/10.5281/zenodo.23754111.</p>
+      <p><span class="about-ref-k">GB/T 7714</span>韩兴宇. 漩涡之在——一场哲学侦探的真相求索[M/OL]. 3.1 版. 日内瓦: Zenodo, 2026. https://doi.org/10.5281/zenodo.23754111.</p>
+      <p><span class="about-ref-k">Chicago</span>Han, Xingyu. 漩涡之在——一场哲学侦探的真相求索. Version 3.1. Geneva: Zenodo, 2026. https://doi.org/10.5281/zenodo.23754111.</p>
       <p><span class="about-ref-k">English</span>Han, Xingyu. “The Vortex of Being: A Relational Ontology of Difference-Coupling.” Preprint, Zenodo, 2026. https://doi.org/10.5281/zenodo.23733500.</p>
     </div>
   </div>

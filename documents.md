@@ -21,7 +21,7 @@ permalink: /documents/
 - **人文篇** —— 艺术、宗教、文学与社会案例。
 - **选择的弹性** —— 另一条线的开篇。
 
-<p class="doc-version"><strong>版本说明</strong> —— 博客上的章节是 2026 年 5—6 月连载时的版本，此后书稿又改过多轮，段落上有三成多与定稿不同。这里保留的是写作过程，不是最终文本；要引用或核对，请用定稿 PDF：<a href="https://doi.org/10.5281/zenodo.23754111" target="_blank" rel="noopener">Zenodo 打印版全文</a>，条目亦见 <a href="https://philarchive.org/rec/JPMUEI" target="_blank" rel="noopener">PhilArchive</a>。</p>
+<p class="doc-version"><strong>版本说明</strong> —— 博客上的章节是 2026 年 5—6 月连载时的版本，此后书稿又改过多轮，段落上有三成多与定稿不同。这里保留的是写作过程，不是最终文本；要引用或核对，请用现行定稿 PDF（3.1 版，2026-11-07，234 页）：<a href="https://doi.org/10.5281/zenodo.23754111" target="_blank" rel="noopener">Zenodo 打印版全文</a>，条目亦见 <a href="https://philarchive.org/rec/JPMUEI" target="_blank" rel="noopener">PhilArchive</a>。</p>
 
 书稿主线的幕次（幕名与题词取自书稿扉页，点章节名直接进）：
 
