@@ -549,9 +549,12 @@ a {
   }
 }
 
-/* 列表之后单起一段说明（版本说明）：不给上距会被读成列表的最后一项 */
+/* 列表之后单起一段说明（版本说明）：不给上距会被读成列表的最后一项。
+   下距原为 .2em —— 那是为了贴住紧随其后的书稿目录（2026-11-08 已撤掉，
+   目录统一在 /vortex/），现在下面是正文段，要还回正常段距，否则两段会
+   粘成一段。 */
 .doc-page .page-content .doc-version {
-  margin: 1.35em 0 .2em;
+  margin: 1.35em 0 .85em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -635,12 +638,9 @@ a {
     }
   }
 
-  .vx-meta {
-    margin: 0 0 1.3em;
-    font-size: .82em;
-    line-height: 1.75;
-    color: var(--body-color-light);
-  }
+  /* 2026-11-08 撤掉 .vx-meta / .vx-note：/vortex/ 不再承担站务信息
+     （PhilArchive、引用格式、版本提醒、勘误邮箱），对应段落已并入
+     /about/ 与 /documents/。样式随之删除，别再加回来。 */
 
   /* 读法三条：粗体词是「谁该读」，后半句才是内容，所以词压深、正文不动 */
   .vx-read {
@@ -651,17 +651,6 @@ a {
       font-weight: 600;
       color: var(--body-color-dark);
     }
-  }
-
-  /* 版本说明：与正文同宽同号，只靠左侧竖线退一档，避免读成「又一个正文段」 */
-  .vx-note {
-    margin: 0 0 1.1em;
-    padding: .85em 1em;
-    background-color: rgba(0, 0, 0, .028);
-    border-left: 2px solid rgba(0, 0, 0, .1);
-    font-size: .93em;
-    line-height: 1.75;
-    color: var(--body-color);
   }
 
   /* 幕题词：include 传 quotes=true 时才出现。排在幕名下面、章节列表上面，
@@ -805,11 +794,6 @@ a {
       &:focus {
         border-color: var(--accent-color);
       }
-    }
-
-    .vx-note {
-      background-color: rgba(255, 255, 255, .045);
-      border-left-color: rgba(255, 255, 255, .14);
     }
   }
 
