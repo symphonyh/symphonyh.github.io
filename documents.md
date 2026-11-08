@@ -25,19 +25,7 @@ permalink: /documents/
 
 书稿主线的幕次（幕名与题词取自书稿扉页，点章节名直接进）：
 
-<div class="doc-acts">
-{%- assign book = site.posts | where: "book", true | sort: "order" -%}
-{%- assign intro = site.posts | where: "order", 0 | first -%}
-<p><strong>序章</strong> · <a href="{{ intro.url | relative_url }}">{{ intro.title | remove_first: "序章：" }}</a></p>
-{%- for a in site.data.acts %}
-<p><strong>{{ a.label }}</strong> · {{ a.title }}</p>
-<ul>
-{%- for p in book %}{% if p.act == a.id %}
-  <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
-{%- endif %}{%- endfor %}
-</ul>
-{%- endfor %}
-</div>
+{% include book-toc.html %}
 
 第一次来，建议从[《漩涡之在》导读](/漩涡之在/2026/07/14/导读.html)开始：七个核心命题，每个命题都标了延伸阅读的章节。想直接看结论，翻第六章（上行因果与下行因果的循环）和第十六章（结论）。
 

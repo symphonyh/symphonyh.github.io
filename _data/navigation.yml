@@ -1,18 +1,30 @@
 - title: Home
   url: /
-- title: Search
-  url: /search/
-- title: TimeLine
-  url: /archive/
-- title: Categories
-  url: /categories/
+- title: Vortex
+  url: /vortex/
+  group: read
+  featured: true
 - title: Essays
   url: /essays/
+  group: read
+- title: Search
+  url: /search/
+  group: browse
+- title: TimeLine
+  url: /archive/
+  group: browse
+- title: Categories
+  url: /categories/
+  group: browse
 - title: Tags
   url: /tags/
+  group: browse
 - title: Knowledge Graph
   url: /knowledge-graph/
+  group: browse
 - title: Documents
   url: /documents/
+  group: meta
 - title: About
   url: /about/
+  group: meta
