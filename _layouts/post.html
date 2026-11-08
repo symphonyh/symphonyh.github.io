@@ -135,6 +135,37 @@ layout: default
  <img src="https://hitscounter.dev/api/hit?url={{ page.url | absolute_url }}&label=Visitor&icon=alarm-fill&color=%23fd7e14&message=&style=flat&tz=Asia%2FHarbin" alt="Hits" onerror="this.style.display='none'">
 {% endif %}
 
+{%- if page.book -%}
+{%- assign bookSeq = site.posts | where: "book", true | sort: "order" -%}
+{%- assign bookPos = -1 -%}
+{%- for bp in bookSeq -%}{%- if bp.url == page.url -%}{%- assign bookPos = forloop.index0 -%}{%- endif -%}{%- endfor -%}
+{%- assign bookPrevIdx = bookPos | minus: 1 -%}
+{%- assign bookNextIdx = bookPos | plus: 1 -%}
+{%- assign bookPrev = nil -%}
+{%- assign bookNext = nil -%}
+{%- for bp in bookSeq -%}
+  {%- if forloop.index0 == bookPrevIdx -%}{%- assign bookPrev = bp -%}{%- endif -%}
+  {%- if forloop.index0 == bookNextIdx -%}{%- assign bookNext = bp -%}{%- endif -%}
+{%- endfor -%}
+<nav class="book-nav" aria-label="《漩涡之在》书内导航">
+  <div class="book-nav-head">
+    <a class="book-nav-toc" href="{{ '/vortex/' | relative_url }}">全书目录</a>
+    <span class="book-nav-pos">第 {{ bookPos | plus: 1 }} 篇 · 共 {{ bookSeq.size }} 篇</span>
+  </div>
+  <div class="book-nav-pn">
+    {%- if bookPrev -%}
+    <a class="book-nav-prev" href="{{ bookPrev.url | relative_url }}"><i class="fas fa-chevron-left"></i><span>{{ bookPrev.title }}</span></a>
+    {%- else -%}
+    <span class="book-nav-prev is-empty"><i class="fas fa-chevron-left"></i><span>已是开篇</span></span>
+    {%- endif -%}
+    {%- if bookNext -%}
+    <a class="book-nav-next" href="{{ bookNext.url | relative_url }}"><span>{{ bookNext.title }}</span><i class="fas fa-chevron-right"></i></a>
+    {%- else -%}
+    <span class="book-nav-next is-empty"><span>已是末篇</span><i class="fas fa-chevron-right"></i></span>
+    {%- endif -%}
+  </div>
+</nav>
+{%- else -%}
 <div class="pagination">
   {% if page.previous %}
     <a class="prev post-prev" href="{{ page.previous.url | relative_url }}">
@@ -152,6 +183,7 @@ layout: default
     <span class="next post-next unable"><i class="fas fa-chevron-right"></i></span>
   {% endif %}
 </div>
+{%- endif -%}
 
 <script src="https://giscus.app/client.js"
           data-repo="symphonyh/symphonyh.github.io"

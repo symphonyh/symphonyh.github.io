@@ -220,9 +220,13 @@ a {
 }
 
 /* ==================================================================
-   08 说明页（/documents/）：网站使用说明
+   08 说明页（/documents/）+ 随笔导读页（/essays/）
    ==================================================================
-   只在该页 page_class: doc-page 下生效，不碰全站其它页面。
+   只在这两页 page_class: doc-page / essays-page 下生效，不碰全站其它页面。
+
+   /essays/ 是 2026-11-07 加的三板块导读，性质与说明页相同：整页是清单与
+   导读，不是供人静读的散文。所以直接共用同一套「小一档」的度量，不另起
+   一套字号——两页并排看时重量一致，改一处两页同时生效。
 
    这一页是「查阅」性质，不是供人静读的散文，所以整页比正文小一档：
    桌面 --body-font-size 是 18px，正文按 1em 排在这页显得松散，一屏装不下几条；
@@ -235,7 +239,9 @@ a {
    h3 干脆不再放大，只靠字重和颜色区分。
    回退：删掉这一段，页面回落到主题默认排版。
    ================================================================== */
-.doc-page .page-title {
+.doc-page .page-title,
+.essays-page .page-title,
+.vortex-page .page-title {
   margin: 0 0 1.15em;
   font-size: clamp(1.4em, 3.2vw, 1.62em);
   line-height: 1.3;
@@ -244,7 +250,9 @@ a {
   text-wrap: balance;
 }
 
-.doc-page .page-content {
+.doc-page .page-content,
+.essays-page .page-content,
+.vortex-page .page-content {
   /* ⚠️ 不能写 .9rem：rem 的基准是 html（16px），不是 body（≥1200px 时 18px）。
      写 rem 会得到 14.4px，桌面反而比手机还小。1em 才是正文基准，
      再用 min() 把桌面那档 18px 压回 16px —— 窄屏本来就是 16px，不受影响。 */
@@ -278,6 +286,12 @@ a {
     font-size: 1em;
     font-weight: 600;
     color: var(--body-color-dark);
+  }
+
+  /* /essays/ 的清单是有序的：篇号本身就是信息，得让 10. 与 1. 的正文左缘对齐，
+     否则两位数的编号会把整列往右推一格 */
+  ol {
+    padding-left: 1.6em;
   }
 
   ul {
@@ -375,6 +389,35 @@ a {
   }
 }
 
+/* ---------- 08b 随笔导读页（/essays/）：清单链接降一档 ----------
+   这一页是 29 条篇目清单，全用主题橙就是一片橙色链接墙——和说明页当初
+   把顶部速查压成小字灰链接是同一个问题，所以只把 li 里的链接降成正文色
+   加一条发丝下划线，hover 才回到强调色。
+   段落内的行内链接（如「分类归档」）不动，仍走主题橙：那是正文语气，
+   第 08 段那句「整页是清单与导读，不是供人静读的散文」只针对清单。
+   回退：删掉这一段，清单链接回落到主题默认橙色。 */
+.essays-page .page-content li a {
+  color: var(--body-color);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, .18);
+  transition: color .2s ease, border-color .2s ease;
+
+  &:hover {
+    color: var(--accent-color);
+    /* _base.scss 有 a:hover { text-decoration: underline }，不写 no 会跟
+       这条发丝线叠成两道 */
+    text-decoration: none;
+    border-bottom-color: currentColor;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  /* 18% 的黑在深色下等于没有，换成 26% 的白，力度与 08 段的 doc-jump 同档 */
+  .essays-page .page-content li a {
+    border-bottom-color: rgba(255, 255, 255, .26);
+  }
+}
+
 /* ---------- 09 幕：扉页块与幕眉（2026-11-06） ----------
    书里幕是一卷的扉页，比章高一级；博客没有这一级节点，而右侧目录
    会把正文 h2/h3/h4 全收进去（toc-progress.js:38），所以幕只能用块表达，
@@ -462,7 +505,8 @@ a {
       （与同页 .doc-jump 是同一思路）；
    ③ 手机上一屏装不下全书目录是正常的，但每行要够紧，别让 19 行散成三屏。
    回退：删掉这一段，块回落到正文默认列表样式。 */
-.doc-page .page-content .doc-acts {
+.doc-page .page-content .doc-acts,
+.vortex-page .page-content .doc-acts {
   margin: 1.25em 0 1.5em;
 
   > p {
@@ -505,9 +549,12 @@ a {
   }
 }
 
-/* 列表之后单起一段说明（版本说明）：不给上距会被读成列表的最后一项 */
+/* 列表之后单起一段说明（版本说明）：不给上距会被读成列表的最后一项。
+   下距原为 .2em —— 那是为了贴住紧随其后的书稿目录（2026-11-08 已撤掉，
+   目录统一在 /vortex/），现在下面是正文段，要还回正常段距，否则两段会
+   粘成一段。 */
 .doc-page .page-content .doc-version {
-  margin: 1.35em 0 .2em;
+  margin: 1.35em 0 .85em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -515,4 +562,310 @@ a {
   .doc-page .page-content .doc-acts a {
     border-bottom-color: rgba(255, 255, 255, .22);
   }
+}
+
+/* ==================================================================
+   11 书籍首页（/vortex/）与书内导航条（2026-11-08）
+   ==================================================================
+   /vortex/ 是《漩涡之在》的唯一入口页：题记、读法、全章目录、版本说明。
+   它与 /documents/、/essays/ 共用 08 段的正文度量（16px / 行高 1.72），
+   这里只补它独有的四样东西：题记、两个动作按钮、读法段落、幕题词。
+
+   章节目录本身复用 10 段的 .doc-acts（按幕分组），不重复一套列表样式。
+
+   书内导航条 .book-nav 不在这一页，它出现在 book: true 的文章底部，
+   替换掉原来按时间顺序的全局上下篇 —— 那套会把「第二章」的下一篇
+   接到同月发布的别类文章上。
+
+   回退：删掉本段，页面回落到正文默认排版；导航条消失，但链接仍可用
+   （Liquid 在 post.html 里，不在样式里）。
+   ================================================================== */
+.vortex-page .page-content {
+  /* 题记：左侧一条竖线就够，不加引号、不加底纹——它是扉页语气，不是引用块 */
+  .vx-epigraph {
+    margin: 0 0 1.85em;
+    padding-left: .95em;
+    border-left: 2px solid rgba(0, 0, 0, .13);
+    font-size: 1.02em;
+    line-height: 1.78;
+    color: var(--body-color-dark);
+  }
+
+  .vx-lead {
+    margin: 0 0 1.4em;
+    line-height: 1.78;
+  }
+
+  /* 两个动作按钮：全本 PDF 是主行动，导读是次行动。手机上并排会挤，用 flex-wrap 自动换行 */
+  .vx-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55em;
+    margin: 1.5em 0 .85em;
+  }
+
+  .vx-btn {
+    display: inline-block;
+    padding: .5em 1.05em;
+    font-size: .9em;
+    line-height: 1.55;
+    color: #fff;
+    background-color: var(--accent-color);
+    border-radius: 3px;
+    text-decoration: none;
+    transition: opacity .18s ease;
+
+    &:hover,
+    &:focus {
+      color: #fff;
+      text-decoration: none;
+      opacity: .88;
+    }
+  }
+
+  /* 次行动留白：描边不填色，hover 才转强调色。和主按钮并排时不抢视线 */
+  .vx-btn-quiet {
+    color: var(--body-color);
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, .2);
+
+    &:hover,
+    &:focus {
+      color: var(--accent-color);
+      background-color: transparent;
+      border-color: currentColor;
+      opacity: 1;
+    }
+  }
+
+  /* 2026-11-08 撤掉 .vx-meta / .vx-note：/vortex/ 不再承担站务信息
+     （PhilArchive、引用格式、版本提醒、勘误邮箱），对应段落已并入
+     /about/ 与 /documents/。样式随之删除，别再加回来。 */
+
+  /* 读法三条：粗体词是「谁该读」，后半句才是内容，所以词压深、正文不动 */
+  .vx-read {
+    margin: 0 0 .62em;
+    line-height: 1.75;
+
+    > strong {
+      font-weight: 600;
+      color: var(--body-color-dark);
+    }
+  }
+
+  /* 幕题词：include 传 quotes=true 时才出现。排在幕名下面、章节列表上面，
+     用字号与颜色两级退让，不做成引用块的方框——它只是扉页的一句话 */
+  .doc-act-quote {
+    margin: -.05em 0 .4em;
+    font-size: .9em;
+    line-height: 1.7;
+    color: var(--body-color-light);
+
+    cite {
+      margin-left: .3em;
+      font-style: normal;
+      font-size: .94em;
+    }
+  }
+}
+
+/* ---------- 书内导航条（book: true 的文章底部） ---------- */
+.book-nav {
+  margin: 2.6em 0 1.4em;
+  padding-top: 1.1em;
+  border-top: 1px solid rgba(0, 0, 0, .08);
+}
+
+.book-nav-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3em 1em;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: .84rem;
+  line-height: 1.6;
+}
+
+.book-nav-toc {
+  color: var(--body-color);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  transition: color .2s ease, border-color .2s ease;
+
+  &:hover,
+  &:focus {
+    color: var(--accent-color);
+    text-decoration: none;
+    border-bottom-color: currentColor;
+  }
+}
+
+.book-nav-pos {
+  color: var(--body-color-light);
+}
+
+/* 两列等宽：上一章靠左、下一章靠右，标题单行省略——
+   章节名最长二十多字，两列各 290px 时必然折行，折成三行会把导航条拉成一堵墙 */
+.book-nav-pn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .7em;
+  margin-top: .7em;
+}
+
+.book-nav-prev,
+.book-nav-next {
+  display: flex;
+  align-items: center;
+  gap: .45em;
+  font-size: .88rem;
+  line-height: 1.55;
+  color: var(--body-color);
+  text-decoration: none;
+
+  i {
+    flex: 0 0 auto;
+    font-size: .78em;
+    opacity: .55;
+  }
+
+  span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: var(--accent-color);
+
+    i {
+      opacity: 1;
+    }
+  }
+}
+
+.book-nav-next {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.book-nav .is-empty {
+  color: var(--body-color-light);
+  opacity: .5;
+
+  &:hover {
+    color: var(--body-color-light);
+  }
+}
+
+@media (max-width: 480px) {
+  /* 窄屏两个按钮各自占满一行：文字长度不同时并排会一宽一窄，
+     点按区也不够高。占满后两行等宽，拇指好按 */
+  .vortex-page .page-content .vx-btn {
+    flex: 1 1 100%;
+    padding: .62em 1em;
+    text-align: center;
+  }
+
+  /* 窄屏两列各剩 148px，标题只剩三四个字，改成上下两行更好读 */
+  .book-nav-pn {
+    grid-template-columns: 1fr;
+  }
+
+  .book-nav-next {
+    justify-content: flex-start;
+    text-align: left;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .vortex-page .page-content {
+    .vx-epigraph {
+      border-left-color: rgba(255, 255, 255, .18);
+    }
+
+    .vx-btn-quiet {
+      border-color: rgba(255, 255, 255, .24);
+
+      &:hover,
+      &:focus {
+        border-color: var(--accent-color);
+      }
+    }
+  }
+
+  .book-nav {
+    border-top-color: rgba(255, 255, 255, .1);
+  }
+
+  .book-nav-toc {
+    border-bottom-color: rgba(255, 255, 255, .26);
+  }
+}
+/* ==================================================================
+   12 侧边栏：按用途分三段（2026-11-08）
+   ------------------------------------------------------------------
+   原来 10 项平铺，顺序是历史堆积的结果：Categories 与 Tags 之间隔着
+   Vortex 与 Essays，两个定位工具被劈在两边。现在按用途分三段：
+
+     （无组）  Home                 入口本身，不属于任何一段
+     写作      Vortex / Essays      作品在前：进来先看内容
+     浏览      Search / TimeLine / Categories / Tags / Knowledge Graph
+     关于      Documents / About
+
+   分段只靠两样东西，不加底色、不加图标、也不写组名：
+     · 一条 71% 宽的居中发丝线（.nav-group，≈160px，rgba 白 14%）
+     · 线上 .95em、线下 .4em，段距约为项距的 1.8 倍
+
+     Vortex 只放大到 1.28em（.nav-label），不带篇数、不加冠名。
+
+   颜色一律交给主题：`.sidebar a` 白、hover/focus 与 `.nav .active` 转
+   --sidebar-color(gray-5)。本段不写任何 color —— 2026-11-08 曾把当前项
+   与 hover 改成橙色，han 否掉了，要的就是最早那套「选中即转暗」。
+
+   回退：删掉本段与 sidebar.html 里的 nav-group 分支，导航即回平铺。
+   ================================================================== */
+.nav-group {
+  /* 只做分隔，不写组名：一条 71% 宽的居中发丝线（224px 内容宽里 ≈160px）。
+     长度演变：30px（像句点）→ 50%（≈112px，仍偏短）→ 71%，留两侧各 32px。
+     透明度同步压到 14%：线一长,18% 就比 30px 时显眼得多,反而抢字。
+     上下留白不必和菜单项一样高：线本身已有分量，段距取项距(10.8px)的 1.8 倍
+     就够，再大反而像空了一行。上 .95em / 下 .4em 不相等，是为了让线"归属
+     "下面那一组——离它要引导的内容近、离上一组远。
+
+     ⚠️ 这里必须用 em 写死，不能用 calc(* var(--spacing))：
+     --spacing 的值是 1em，按「元素自身字号」解析，一旦这里把 font-size
+     调小或置 0，整条 margin 会一起塌成 0（实测踩过）。 */
+  display: block;
+  width: 71%;
+  height: 1px;
+  margin: .95em auto .4em;
+  background: rgba(255, 255, 255, .14);
+  border: 0;
+  padding: 0;
+}
+
+/* 项间距 16px 太松：10 项之后进抽屉要多滚一截，收到约 11px 仍然透气
+   （0.75 × var(--spacing)，--spacing=1em 按 .nav 的 14.4px 解析） */
+.nav-list .nav-item {
+  margin-bottom: calc(.75 * var(--spacing));
+}
+
+/* 书这一项上下多留一点：上接分隔线、下接 Essays。
+   上方只留 .2×spacing（≈2.9px）而不是 .5：线的下边距已经给了 .4em，
+   两项相加若太大，第一条线在 Home 与 Vortex 之间会显得居中，
+   与另两条「上远下近」的节奏不一致。 */
+.nav-list .nav-item--featured {
+  margin-top: calc(.2 * var(--spacing));
+  margin-bottom: calc(.85 * var(--spacing));
+}
+
+.nav-item--featured .nav-label {
+  /* 只靠字号和字距突出；颜色不碰，active/hover 仍走主题的 gray-5 */
+  font-size: 1.28em;
+  letter-spacing: .1em;
+  text-indent: .1em;
 }

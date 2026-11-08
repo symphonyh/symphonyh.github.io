@@ -1,0 +1,31 @@
+{%- comment -%}
+  书稿目录（按幕分组）。**目前只有 /vortex/ 一处在用**。
+  2026-11-08 之前 /documents/ 也嵌了一份，与全书入口页重复，已撤掉——
+  说明页只负责"怎么用这个站"，目录归 /vortex/ 一处维护。
+
+  数据来源：_data/acts.yml 存幕名与题词；每篇章节的 front matter 用
+  `book: true` + `order: N` + `act: N` 标位置（序章 order 0、无 act）。
+
+  参数：
+    quotes=true  在幕名下面补一行题词（门面页要）。目前唯一调用就带 true，
+                 保留这个开关是为将来若再有"不要题词"的用例。
+
+  注意：include 内的 assign 会泄漏到外层作用域，所以变量名带 book 前缀，
+  不要写成 book / intro 这种通用名。
+{%- endcomment -%}
+{%- assign bookList = site.posts | where: "book", true | sort: "order" -%}
+{%- assign bookIntro = site.posts | where: "order", 0 | first -%}
+<div class="doc-acts{% if include.quotes %} doc-acts-quotes{% endif %}">
+<p><strong>序章</strong> · <a href="{{ bookIntro.url | relative_url }}">{{ bookIntro.title | remove_first: "序章：" }}</a></p>
+{%- for a in site.data.acts %}
+<p><strong>{{ a.label }}</strong> · {{ a.title }}</p>
+{%- if include.quotes %}
+<p class="doc-act-quote">{{ a.quote }}<cite>——{{ a.source }}</cite></p>
+{%- endif %}
+<ul>
+{%- for p in bookList %}{% if p.act == a.id %}
+  <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+{%- endif %}{%- endfor %}
+</ul>
+{%- endfor %}
+</div>

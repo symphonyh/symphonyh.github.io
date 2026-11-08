@@ -14,10 +14,20 @@
   {% if site.data.navigation %}
     <nav class="sidebar-section nav">
       <ul class="nav-list">
+        {%- assign sbGroup = "" -%}
         {% for item in site.data.navigation %}
-          <li class="nav-item">
+          {%- if item.group and item.group != sbGroup -%}
+          {%- assign sbGroup = item.group -%}
+          <li class="nav-group" aria-hidden="true"></li>
+          {%- endif -%}
+          {%- unless item.group -%}{%- assign sbGroup = "" -%}{%- endunless %}
+          <li class="nav-item{% if item.featured %} nav-item--featured{% endif %}">
             <a class="{% if page.url == item.url %}active{% endif %}" href="{{ item.url | relative_url }}">
+              {%- if item.featured -%}
+              <span class="nav-label">{{ item.title }}</span>
+              {%- else -%}
               {{ item.title }}
+              {%- endif -%}
             </a>
           </li>
         {% endfor %}
