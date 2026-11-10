@@ -1050,7 +1050,7 @@ const CONCEPT_RELATIONS = [
     { source:'concept:存在', target:'concept:漩涡', type:'形态' },
     { source:'concept:光子', target:'concept:存在', type:'实例' }, // 光子无静止质量，只在相互作用中存在
     { source:'concept:时空', target:'concept:存在', type:'构成' },
-    { source:'concept:涌现', target:'concept:熵增', type:'产生' }, // 熵增是关系网络涌现的数学必然
+    { source:'concept:涌现', target:'concept:熵增', type:'产生' }, // 不可逆性如何从可逆关系里长出来：涌现产生熵增
     { source:'concept:熵增', target:'concept:时间不可逆', type:'导致' },
     { source:'concept:时间不可逆', target:'concept:历史曲率', type:'条件' }, // 不可逆才留下曲率
     { source:'concept:条件独立', target:'concept:马尔可夫毯', type:'构成' }, // 毯即条件独立的边界
