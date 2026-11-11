@@ -805,48 +805,6 @@ a {
     border-bottom-color: rgba(255, 255, 255, .26);
   }
 }
-/* ==================================================================
-   12 侧边栏：按用途分三段（2026-11-08）
-   ------------------------------------------------------------------
-   原来 10 项平铺，顺序是历史堆积的结果：Categories 与 Tags 之间隔着
-   Vortex 与 Essays，两个定位工具被劈在两边。现在按用途分三段：
-
-     （无组）  Home                 入口本身，不属于任何一段
-     写作      Vortex / Essays      作品在前：进来先看内容
-     浏览      Search / TimeLine / Categories / Tags / Knowledge Graph
-     关于      Documents / About
-
-   分段只靠两样东西，不加底色、不加图标、也不写组名：
-     · 一条 71% 宽的居中发丝线（.nav-group，≈160px，rgba 白 14%）
-     · 线上 .95em、线下 .4em，段距约为项距的 1.8 倍
-
-     Vortex 只放大到 1.28em（.nav-label），不带篇数、不加冠名。
-
-   颜色一律交给主题：`.sidebar a` 白、hover/focus 与 `.nav .active` 转
-   --sidebar-color(gray-5)。本段不写任何 color —— 2026-11-08 曾把当前项
-   与 hover 改成橙色，han 否掉了，要的就是最早那套「选中即转暗」。
-
-   回退：删掉本段与 sidebar.html 里的 nav-group 分支，导航即回平铺。
-   ================================================================== */
-.nav-group {
-  /* 只做分隔，不写组名：一条 71% 宽的居中发丝线（224px 内容宽里 ≈160px）。
-     长度演变：30px（像句点）→ 50%（≈112px，仍偏短）→ 71%，留两侧各 32px。
-     透明度同步压到 14%：线一长,18% 就比 30px 时显眼得多,反而抢字。
-     上下留白不必和菜单项一样高：线本身已有分量，段距取项距(10.8px)的 1.8 倍
-     就够，再大反而像空了一行。上 .95em / 下 .4em 不相等，是为了让线"归属
-     "下面那一组——离它要引导的内容近、离上一组远。
-
-     ⚠️ 这里必须用 em 写死，不能用 calc(* var(--spacing))：
-     --spacing 的值是 1em，按「元素自身字号」解析，一旦这里把 font-size
-     调小或置 0，整条 margin 会一起塌成 0（实测踩过）。 */
-  display: block;
-  width: 71%;
-  height: 1px;
-  margin: .95em auto .4em;
-  background: rgba(255, 255, 255, .14);
-  border: 0;
-  padding: 0;
-}
 
 /* 项间距 16px 太松：10 项之后进抽屉要多滚一截，收到约 11px 仍然透气
    （0.75 × var(--spacing)，--spacing=1em 按 .nav 的 14.4px 解析） */
@@ -854,18 +812,34 @@ a {
   margin-bottom: calc(.75 * var(--spacing));
 }
 
-/* 书这一项上下多留一点：上接分隔线、下接 Essays。
-   上方只留 .2×spacing（≈2.9px）而不是 .5：线的下边距已经给了 .4em，
-   两项相加若太大，第一条线在 Home 与 Vortex 之间会显得居中，
-   与另两条「上远下近」的节奏不一致。 */
-.nav-list .nav-item--featured {
-  margin-top: calc(.2 * var(--spacing));
-  margin-bottom: calc(.85 * var(--spacing));
-}
-
 .nav-item--featured .nav-label {
   /* 只靠字号和字距突出；颜色不碰，active/hover 仍走主题的 gray-5 */
   font-size: 1.28em;
   letter-spacing: .1em;
   text-indent: .1em;
+}
+
+/* ==================================================================
+   13 抽屉高度：按 705px 可用高度收口（2026-11-11）
+   ------------------------------------------------------------------
+   桌面断点（min-width 768）把 --body-font-size 抬到 18px，此时抽屉
+   内容高 739px；浏览器 125% 缩放时 CSS 可用高度只剩约 705px，于是
+   常年挂一条滚动条，底部「Powered by」被切。删掉三条分组线只省
+   27px（线的外边距与相邻 li 的下边距折叠，一半本来就占着），不够。
+
+   这里不动字号、不动行距，只收两处空白：
+     · .sidebar-section 段距 2em → 1.6em（题头/导航/社交三处，≈17px）
+     · .power 的 2em 下边距归零（≈36px）。它是滚动容器的最后一个
+       元素，末尾外边距会被算进 scrollHeight，滚下去只有空白，属于
+       假溢出；底部已有 .sidebar 的 padding 垫着，视觉无损。
+
+   合计 ≈53px：内容 739 → 686，705px 视口下 OVER = 0。
+   回退：删掉本段两行规则即可恢复原高度。
+   ================================================================== */
+.sidebar-section {
+  margin-bottom: calc(1.6 * var(--spacing));
+}
+
+.sidebar .power {
+  margin-bottom: 0;
 }
