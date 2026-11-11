@@ -46,6 +46,15 @@ layout: default
     <img class="post-image" src="{{ page.image | relative_url }}" alt="{{ page.title }}">
   {% endif %}
 
+    {%- comment -%}
+      只有带小标题的文章才挂右侧目录。碎片稿通篇没有 h2/h3（一篇只讲一个论点），
+      以前会在这里留一个空框加一句「本文暂无章节标题」；进度条在一千字上下也读不出东西。
+      act-mark.html 输出的幕标记是 div/p，不会被这里的 contains 误判。
+    {%- endcomment -%}
+    {%- assign has_toc = false -%}
+    {%- if content contains '<h2' -%}{%- assign has_toc = true -%}{%- endif -%}
+    {%- if content contains '<h3' -%}{%- assign has_toc = true -%}{%- endif -%}
+    {%- if has_toc -%}
     <aside class="reader-sidebar" id="reader-sidebar">
     <div class="reader-sidebar-box">
       <div class="reader-sidebar-header">
@@ -62,6 +71,7 @@ layout: default
   </aside>
 
   <button type="button" class="reader-sidebar-show" id="reader-sidebar-show" aria-label="显示目录"><i class="fas fa-list"></i></button>
+    {%- endif -%}
 
   <div class="post-content">
     {% include act-mark.html %}
