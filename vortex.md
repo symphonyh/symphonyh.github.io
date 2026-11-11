@@ -2,7 +2,7 @@
 layout: page
 page_class: vortex-page
 title: 漩涡之在
-description: 《漩涡之在——一场哲学侦探的真相求索》全书入口：十九篇在线章节的目录、三种不同深度的读法，以及 3.1 版全本 PDF 的下载。
+description: 《漩涡之在——一场哲学侦探的真相求索》全书入口：十九篇在线章节的目录、三种不同深度的读法，以及 3.2 版全本 PDF 的下载。
 permalink: /vortex/
 ---
 
@@ -11,7 +11,7 @@ permalink: /vortex/
 <p class="vx-lead">全书借一个侦探故事的骨架，把「存在」重写成一种关系动力学：从实体论的失败开始，经由关系优先、涌现、上行与下行因果，一路推到物理、生命、意识、社会与语言。下面是十九篇在线章节，以及三种不同深度的读法。</p>
 
 <div class="vx-actions">
-<a class="vx-btn" href="https://doi.org/10.5281/zenodo.23754111" target="_blank" rel="noopener">全本 PDF　3.1 版 · 234 页</a>
+<a class="vx-btn" href="https://doi.org/10.5281/zenodo.23754111" target="_blank" rel="noopener">全本 PDF　3.2 版 · 240 页</a>
 <a class="vx-btn vx-btn-quiet" href="{% post_url 2026-07-14-导读 %}">先读导读　七个命题</a>
 </div>
 
