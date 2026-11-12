@@ -6,3 +6,6 @@ _draft/
 # 本地工具与试验产物，不进仓库（sass/playwright 依赖、页面样张与截图）
 node_modules/
 .hero-try/
+
+# 本地 Ruby 版本标记，不进仓库
+.ruby-version
