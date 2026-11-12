@@ -144,7 +144,11 @@
     只加载 assets/css/override.css（内容在 _sass/override/_apply.scss）。
     回退：删掉下面这一行 <link> 即完全恢复原版，tao/ 下无需改动。
   {%- endcomment -%}
-  <link rel="stylesheet" href="{{ 'assets/css/override.css' | relative_url }}">
+  {%- comment -%}
+    带构建时间戳：Cloudflare 对 .css 的 TTL 是 4 小时，不加版本号时
+    改完样式要等 4 小时才看到；site.time 每次构建都变，等于永久击穿缓存。
+  {%- endcomment -%}
+  <link rel="stylesheet" href="{{ 'assets/css/override.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 
   {%- comment -%}
     预加载 Mermaid：让浏览器在解析 HTML 阶段就开始下载，
