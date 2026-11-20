@@ -12,7 +12,7 @@ permalink: /vortex/
 
 <div class="vx-actions">
 <a class="vx-btn" href="https://doi.org/10.5281/zenodo.23754111" target="_blank" rel="noopener">全本 PDF　3.2 版 · 240 页</a>
-<a class="vx-btn vx-btn-quiet" href="{% post_url 2026-07-14-导读 %}">先读导读　七个命题</a>
+<a class="vx-btn vx-btn-quiet" href="{% post_url 2026-07-14-导读 %}">先读导读　八个命题</a>
 </div>
 
 ## 怎么读
