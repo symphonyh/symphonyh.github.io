@@ -12,21 +12,20 @@
   外层那个 page.act 判断不是多余的：绝大多数文章没有幕，
   没必要为它们跑一次 where。结案陈词用 act: 6 而不是 0，
   这样这一层不依赖「0 是 truthy」这种实现差异。
+
+  2026-11-23：幕标记统一成一行。原先幕首章用扉页块，出「幕号 +
+  幕名 + 题词」一大块，同幕其余章只出一行小字，两种外观并排看太乱。
+  现在幕号与幕名永远一行，act_opening 只决定下面要不要跟题词。
 {%- endcomment -%}
 {%- if page.act -%}
 {%- assign act = site.data.acts | where: "id", page.act | first -%}
 {%- if act -%}
-{%- if page.act_opening -%}
-<div class="act-card">
-  <p class="act-label">{{ act.label }}</p>
-  <p class="act-name">{{ act.title }}</p>
-  <blockquote class="act-quote">
-    <p>{{ act.quote }}</p>
-    <p class="act-source">{{ act.source }}</p>
-  </blockquote>
-</div>
-{%- else -%}
 <p class="act-ribbon">{{ act.label }}<span class="act-dot" aria-hidden="true">·</span>{{ act.title }}</p>
+{%- if page.act_opening -%}
+<blockquote class="act-quote">
+  <p>{{ act.quote }}</p>
+  <p class="act-source">{{ act.source }}</p>
+</blockquote>
 {%- endif -%}
 {%- endif -%}
 {%- endif -%}
