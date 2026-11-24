@@ -376,7 +376,7 @@ a {
    源文原来是 **表 17 ……**，渲染成整行加粗正文：字号与正文相同、左对齐，
    再加段前段后各一个空行，读起来像第二个小标题，把表身压下去了。
    书里表题是小一号、居中、紧贴表上方，这里回到那个关系：
-   · 字号降一档：.84em ≈ 15px（⚠️ 不用 rem——rem 的基准是 html 的 16px，
+   · 字号降一档：.8em ≈ 14.4px（⚠️ 不用 rem——rem 的基准是 html 的 16px，
      而正文在宽屏是 18px，写 rem 会掉到 13px 以下）；
    · 居中、收到 --body-color-light，只剩「这是表的名字」这一层意思；
    · margin-top 保留 1.15em 与上下文断开，margin-bottom 压到 .38em 并把
@@ -386,12 +386,19 @@ a {
 .post-content .table-caption {
   margin: 1.15em 0 .38em;
   text-align: center;
-  font-size: .84em;
+  font-size: .8em;
   font-weight: 600;
   line-height: 1.55;
   letter-spacing: .012em;
   color: var(--body-color-light);
   text-wrap: balance;
+}
+
+/* 表身比正文低一档：18px → 16.2px。表格是「附表」，与正文同号时会读成正文的
+   延续，压一档才有从属感；再小（≤.86em，15.5px）就贴到题注上，层级反而塌。
+   题注同时从 .84em 收到 .8em（14.4px），保证「题注 < 表身」始终有一档差。 */
+.post-content table {
+  font-size: .9em;
 }
 
 .post-content .table-caption + table {
