@@ -372,6 +372,32 @@ a {
   }
 }
 
+/* ---------- 09c 表题 <p class="table-caption">（2026-11-24） ----------
+   源文原来是 **表 17 ……**，渲染成整行加粗正文：字号与正文相同、左对齐，
+   再加段前段后各一个空行，读起来像第二个小标题，把表身压下去了。
+   书里表题是小一号、居中、紧贴表上方，这里回到那个关系：
+   · 字号降一档：.84em ≈ 15px（⚠️ 不用 rem——rem 的基准是 html 的 16px，
+     而正文在宽屏是 18px，写 rem 会掉到 13px 以下）；
+   · 居中、收到 --body-color-light，只剩「这是表的名字」这一层意思；
+   · margin-top 保留 1.15em 与上下文断开，margin-bottom 压到 .38em 并把
+     表身的上边距吃掉，让题与表成为一组（表题在上，符合中文排版习惯）。
+   不做成表格的 <caption>：kramdown 的管道表格不产出 caption 元素。
+   回退：删掉本段，并把 _posts 里 21 处 <p class="table-caption"> 换回 **…**。 */
+.post-content .table-caption {
+  margin: 1.15em 0 .38em;
+  text-align: center;
+  font-size: .84em;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: .012em;
+  color: var(--body-color-light);
+  text-wrap: balance;
+}
+
+.post-content .table-caption + table {
+  margin-top: 0;
+}
+
 /* ---------- 10 书稿目录（/vortex/）（2026-11-06） ----------
    /vortex/ 里按幕分组列出全书 19 篇。三件事：
    ① 幕是组标题、章节是内容，靠段前距与字重分层——不用缩进，缩进在手机上对不齐；
