@@ -117,112 +117,11 @@ a {
 }
 
 /* ==================================================================
-   07 文章底部：本文涉及的概念
+   08 随笔导读页（/essays/）+ 书籍首页（/vortex/）
    ==================================================================
-   与标签行的分工：
-     概念行 = 这篇谈论的东西，指向知识图谱里的唯一节点（网）
-     标签行 = 题材归档，指向 /tags/ 的文章目录（索引）
-   视觉上也刻意分开：概念是正文色 + 一条细下划线，像正文里的词；
-   标签是灰色小号 #，像页脚注记。两者不共用类名，互不影响。
-
-   字号踩过一轮：.95rem 那版在深色模式下整行糊成一片灰（颜色其实和正文
-   同值 #dee2e6，锅在字号小 + 行高 1.95 太散 + 下划线只有 24% 白）。
-   现在字号提到 1.02rem、行高收到 2、下划线加深到 38%，才站得住。 */
-.post-concepts {
-  /* 不用 flex：flex 里每个词和分隔点都是独立 item，换行时那个「·」
-     会被甩到行尾，孤零零挂在右边（实测很难看）。改成行内流 + 下面
-     的 inline-block 单元，折行只发生在单元之间。 */
-  display: block;
-  margin: 2.6rem 0 1.4rem;
-  /* 试过缩进 2em（想让这块读起来像正文最后一句），结果是第一行缩进、
-     第二行顶格的悬挂错位，反而像溢出。整块齐左更稳。 */
-  font-size: 1.02rem;
-  line-height: 2;
-}
-
-/* 「· 词」绑成一个不可断开的单元：nowrap 保证分隔点永远跟着它后面的词，
-   不会单独留在行尾；下划线只画在里面的 <a> 上，所以点本身不带线。 */
-.post-concepts-item {
-  display: inline-block;
-  white-space: nowrap;
-  vertical-align: baseline;
-  /* text-indent 是继承属性：inline-block 自成块容器，不归零的话
-     每个词都会各自再缩进 2em，词间距被撑成一片散沙（踩过）。 */
-  text-indent: 0;
-}
-
-/* 前缀不写成大写英文，保持中文页面的语气；冒号用 ::after 给，
-   这样换文案时不用动 HTML，也不必再写一遍全角标点 */
-.post-concepts-label {
-  margin-right: .55rem;
-  font-size: .76rem;
-  letter-spacing: .16em;
-  text-indent: .16em;
-  white-space: nowrap;
-  color: var(--body-color-light);
-
-  &::after {
-    content: '：';
-    margin-left: -.06em;
-    letter-spacing: 0;
-  }
-}
-
-.post-concept {
-  padding-bottom: .1em;
-  color: var(--body-color);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .3);
-  transition: color .22s ease, border-color .22s ease;
-
-  &:hover {
-    color: var(--accent-color);
-    border-bottom-color: currentColor;
-    /* 必须显式写：_base.scss 里有 a:hover { text-decoration: underline }，
-       否则一 hover 就和这条细线叠成两道 */
-    text-decoration: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-  }
-}
-
-.post-concepts-sep {
-  margin: 0 .5rem;
-  color: rgba(0, 0, 0, .32);
-}
-
-@media (prefers-color-scheme: dark) {
-  .post-concept { border-bottom-color: rgba(255, 255, 255, .38); }
-  .post-concepts-label { color: rgba(255, 255, 255, .52); }
-  .post-concepts-sep { color: rgba(255, 255, 255, .34); }
-}
-
-@media (max-width: 560px) {
-  .post-concepts {
-    margin: 2.2rem 0 1.2rem;
-    font-size: .98rem;
-    line-height: 1.95;
-  }
-
-  .post-concepts-label {
-    margin-right: .45rem;
-    font-size: .74rem;
-  }
-
-  /* 间隔号收到 .34rem（原 .4）：手机上 420px 这一档，第一行原本余 25px，
-     差一点点就能把第 4 个词放进第一行。收窄到 .34 后余量升到约 30px，
-     折行点前移一个词。再往下收（试过 .26 / .18）视觉上词太挤，
-     而折行次数并不会减少 —— 版面收益到此为止。 */
-  .post-concepts-sep { margin: 0 .34rem; }
-}
-
-/* ==================================================================
-   08 说明页（/documents/）+ 随笔导读页（/essays/）
-   ==================================================================
-   只在这两页 page_class: doc-page / essays-page 下生效，不碰全站其它页面。
+   只在这两页 page_class: essays-page / vortex-page 下生效，不碰全站其它页面。
+   （2026-11-24：/documents/ 说明页连同 doc-page 选择器一并删除，
+    本节余下的规则由上面这两页共用。）
 
    /essays/ 是 2026-11-07 加的三板块导读，性质与说明页相同：整页是清单与
    导读，不是供人静读的散文。所以直接共用同一套「小一档」的度量，不另起
@@ -239,7 +138,6 @@ a {
    h3 干脆不再放大，只靠字重和颜色区分。
    回退：删掉这一段，页面回落到主题默认排版。
    ================================================================== */
-.doc-page .page-title,
 .essays-page .page-title,
 .vortex-page .page-title {
   margin: 0 0 1.15em;
@@ -250,7 +148,6 @@ a {
   text-wrap: balance;
 }
 
-.doc-page .page-content,
 .essays-page .page-content,
 .vortex-page .page-content {
   /* ⚠️ 不能写 .9rem：rem 的基准是 html（16px），不是 body（≥1200px 时 18px）。
@@ -337,38 +234,6 @@ a {
     color: var(--body-color-light);
   }
 
-  /* 页首速查：七个锚点排成一行会变成一堵橙色链接墙，手机上还占两行。
-     改成退到背景里的小字 + 发丝下划线，只在 hover 时才给强调色。 */
-  .doc-jump {
-    margin: 0 0 1.25em;
-    font-size: .82rem;
-    line-height: 2.1;
-    /* 间隔号两边的 &nbsp; 只有 4px 左右，中文里显得点和词粘在一起。
-       word-spacing 连 nbsp 一起加宽，比在每个链接里塞 span 省事得多；
-       换行只会发生在链接之间，点始终跟在词尾，不会落到行首。 */
-    word-spacing: .2em;
-    color: var(--body-color-light);
-
-    a {
-      padding-bottom: .06em;
-      /* 手机上 358px 栏里「联系与勘误」会被拦腰断成「…联 / 系与勘误」，
-         每个锚点整体不折行，只允许在链接之间换行 */
-      white-space: nowrap;
-      color: var(--body-color);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(0, 0, 0, .24);
-      transition: color .2s ease, border-color .2s ease;
-
-      /* _base.scss 有 a:hover { text-decoration: underline }，
-         不显式写 no，悬停时细线和下划线会叠成两道 */
-      &:hover {
-        color: var(--accent-color);
-        text-decoration: none;
-        border-bottom-color: currentColor;
-      }
-    }
-  }
-
   @media (prefers-color-scheme: dark) {
     /* 深色下 7.5% 的黑线等于没有，换成 10% 的白 */
     h2 {
@@ -381,10 +246,6 @@ a {
 
     figure img {
       border-color: rgba(255, 255, 255, .12);
-    }
-
-    .doc-jump a {
-      border-bottom-color: rgba(255, 255, 255, .3);
     }
   }
 }
@@ -412,48 +273,26 @@ a {
 }
 
 @media (prefers-color-scheme: dark) {
-  /* 18% 的黑在深色下等于没有，换成 26% 的白，力度与 08 段的 doc-jump 同档 */
+  /* 18% 的黑在深色下等于没有，换成 26% 的白，力度与 08 段同档 */
   .essays-page .page-content li a {
     border-bottom-color: rgba(255, 255, 255, .26);
   }
 }
 
-/* ---------- 09 幕：扉页块与幕眉（2026-11-06） ----------
+/* ---------- 09 幕：幕眉与幕首题词（2026-11-06，11-23 统一） ----------
    书里幕是一卷的扉页，比章高一级；博客没有这一级节点，而右侧目录
    会把正文 h2/h3/h4 全收进去（toc-progress.js:38），所以幕只能用块表达，
    并且块内一律不用标题标签。
-   题词底色与 about 页题记同一配方（#f4efe6 + accent 竖线），
-   但不放 Georgia 大引号——幕题词是扉页的一部分，不是独立引言卡。
+   11-23：幕号与幕名统一成一行（.act-ribbon），不再有「幕首章一大块、
+   同幕其余章一行」两套外观；幕首章只是在这行下面多一个题词块。
+   题词底色与 about 页题记同一配方（#f4efe6 + accent 竖线），但不放
+   Georgia 大引号——它是扉页的一部分，不是独立引言卡。
+   两级选择器是必须的：_base.scss 的 blockquote 单级规则带 4px 红竖线 +
+   暖灰底 + .875em 字号，单级压不过它。
    回退：删掉 09 段 + _includes/act-mark.html + post.html 里那行 include。 */
-.act-card {
-  /* 上方 2.1em 是必须的：.post-title 的 margin-bottom 很小，
-     不留白的话「第四幕」会紧贴标题底边，像标题掉下来的一块 */
-  margin: 2.1em 0 2.6em;
-  padding: 0 0 1.5em;
-  border-bottom: 1px solid rgba(0, 0, 0, .085);
-}
-
-.act-label {
-  margin: 0 0 .6em;
-  font-size: .82rem;
-  letter-spacing: .28em;      /* 「第 四 幕」靠字距拉开，不手写空格 */
-  /* 不用 --body-color-light：那个灰在浅底上淡到几乎看不见，
-     幕号是定位信息，得能读出来。降透明度对深浅两套底色都成立。 */
-  color: var(--body-color);
-  opacity: .6;
-}
-
-.act-name {
-  margin: 0 0 1.15em;
-  font-size: 1.28rem;
-  line-height: 1.5;
-  color: var(--body-color);
-}
-
-/* 两级选择器：_base.scss 的 blockquote 单级规则带 4px 红竖线 + 暖灰底
-   + .875em 字号，单级压不过它 */
 .post-content .act-quote {
-  margin: 0;
+  /* 上方不留白：紧接 .act-ribbon 的 2em 下边距；下方 2em 与正文隔开 */
+  margin: 0 0 2em;
   padding: .95em 1.15em;
   background: #f4efe6;
   border-left: 3px solid var(--accent-color);
@@ -473,6 +312,12 @@ a {
   }
 }
 
+/* 序章的题词没有幕眉：幕首章的卡片靠 .act-ribbon 的 2em 下边距托住，
+   序章前面什么都没有，卡片会顶到标题下面，用 --lead 自己补这段距离。 */
+.post-content .act-quote--lead {
+  margin-top: 1em;
+}
+
 .act-ribbon {
   /* 与标题拉开 1em：贴着标题会被当成副标题，读者会以为「真相的扩散」
      是「第八章 生命世界的漩涡」的补充说明 */
@@ -489,23 +334,51 @@ a {
 }
 
 @media (prefers-color-scheme: dark) {
-  .act-card {
-    border-bottom-color: rgba(255, 255, 255, .10);
-  }
-
   .post-content .act-quote {
     background: rgba(255, 255, 255, .055);
   }
 }
 
-/* ---------- 10 说明页的书稿目录（2026-11-06） ----------
-   /documents/ 里按幕分组列出全书 19 篇。三件事：
+/* ---------- 09b 正文引述：引文 + 署名（2026-11-23） ----------
+   书稿里正文中段的引述是「引文段（正文缩进）+ 署名段（右对齐）」，
+   markdown 没有段落对齐语法，转换时只剩两段普通文字，署名贴着左边
+   独占一行，读者会读成正文断句（第五章「——普里高津」「——侯世达」）。
+   与 09 的分工：.act-quote 是幕扉页的一部分，有暖灰底，出现即意味着
+   「新的一幕」；这里是章内引述，不加底色，只把「谁说的」还到右边。
+   类名用 epigraph（题词）而不是 blockquote：它不是块引用，不缩进成整块。
+   回退：删掉本段 + _posts 里三处 <div class="epigraph"> 包回普通段落。 */
+.post-content .epigraph {
+  margin: 1.7em 0 1.7em 1.4em;
+  padding-left: .9em;
+  border-left: 2px solid rgba(0, 0, 0, .14);
+  font-size: .95rem;
+  line-height: 1.9;
+
+  p {
+    margin: 0;
+  }
+
+  .epigraph-source {
+    margin-top: .5em;
+    text-align: right;
+    font-size: .84rem;
+    color: var(--body-color-light);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .post-content .epigraph {
+    border-left-color: rgba(255, 255, 255, .22);
+  }
+}
+
+/* ---------- 10 书稿目录（/vortex/）（2026-11-06） ----------
+   /vortex/ 里按幕分组列出全书 19 篇。三件事：
    ① 幕是组标题、章节是内容，靠段前距与字重分层——不用缩进，缩进在手机上对不齐；
    ② 19 行橙色链接会变成一片色块，退到正文色加细下划线，hover 才给强调色
-      （与同页 .doc-jump 是同一思路）；
+      （与 08 段同一思路）；
    ③ 手机上一屏装不下全书目录是正常的，但每行要够紧，别让 19 行散成三屏。
    回退：删掉这一段，块回落到正文默认列表样式。 */
-.doc-page .page-content .doc-acts,
 .vortex-page .page-content .doc-acts {
   margin: 1.25em 0 1.5em;
 
@@ -549,36 +422,26 @@ a {
   }
 }
 
-/* 列表之后单起一段说明（版本说明）：不给上距会被读成列表的最后一项。
-   下距原为 .2em —— 那是为了贴住紧随其后的书稿目录（2026-11-08 已撤掉，
-   目录统一在 /vortex/），现在下面是正文段，要还回正常段距，否则两段会
-   粘成一段。 */
-.doc-page .page-content .doc-version {
-  margin: 1.35em 0 .85em;
-}
-
 @media (prefers-color-scheme: dark) {
   /* 14% 的黑线在深色底上等于没有 */
-  .doc-page .page-content .doc-acts a {
+  .vortex-page .page-content .doc-acts a {
     border-bottom-color: rgba(255, 255, 255, .22);
   }
 }
 
 /* ==================================================================
-   11 书籍首页（/vortex/）与书内导航条（2026-11-08）
+   11 书籍首页（/vortex/）（2026-11-08）
    ==================================================================
    /vortex/ 是《漩涡之在》的唯一入口页：题记、读法、全章目录、版本说明。
-   它与 /documents/、/essays/ 共用 08 段的正文度量（16px / 行高 1.72），
+   它与 /essays/ 共用 08 段的正文度量（16px / 行高 1.72），
    这里只补它独有的四样东西：题记、两个动作按钮、读法段落、幕题词。
 
    章节目录本身复用 10 段的 .doc-acts（按幕分组），不重复一套列表样式。
 
-   书内导航条 .book-nav 不在这一页，它出现在 book: true 的文章底部，
-   替换掉原来按时间顺序的全局上下篇 —— 那套会把「第二章」的下一篇
-   接到同月发布的别类文章上。
+   文章底部的导航条不在这里（11-08 曾有一版 .book-nav，11-23 已删除，
+   统一回主题自带的 .pagination）。
 
-   回退：删掉本段，页面回落到正文默认排版；导航条消失，但链接仍可用
-   （Liquid 在 post.html 里，不在样式里）。
+   回退：删掉本段，页面回落到正文默认排版。
    ================================================================== */
 .vortex-page .page-content {
   /* 题记：左侧一条竖线就够，不加引号、不加底纹——它是扉页语气，不是引用块 */
@@ -669,97 +532,12 @@ a {
   }
 }
 
-/* ---------- 书内导航条（book: true 的文章底部） ---------- */
-.book-nav {
-  margin: 2.6em 0 1.4em;
-  padding-top: 1.1em;
-  border-top: 1px solid rgba(0, 0, 0, .08);
-}
-
-.book-nav-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .3em 1em;
-  align-items: baseline;
-  justify-content: space-between;
-  font-size: .84rem;
-  line-height: 1.6;
-}
-
-.book-nav-toc {
-  color: var(--body-color);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
-  transition: color .2s ease, border-color .2s ease;
-
-  &:hover,
-  &:focus {
-    color: var(--accent-color);
-    text-decoration: none;
-    border-bottom-color: currentColor;
-  }
-}
-
-.book-nav-pos {
-  color: var(--body-color-light);
-}
-
-/* 两列等宽：上一章靠左、下一章靠右，标题单行省略——
-   章节名最长二十多字，两列各 290px 时必然折行，折成三行会把导航条拉成一堵墙 */
-.book-nav-pn {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: .7em;
-  margin-top: .7em;
-}
-
-.book-nav-prev,
-.book-nav-next {
-  display: flex;
-  align-items: center;
-  gap: .45em;
-  font-size: .88rem;
-  line-height: 1.55;
-  color: var(--body-color);
-  text-decoration: none;
-
-  i {
-    flex: 0 0 auto;
-    font-size: .78em;
-    opacity: .55;
-  }
-
-  span {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: var(--accent-color);
-
-    i {
-      opacity: 1;
-    }
-  }
-}
-
-.book-nav-next {
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.book-nav .is-empty {
-  color: var(--body-color-light);
-  opacity: .5;
-
-  &:hover {
-    color: var(--body-color-light);
-  }
-}
+/* ---------- 书内导航条已删除（2026-11-23） ----------
+   11-08 加的 .book-nav（全书目录 + 第 N 篇 · 共 N 篇 + 上下章名）整套拿掉，
+   所有文章统一用主题自带的 .pagination。理由：两套结尾导航并存，
+   读者看到的样式不一致，而新增那套的服务对象只有 19 篇。
+   回退：git show ee6b483:_sass/override/_apply.scss 取回本段，
+   并恢复 post.html 里按 page.book 分流的那段 Liquid。 */
 
 @media (max-width: 480px) {
   /* 窄屏两个按钮各自占满一行：文字长度不同时并排会一宽一窄，
@@ -768,16 +546,6 @@ a {
     flex: 1 1 100%;
     padding: .62em 1em;
     text-align: center;
-  }
-
-  /* 窄屏两列各剩 148px，标题只剩三四个字，改成上下两行更好读 */
-  .book-nav-pn {
-    grid-template-columns: 1fr;
-  }
-
-  .book-nav-next {
-    justify-content: flex-start;
-    text-align: left;
   }
 }
 
@@ -795,14 +563,6 @@ a {
         border-color: var(--accent-color);
       }
     }
-  }
-
-  .book-nav {
-    border-top-color: rgba(255, 255, 255, .1);
-  }
-
-  .book-nav-toc {
-    border-bottom-color: rgba(255, 255, 255, .26);
   }
 }
 

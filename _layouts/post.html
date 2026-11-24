@@ -79,63 +79,26 @@ layout: default
   </div>
 
   {%- comment -%}
-    概念坐标：这篇文章真正谈论的几样东西（front matter 的 concepts）。
-    每个词都指到知识图谱里的同一个节点 —— 这里点「关系」和从别处点「关系」，
-    落到的是同一张网的同一个位置，而不是各自的路由。
+    标签行（2026-11-24 定）：知识图谱撤掉后，原「本文涉及概念」那一行随之删除。
+    那一行原本承担两件事 —— 给概念一个入口、并把与概念重名的标签藏起来；
+    现在两件都不做了，标签行回到最简单的形态：front matter 里写了几个就显示几个。
 
-    url_encode 是 Liquid 核心过滤器：概念名是中文，不编码的话分享、粘贴时
-    容易被半截截断；编码后 URLSearchParams 解出来仍是原词。
+    因此当初被去重隐藏的题材标签（关系、僵化、动态平衡……）会重新出现，
+    标签行比 11-08 之后变长。这是预期结果，不是回归。
 
-    ⚠️ 下面那个 for 循环故意写成紧凑形式（标签和内容挤在同一行），
-    不要「格式化」成一行一个：每个概念是一个 inline-block 单元，
-    HTML 里多一个换行就是一个空格，词与词之间会凭空多出几像素，
-    折行位置也会跟着变。
-
-    分隔点写在词尾、不写在下个词前面：手机上一行放不下时，点若属于下一个词，
-    就会孤零零挂在行首（360–420px 实测全部如此，把间距从 .4rem 收到 .18rem
-    也躲不掉，只能少占几像素）。跟着前一个词走，折行只发生在「词+点」与
-    下一个词之间，行首永远是干净的字，也符合中文排版里间隔号不进行首的规矩。
-    （注释里不能出现未闭合的模板定界符，Liquid 连注释内容也当标签扫，
-      写了就 SyntaxError，构建直接挂。）
+    想按题材再精简，正确做法是去改文章 front matter 的 tags，
+    不要在模板里再加一层隐藏逻辑 —— 隐藏过的标签在站内只能靠 /tags/ 找到，
+    读者看得见的那一行和实际归类就对不上了。
   {%- endcomment -%}
-  {% if page.concepts.size > 0 %}
-    <nav class="post-concepts" aria-label="本文涉及的概念">
-      <span class="post-concepts-label">本文涉及概念</span>{%
-      for concept in page.concepts %}<span class="post-concepts-item"><a class="post-concept" href="{{ '/knowledge-graph/' | relative_url }}?q={{ concept | url_encode }}">{{ concept }}</a>{%
-        unless forloop.last %}<span class="post-concepts-sep" aria-hidden="true">·</span>{%
-        endunless %}</span>{%
-      endfor %}
-    </nav>
-  {% endif %}
-
-  {%- comment -%}
-    标签行去重：已发布的 21 种标签里有 19 种与 concepts 同名（关系、僵化、动态平衡……），
-    同一行里出现两遍只是啰嗦。与概念同名的标签已经在概念行里给过图谱入口，
-    这里只留真正的题材标签（交换模型三部曲、智能）。
-    想恢复完整标签，把下面这个 assign 改成 false。
-  {%- endcomment -%}
-  {%- assign dedupe_tags = true -%}
-  {%- assign tags_left = page.tags.size -%}
-  {%- if dedupe_tags -%}
-    {%- assign tags_left = 0 -%}
-    {%- for tag in page.tags -%}
-      {%- unless page.concepts contains tag -%}
-        {%- assign tags_left = tags_left | plus: 1 -%}
-      {%- endunless -%}
-    {%- endfor -%}
-  {%- endif -%}
-
-  {% if tags_left > 0 %}
+  {% if page.tags.size > 0 %}
     <nav class="post-meta post-meta-bottom">
       {% for tag in page.tags %}
-        {% unless dedupe_tags and page.concepts contains tag %}
-          {% assign slugified_tag = tag | slugify %}
-          {% if site.tags_path %}
-            <a class="post-tag" href="{{ site.tags_path | relative_url }}#{{ slugified_tag }}">#{{ slugified_tag }}</a>
-          {% else %}
-            <span>#{{ slugified_tag }}</span>
-          {% endif %}
-        {% endunless %}
+        {% assign slugified_tag = tag | slugify %}
+        {% if site.tags_path %}
+          <a class="post-tag" href="{{ site.tags_path | relative_url }}#{{ slugified_tag }}">#{{ slugified_tag }}</a>
+        {% else %}
+          <span>#{{ slugified_tag }}</span>
+        {% endif %}
       {% endfor %}
     </nav>
   {% endif %}
@@ -145,37 +108,14 @@ layout: default
  <img src="https://hitscounter.dev/api/hit?url={{ page.url | absolute_url }}&label=Visitor&icon=alarm-fill&color=%23fd7e14&message=&style=flat&tz=Asia%2FHarbin" alt="Hits" onerror="this.style.display='none'">
 {% endif %}
 
-{%- if page.book -%}
-{%- assign bookSeq = site.posts | where: "book", true | sort: "order" -%}
-{%- assign bookPos = -1 -%}
-{%- for bp in bookSeq -%}{%- if bp.url == page.url -%}{%- assign bookPos = forloop.index0 -%}{%- endif -%}{%- endfor -%}
-{%- assign bookPrevIdx = bookPos | minus: 1 -%}
-{%- assign bookNextIdx = bookPos | plus: 1 -%}
-{%- assign bookPrev = nil -%}
-{%- assign bookNext = nil -%}
-{%- for bp in bookSeq -%}
-  {%- if forloop.index0 == bookPrevIdx -%}{%- assign bookPrev = bp -%}{%- endif -%}
-  {%- if forloop.index0 == bookNextIdx -%}{%- assign bookNext = bp -%}{%- endif -%}
-{%- endfor -%}
-<nav class="book-nav" aria-label="《漩涡之在》书内导航">
-  <div class="book-nav-head">
-    <a class="book-nav-toc" href="{{ '/vortex/' | relative_url }}">全书目录</a>
-    <span class="book-nav-pos">第 {{ bookPos | plus: 1 }} 篇 · 共 {{ bookSeq.size }} 篇</span>
-  </div>
-  <div class="book-nav-pn">
-    {%- if bookPrev -%}
-    <a class="book-nav-prev" href="{{ bookPrev.url | relative_url }}"><i class="fas fa-chevron-left"></i><span>{{ bookPrev.title }}</span></a>
-    {%- else -%}
-    <span class="book-nav-prev is-empty"><i class="fas fa-chevron-left"></i><span>已是开篇</span></span>
-    {%- endif -%}
-    {%- if bookNext -%}
-    <a class="book-nav-next" href="{{ bookNext.url | relative_url }}"><span>{{ bookNext.title }}</span><i class="fas fa-chevron-right"></i></a>
-    {%- else -%}
-    <span class="book-nav-next is-empty"><span>已是末篇</span><i class="fas fa-chevron-right"></i></span>
-    {%- endif -%}
-  </div>
-</nav>
-{%- else -%}
+{%- comment -%}
+  结尾导航只用主题自带这一套（2026-11-23 定）。
+  11-08 曾给 book: true 的文章加过一条书内导航（全书目录 + 第 N 篇 · 共 18 篇），
+  与普通文章的圆角双格并存，两套样式并存看着比统一更乱 —— 删掉新加的那套，
+  所有文章回落到这一套。样式越少越好。
+  代价：序章左边会指向 2026-05 之前的一篇旧文，第十七章右边指向 06-20 的下一篇；
+  中间 16 篇上下相邻（连载期 05-25～06-18 没有别的文章插进来）。
+{%- endcomment -%}
 <div class="pagination">
   {% if page.previous %}
     <a class="prev post-prev" href="{{ page.previous.url | relative_url }}">
@@ -193,7 +133,6 @@ layout: default
     <span class="next post-next unable"><i class="fas fa-chevron-right"></i></span>
   {% endif %}
 </div>
-{%- endif -%}
 
 <script src="https://giscus.app/client.js"
           data-repo="symphonyh/symphonyh.github.io"
