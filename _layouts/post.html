@@ -152,15 +152,33 @@ layout: default
   </script>
 
 <script>
-  // [TABLE-FIT] 表格两件事，JS 关掉时退回原样，不影响阅读：
+  // [TABLE-FIT] 表格三件事，JS 关掉时退回原样，不影响阅读：
   // 1) 宽表在窄屏上会撑破正文栏、把整页拖出横向滚动条。统一包一层 .table-scroll
   //    （overflow-x:auto），只有真放不下时才在这层里滚，页面本身不再横移。
   // 2) 首列多是「历史的地位」这种 2-5 字维度名，被长文本列挤到 4 字宽时会断成
   //    「历史的地／位」。只给 6 字以内的首列加 nowrap；第七章表 13 那种 16 字
   //    首列仍可折行，不会凭空造出横向溢出。
-  // 纯 CSS 做不到 2)：min-width 在 table 自动布局里不被可靠执行，nowrap 又会
-  // 把长首列一并锁死。所以判长度这一步放在这里。
-  document.querySelectorAll('.post-content table').forEach(function (t) {
+  // 3) 表头同理：表 17 的「被误解的“瞬间平衡”」「“漩涡之在”的历史性」被挤成两行，
+  //    一个列名要换行才读得完。默认给 th 加 nowrap，加完立刻量一次宽度——整表
+  //    因此超出正文栏就整套退回折行，宁可两行也不造出横向滚动。窗口拉动后按
+  //    新宽度重判。
+  // 纯 CSS 做不到 2)(3)：min-width 在 table 自动布局里不被可靠执行，nowrap 又会
+  // 把长首列、长表头一并锁死。所以判长度、量宽度这两步只能放在这里。
+  var tables = [].slice.call(document.querySelectorAll('.post-content table'));
+
+  function fitHeader(t) {
+    var ths = t._ths || (t._ths = [].slice.call(t.querySelectorAll('th')));
+    if (!ths.length) return;
+    ths.forEach(function (h) { h.style.whiteSpace = 'nowrap'; });
+    // 溢出就整套退回：th nowrap 只是让列名好看，不值得为它多出一条横向滚动。
+    // 判据用滚动容器的 scrollWidth（整数、含真实内容宽），table 自身的 offsetWidth
+    // 会被取整成 600 而看不出 38px 的溢出，别用。
+    if (t.parentNode.scrollWidth > t.parentNode.clientWidth + 1) {
+      ths.forEach(function (h) { h.style.whiteSpace = ''; });
+    }
+  }
+
+  tables.forEach(function (t) {
     var box = document.createElement('div');
     box.className = 'table-scroll';
     t.parentNode.insertBefore(box, t);
@@ -168,6 +186,13 @@ layout: default
     t.querySelectorAll('tr > :first-child').forEach(function (c) {
       if (c.textContent.trim().length <= 6) c.style.whiteSpace = 'nowrap';
     });
+    fitHeader(t);
+  });
+
+  var fitTimer;
+  addEventListener('resize', function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(function () { tables.forEach(fitHeader); }, 150);
   });
 </script>
 
