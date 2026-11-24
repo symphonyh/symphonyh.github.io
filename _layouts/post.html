@@ -152,6 +152,26 @@ layout: default
   </script>
 
 <script>
+  // [TABLE-FIT] 表格两件事，JS 关掉时退回原样，不影响阅读：
+  // 1) 宽表在窄屏上会撑破正文栏、把整页拖出横向滚动条。统一包一层 .table-scroll
+  //    （overflow-x:auto），只有真放不下时才在这层里滚，页面本身不再横移。
+  // 2) 首列多是「历史的地位」这种 2-5 字维度名，被长文本列挤到 4 字宽时会断成
+  //    「历史的地／位」。只给 6 字以内的首列加 nowrap；第七章表 13 那种 16 字
+  //    首列仍可折行，不会凭空造出横向溢出。
+  // 纯 CSS 做不到 2)：min-width 在 table 自动布局里不被可靠执行，nowrap 又会
+  // 把长首列一并锁死。所以判长度这一步放在这里。
+  document.querySelectorAll('.post-content table').forEach(function (t) {
+    var box = document.createElement('div');
+    box.className = 'table-scroll';
+    t.parentNode.insertBefore(box, t);
+    box.appendChild(t);
+    t.querySelectorAll('tr > :first-child').forEach(function (c) {
+      if (c.textContent.trim().length <= 6) c.style.whiteSpace = 'nowrap';
+    });
+  });
+</script>
+
+<script>
   // [HILITE-FIX] 两点收口：
   // 1) surroundContents 在选区跨越多个元素时会抛 InvalidStateError（跨段落拖选是最常见操作），
   //    原来没有 try/catch，每次都会在控制台抛未捕获异常；这里捕获后放弃本次高亮。

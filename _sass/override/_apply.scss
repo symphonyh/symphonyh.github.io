@@ -398,6 +398,23 @@ a {
   margin-top: 0;
 }
 
+/* 表格外层滚动容器，由 _layouts/post.html 的 [TABLE-FIT] 脚本现包：
+   窄屏放不下时在这层里横向滚，页面本身不再被宽表撑出滚动条。
+   表题与表身之间仍然贴紧，所以 margin-top 归零。 */
+.post-content .table-scroll {
+  margin: var(--spacing) 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+
+  > table {
+    margin: 0;
+  }
+}
+
+.post-content .table-caption + .table-scroll {
+  margin-top: 0;
+}
+
 /* ---------- 10 书稿目录（/vortex/）（2026-11-06） ----------
    /vortex/ 里按幕分组列出全书 19 篇。三件事：
    ① 幕是组标题、章节是内容，靠段前距与字重分层——不用缩进，缩进在手机上对不齐；
