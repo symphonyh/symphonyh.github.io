@@ -134,6 +134,7 @@ layout: default
   {% endif %}
 </div>
 
+{% unless page.comments == false %}
 <script src="https://giscus.app/client.js"
           data-repo="symphonyh/symphonyh.github.io"
           data-repo-id="R_kgDOItt3cA"
@@ -150,6 +151,7 @@ layout: default
           crossorigin="anonymous"
           async>
   </script>
+{% endunless %}
 
 <script>
   // [TABLE-FIT] 表格三件事，JS 关掉时退回原样，不影响阅读：
