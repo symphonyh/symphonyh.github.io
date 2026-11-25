@@ -212,25 +212,3 @@ article.post,
 .entry-content {
   font-family: var(--post-font, var(--body-font));
 }
-// 设置表格 首列宽度，不换行
-.no-wrap-first-col td:first-child {
-    white-space: nowrap;
-}
-
-.table-wrapper {
-    overflow-x: auto;
-    margin: var(--spacing) 0;
-
-    table {
-        margin: 0;
-        font-size: .85em;
-        white-space: nowrap;
-
-        td:last-child,
-        td:nth-last-child(2) {
-            white-space: normal;
-            min-width: 10em;
-            max-width: 16em;
-        }
-    }
-}

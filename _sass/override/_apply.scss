@@ -4,7 +4,8 @@
    唯一入口：assets/css/override.scss（由 _includes/head.html 引用一行）
    回退：删掉 _includes/head.html 里那一行 <link> 即恢复原样；
          彻底清理则连本文件 + assets/css/override.scss 一起删。
-   _sass/tao/ 下所有文件一字未动。
+   _sass/tao/ 除 2026-11-25 清掉的旧表格方案残留（.table-wrapper /
+   .no-wrap-first-col，见 git log）外，其余一字未动。
    ================================================================== */
 
 /* ---------- 01 token：暖纸底 + 正文行距 ---------- */
@@ -65,55 +66,6 @@ a {
 .post-meta {
   letter-spacing: .04em;
   font-variant-numeric: tabular-nums;
-}
-
-/* ==================================================================
-   以下这条是「组件」：只在显式写了类名的地方生效（文章正文）
-   ================================================================== */
-
-/* ---------- 06 2×2 发丝网格：文章正文里的四点并列 ----------
-   600px 栏里每格约 290px，正文收到 .95rem 才好读。窄屏退成单列。 */
-.hgrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  margin: 1.7em 0;
-  background: rgba(0, 0, 0, .16);
-  border: 1px solid rgba(0, 0, 0, .16);
-
-  > .hgrid-cell {
-    margin: 0;
-    padding: 1.05em 1.15em 1.15em;
-    background: var(--body-bg);
-  }
-
-  .hgrid-k {
-    display: block;
-    margin-bottom: .5em;
-    font-family: var(--title-font);
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    color: var(--accent-color);
-  }
-
-  p {
-    margin: 0;
-    font-size: .95rem;
-    line-height: 1.78;
-    color: var(--body-color);
-  }
-
-  @media (max-width: 560px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .hgrid {
-    background: rgba(255, 255, 255, .18);
-    border-color: rgba(255, 255, 255, .18);
-  }
 }
 
 /* ==================================================================
