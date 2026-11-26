@@ -18,7 +18,7 @@ permalink: /about/
 
 <p class="about-lead">《漩涡之在》并不试图颠覆绵延两千年的形而上学传统。恰恰相反，它要在历代前贤的肩膀上，完成一次面向现代的重构。</p>
 
-<p class="about-note"><strong>想读了</strong>：全书入口在<a href="{{ '/vortex/' | relative_url }}">《漩涡之在》</a>——十九篇在线目录，三种不同深度的读法（半小时、方法落地、只要结论），3.7 版全本 PDF 也在那里。先要一个整体印象，可读<a href="{{ '/漩涡之在/2026/07/14/导读.html' | relative_url }}">导读</a>：八个核心命题，每个都标了延伸阅读的章节。</p>
+<p class="about-note"><strong>想读了</strong>：全书入口在<a href="{{ '/vortex/' | relative_url }}">《漩涡之在》</a>——十九篇在线目录，三种不同深度的读法（半小时、方法落地、只要结论），3.8 修订稿的在线正文与 3.7 版全本 PDF 也在那里。先要一个整体印象，可读<a href="{{ '/漩涡之在/2026/07/14/导读.html' | relative_url }}">导读</a>：八个核心命题，每个都标了延伸阅读的章节。</p>
 
 <div class="about-colophon">
   <div class="about-col-row">
